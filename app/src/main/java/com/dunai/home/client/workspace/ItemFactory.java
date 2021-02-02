@@ -19,6 +19,7 @@ public class ItemFactory {
             case "dropdown":
             case "color":
             case "button":
+            case "slider":
                 return buildWidget(item);
             default:
                 throw new Exception("Unknown item type: " + item.getString("type"));
@@ -50,6 +51,7 @@ public class ItemFactory {
                         spanPortrait,
                         spanLandscape,
                         bgColor,
+                        item.has("prefix") ? item.getString("prefix") : "",
                         item.has("suffix") ? item.getString("suffix") : ""
                 );
             case "switch":
@@ -122,6 +124,19 @@ public class ItemFactory {
                         bgColor,
                         buttonKeyValues,
                         ButtonWidget.Orientation.valueOf(item.has("orientation") ? item.getString("orientation") : "HORIZONTAL")
+                );
+            case "slider":
+                return new SliderWidget(
+                        id,
+                        title,
+                        topic,
+                        retain,
+                        spanPortrait,
+                        spanLandscape,
+                        bgColor,
+                        item.getInt("minValue"),
+                        item.getInt("maxValue"),
+                        item.getInt("step")
                 );
             default:
                 throw new Exception("Unknown item type: " + item.getString("type"));

@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
@@ -20,11 +21,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
-    private HomeClient client;
     private MenuItem menuConnectionStatus;
+    private boolean alive;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.alive = true;
         Log.i("HomeApp.MainActivity", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -46,9 +48,8 @@ public class MainActivity extends AppCompatActivity {
         ft.hide(getSupportFragmentManager().findFragmentById(R.id.fragment_tiles));
         ft.commit();
 
-        this.client = HomeClient.getInstance();
-        client.setConnectionStateChangedListener(this::setConnectionState);
-        setConnectionState(client.connectionState);
+        HomeClient.getInstance().setConnectionStateChangedListener(this::setConnectionState);
+        setConnectionState(HomeClient.getInstance().getConnectionState());
         Log.i("HomeApp", "onCreate");
     }
 
@@ -59,9 +60,21 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        this.alive = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.alive = false;
+    }
+
+    @Override
     protected void onDestroy() {
         Log.i("HomeApp.MainActivity", "onDestroy");
-        client.setConnectionStateChangedListener(null);
+        HomeClient.getInstance().setConnectionStateChangedListener(null);
         super.onDestroy();
     }
 
@@ -70,9 +83,7 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         menuConnectionStatus = menu.findItem(R.id.menuConnectionStatus);
-        if (client != null) {
-            setConnectionState(client.connectionState);
-        }
+        setConnectionState(HomeClient.getInstance().getConnectionState());
         return true;
     }
 
@@ -84,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings || (id == R.id.menuConnectionStatus && client.getConnectionState() == ConnectionState.NO_CONF)) {
+        if (id == R.id.action_settings || (id == R.id.menuConnectionStatus && HomeClient.getInstance().getConnectionState() == ConnectionState.NO_CONF)) {
             Intent intent = new Intent(this, SettingsActivity.class);
             this.startActivity(intent);
             return true;
@@ -96,6 +107,9 @@ public class MainActivity extends AppCompatActivity {
     void setConnectionState(ConnectionState connectionState) {
 //        final TextView view = ((TextView) findViewById(R.id.connectionState));
 //        MenuItem view = findViewById(R.id.menuConnectionStatus);
+        if (!alive) {
+            return;
+        }
         if (menuConnectionStatus == null) {
             return;
         }
@@ -108,7 +122,12 @@ public class MainActivity extends AppCompatActivity {
         try {
             switch (connectionState) {
                 case NO_CONF:
-                    menuConnectionStatus.setTitle("Configure");
+                case ERROR:
+                    if (connectionState == ConnectionState.NO_CONF) {
+                        menuConnectionStatus.setTitle("No config");
+                    } else {
+                        menuConnectionStatus.setTitle("Error");
+                    }
                     ft1.hide(getSupportFragmentManager().findFragmentById(R.id.fragment_tiles));
                     ft1.show(getSupportFragmentManager().findFragmentById(R.id.fragment_not_connected));
                     ft1.commit();
@@ -133,5 +152,10 @@ public class MainActivity extends AppCompatActivity {
         } catch (IllegalStateException e) { // Hack for java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }

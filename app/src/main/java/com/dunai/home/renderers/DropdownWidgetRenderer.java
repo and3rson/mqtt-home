@@ -35,10 +35,14 @@ public class DropdownWidgetRenderer extends WidgetRenderer {
 
         this.spinnerView = this.findViewById(R.id.dropdownRendererSpinner);
         this.spinnerView.setAdapter(new DropdownAdapter(getContext(), R.layout.two_column_list_item, this.workspaceDropdownWidget.keyValues));
-        this.spinnerView.setSelection(0, false); // Prevent setOnItemSelectedListener from firing initially
         this.spinnerView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            boolean isInitial = true;
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (isInitial) {
+                    isInitial = false;
+                    return;
+                }
                 HomeClient.getInstance().publish(
                         workspaceDropdownWidget.topic,
                         workspaceDropdownWidget.keyValues.get(position).getValue(),

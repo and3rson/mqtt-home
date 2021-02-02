@@ -13,6 +13,7 @@ import com.dunai.home.client.workspace.TextWidget;
 public class TextWidgetRenderer extends WidgetRenderer {
     private final TextWidget workspaceTextWidget;
 
+    private final TextView prefixView;
     private final TextView valueView;
     private final TextView suffixView;
 
@@ -23,18 +24,23 @@ public class TextWidgetRenderer extends WidgetRenderer {
 
         this.workspaceTextWidget = workspaceTextWidget;
 
+        this.prefixView = this.findViewById(R.id.textRendererPrefix);
         this.valueView = this.findViewById(R.id.textRendererValue);
         this.suffixView = this.findViewById(R.id.textRendererSuffix);
 
         if (value != null) {
             this.setValue(value);
         } else {
+            this.prefixView.setText("");
             this.suffixView.setText("");
         }
     }
 
     public void setValue(String value) {
         this.valueView.setText(value);
+        if (this.workspaceTextWidget.prefix != null) {
+            this.prefixView.setText(this.workspaceTextWidget.prefix);
+        }
         if (this.workspaceTextWidget.suffix != null) {
             this.suffixView.setText(this.workspaceTextWidget.suffix);
         }

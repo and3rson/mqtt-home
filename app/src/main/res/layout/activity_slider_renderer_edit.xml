@@ -65,9 +65,20 @@
                         android:hint="Topic" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <CheckBox
+                    android:id="@+id/rendererEditRetain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+                    android:text="Retain" />
+
                 <androidx.gridlayout.widget.GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="8sp"
                     app:rowCount="2">
 
                     <TextView
@@ -124,14 +135,28 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8sp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/textRendererEditPrefix"
+                        android:id="@+id/sliderRendererEditMinValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8sp"
-                        android:hint="Prefix" />
+                        android:hint="Minimum value"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8sp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/sliderRendererEditMaxValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Maximum value"
+                        android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -139,11 +164,11 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/textRendererEditSuffix"
+                        android:id="@+id/sliderRendererEditStep"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8sp"
-                        android:hint="Suffix" />
+                        android:hint="Step"
+                        android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>

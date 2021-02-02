@@ -71,12 +71,7 @@ public abstract class WidgetRenderer extends LinearLayout {
             findViewById(R.id.rendererMoreButton).setVisibility(GONE);
         }
 
-        findViewById(R.id.rendererMoreButton).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showContextMenu();
-            }
-        });
+        findViewById(R.id.rendererMoreButton).setOnClickListener(v -> showContextMenu());
 
         if (widget.bgColor != null) {
             this.bgColor = Color.parseColor(widget.bgColor);

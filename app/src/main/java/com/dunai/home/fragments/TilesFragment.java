@@ -28,6 +28,7 @@ import com.dunai.home.activities.ColorWidgetEditActivity;
 import com.dunai.home.activities.DropdownWidgetEditActivity;
 import com.dunai.home.activities.GraphWidgetEditActivity;
 import com.dunai.home.activities.SectionEditActivity;
+import com.dunai.home.activities.SliderWidgetEditActivity;
 import com.dunai.home.activities.SwitchWidgetEditActivity;
 import com.dunai.home.activities.TextWidgetEditActivity;
 import com.dunai.home.client.HomeClient;
@@ -38,6 +39,7 @@ import com.dunai.home.client.workspace.DropdownWidget;
 import com.dunai.home.client.workspace.GraphWidget;
 import com.dunai.home.client.workspace.Item;
 import com.dunai.home.client.workspace.Section;
+import com.dunai.home.client.workspace.SliderWidget;
 import com.dunai.home.client.workspace.SwitchWidget;
 import com.dunai.home.client.workspace.TextWidget;
 import com.dunai.home.client.workspace.Widget;
@@ -46,6 +48,7 @@ import com.dunai.home.renderers.ColorWidgetRenderer;
 import com.dunai.home.renderers.DropdownWidgetRenderer;
 import com.dunai.home.renderers.GraphWidgetRenderer;
 import com.dunai.home.renderers.SectionRenderer;
+import com.dunai.home.renderers.SliderWidgetRenderer;
 import com.dunai.home.renderers.SwitchWidgetRenderer;
 import com.dunai.home.renderers.TextWidgetRenderer;
 import com.dunai.home.renderers.WidgetRenderer;
@@ -111,6 +114,8 @@ public class TilesFragment extends Fragment {
                         renderer = new ColorWidgetRenderer(getContext(), (ColorWidget) item, topic);
                     } else if (item instanceof ButtonWidget) {
                         renderer = new ButtonWidgetRenderer(getContext(), (ButtonWidget) item, topic);
+                    } else if (item instanceof SliderWidget) {
+                        renderer = new SliderWidgetRenderer(getContext(), (SliderWidget) item, topic);
                     } else {
                         throw new Exception("Unknown item type: " + item.getType());
                     }
@@ -193,7 +198,8 @@ public class TilesFragment extends Fragment {
                 new AlertItem("Graph", R.drawable.ic_w_graph, GraphWidgetEditActivity.class),
                 new AlertItem("Dropdown", R.drawable.ic_w_dropdown, DropdownWidgetEditActivity.class),
                 new AlertItem("Color", R.drawable.ic_w_color, ColorWidgetEditActivity.class),
-                new AlertItem("Button", R.drawable.ic_w_button, ButtonWidgetEditActivity.class)
+                new AlertItem("Button", R.drawable.ic_w_button, ButtonWidgetEditActivity.class),
+                new AlertItem("Slider", R.drawable.ic_w_slider, SliderWidgetEditActivity.class)
         ));
 
         view.findViewById(R.id.tilesFab).setOnClickListener(v -> {
@@ -255,6 +261,8 @@ public class TilesFragment extends Fragment {
                     cls = ColorWidgetEditActivity.class;
                 } else if (workspaceItem instanceof ButtonWidget) {
                     cls = ButtonWidgetEditActivity.class;
+                } else if (workspaceItem instanceof SliderWidget) {
+                    cls = SliderWidgetEditActivity.class;
                 } else {
                     cls = null;
                 }

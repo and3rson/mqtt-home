@@ -87,7 +87,7 @@ import javax.net.ssl.X509TrustManager;
 
 public class HomeClient {
     private static HomeClient instance = null; // TODO: Memory leak?
-    public ConnectionState connectionState = ConnectionState.OFFLINE;
+    private ConnectionState connectionState = ConnectionState.OFFLINE;
     private MqttAndroidClient mqttClient;
     private Context context;
     private WorkspaceChangedListener workspaceChangedListener;
@@ -337,7 +337,7 @@ public class HomeClient {
             this.reconnectTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if (connectionState == ConnectionState.OFFLINE || connectionState == ConnectionState.NO_CONF) {
+                    if (connectionState == ConnectionState.OFFLINE || connectionState == ConnectionState.ERROR) {
                         Handler handler = new Handler(Looper.getMainLooper());
                         handler.post(() -> connect());
                     }
@@ -347,13 +347,17 @@ public class HomeClient {
         if (this.connectionState == ConnectionState.CONNECTING || this.connectionState == ConnectionState.CONNECTED) {
             return;
         }
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.context);
+        if (prefs.getString("host", "").isEmpty()) {
+            this.setConnectionState(ConnectionState.NO_CONF);
+            return;
+        }
         this.setConnectionState(ConnectionState.CONNECTING);
         this.getConnectionOptions(opts -> {
             if (opts == null) {
-                this.setConnectionState(ConnectionState.NO_CONF);
+                this.setConnectionState(ConnectionState.ERROR);
                 return;
             }
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.context);
             String clientId = prefs.getString("clientId", "automatic");
             if (clientId.equals("automatic")) {
                 clientId = "homeclient-" + Math.round(Math.random() * 1e6);
@@ -429,8 +433,10 @@ public class HomeClient {
     }
 
     public void disconnect() {
-        this.reconnectTimer.cancel();
-        this.reconnectTimer = null;
+        if (this.reconnectTimer != null) {
+            this.reconnectTimer.cancel();
+            this.reconnectTimer = null;
+        }
         try {
             if (this.mqttClient != null && this.mqttClient.isConnected()) {
                 this.mqttClient.disconnect();
@@ -588,6 +594,7 @@ public class HomeClient {
     }
 
     void setConnectionState(ConnectionState connectionState) {
+        System.out.println("Conn state -> " + connectionState.name());
         this.connectionState = connectionState;
         if (this.connectionStateChangedListener != null) {
             this.connectionStateChangedListener.onConnectionStateChanged(connectionState);

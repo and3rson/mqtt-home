@@ -1,0 +1,35 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Home" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/purple_200</item>
+        <item name="colorSecondaryVariant">@color/purple_500</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.Home.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Home.AppBarOverlay" parent="ThemeOverlay.AppCompat.DayNight.ActionBar" />
+
+    <style name="Theme.Home.PopupOverlay" parent="ThemeOverlay.AppCompat.DayNight" />
+
+    <style name="Theme.Home.SectionRenderer" parent="Theme.MaterialComponents.DayNight">
+        <item name="android:textColor">@color/gray_200</item>
+    </style>
+
+    <style name="Theme.Home.TextRenderer" parent="Theme.MaterialComponents.DayNight">
+        <item name="android:textColor">#FFCCCCCC</item>
+<!--        <item name="android:background">#FF282828</item>-->
+<!--        <item name="android:background">@color/purple_200</item>-->
+    </style>
+</resources>

@@ -1,17 +1,15 @@
-package com.dunai.home;
+package com.dunai.home.fragments;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.preference.PreferenceManager;
 
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Gravity;
@@ -23,6 +21,16 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dunai.home.R;
+import com.dunai.home.activities.SectionWidgetEditActivity;
+import com.dunai.home.activities.TextWidgetEditActivity;
+import com.dunai.home.client.HomeClient;
+import com.dunai.home.client.Workspace;
+import com.dunai.home.client.WorkspaceItem;
+import com.dunai.home.client.WorkspaceSection;
+import com.dunai.home.client.WorkspaceText;
+import com.dunai.home.widgets.Section;
+import com.dunai.home.widgets.TextWidget;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.HashMap;
@@ -43,20 +51,27 @@ public class TilesFragment extends Fragment {
                 tiles.removeAllViews();
                 Log.i("HomeApp", "Workspace: " + workspace);
 
+                DisplayMetrics metrics = new DisplayMetrics();
+                getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
+
                 Log.i("HomeApp", "Creating tiles: " + String.valueOf(workspace.items.size()));
                 for (int i = 0; i < workspace.items.size(); i++) {
                     WorkspaceItem item = workspace.items.get(i);
                     View renderer;
                     if (item instanceof WorkspaceSection) {
-                        renderer = new SectionRenderer(getContext(), (WorkspaceSection) item);
+                        renderer = new Section(getContext(), (WorkspaceSection) item);
                         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 12, 12);
+                        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 12);
+//                        params.width = metrics.widthPixels;
                         renderer.setLayoutParams(params);
                     } else if (item instanceof WorkspaceText) {
-                        renderer = new TextRenderer(getContext(), (WorkspaceText) item, this.topicValueMap.get((((WorkspaceText) item).topic)));
+                        renderer = new TextWidget(getContext(), (WorkspaceText) item, this.topicValueMap.get((((WorkspaceText) item).topic)));
                         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, ((WorkspaceText) item).span, (float) ((WorkspaceText) item).span);
+                        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, ((WorkspaceText) item).span);
+                        // params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, ((WorkspaceText) item).span, (float) ((WorkspaceText) item).span);
+//                        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, ((WorkspaceText) item).span, ((WorkspaceText) item).span);
                         //                        params.columnSpec = GridLayout.Spec(GridLayout.UNDEFINED, 6, GridLayout.ALIGN_BOUNDS, 1);
+                        params.width = metrics.widthPixels * ((WorkspaceText) item).span / 12;
                         renderer.setLayoutParams(params);
                         topicRendererMap.put(((WorkspaceText) item).topic, renderer);
                     } else {
@@ -78,11 +93,11 @@ public class TilesFragment extends Fragment {
             }
         });
         client.setDataReceivedListener((topic, payload) -> {
-            Log.i("HomeApp", topic + " -> " + payload);
+//            Log.i("HomeApp", topic + " -> " + payload);
             topicValueMap.put(topic, payload);
             View view = topicRendererMap.get(topic);
             if (view != null) {
-                ((TextRenderer) view).setValue(payload);
+                ((TextWidget) view).setValue(payload);
             }
         });
     }
@@ -97,15 +112,15 @@ public class TilesFragment extends Fragment {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             final String[] items = {
                     "Section",
-                    "Text"
+                    "Text widget"
             };
             builder.setTitle("Create new item");
             builder.setItems(items, ((dialog, which) -> {
                 Class<? extends AppCompatActivity> cls;
                 if (which == 0) {
-                    cls = SectionRendererEditActivity.class;
+                    cls = SectionWidgetEditActivity.class;
                 } else if (which == 1) {
-                    cls = TextRendererEditActivity.class;
+                    cls = TextWidgetEditActivity.class;
                 } else {
                     cls = null;
                 }
@@ -152,9 +167,9 @@ public class TilesFragment extends Fragment {
                 WorkspaceItem workspaceItem = client.getItem(workspaceItemId);
                 Class<? extends AppCompatActivity> cls;
                 if (workspaceItem instanceof WorkspaceText) {
-                    cls = TextRendererEditActivity.class;
+                    cls = TextWidgetEditActivity.class;
                 } else if (workspaceItem instanceof WorkspaceSection) {
-                    cls = SectionRendererEditActivity.class;
+                    cls = SectionWidgetEditActivity.class;
                 } else {
                     cls = null;
                 }
@@ -166,10 +181,17 @@ public class TilesFragment extends Fragment {
                 break;
             case 3:
                 // Delete
-                client.deleteItem(workspaceItemId);
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Confirm deletion")
+                        .setMessage("Do you want to delete this item?")
+                        .setPositiveButton("Yes", (dialog, which) -> client.deleteItem(workspaceItemId))
+                        .setNegativeButton("No", null)
+                        .show();
                 break;
         }
 
         return super.onContextItemSelected(item);
     }
+
+
 }

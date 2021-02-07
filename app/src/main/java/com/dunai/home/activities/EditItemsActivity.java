@@ -1,8 +1,10 @@
-package com.dunai.home;
+package com.dunai.home.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.dunai.home.R;
 
 public class EditItemsActivity extends AppCompatActivity {
 

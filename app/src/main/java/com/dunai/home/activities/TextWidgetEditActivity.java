@@ -1,18 +1,20 @@
-package com.dunai.home;
+package com.dunai.home.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class TextRendererEditActivity extends AppCompatActivity {
+import com.dunai.home.R;
+import com.dunai.home.client.HomeClient;
+import com.dunai.home.client.WorkspaceText;
+
+public class TextWidgetEditActivity extends AppCompatActivity {
     private String itemId;
     private TextView title;
     private TextView topic;
@@ -46,12 +48,26 @@ public class TextRendererEditActivity extends AppCompatActivity {
             topic.setText(item.topic);
             span.setText(String.valueOf(item.span));
             suffix.setText(item.suffix);
-            this.setTitle("Edit text \"" + item.title + "\"");
+            this.setTitle("Edit text widget \"" + item.title + "\"");
         } else {
-            this.setTitle("Create text");
+            this.setTitle("Create text widget");
         }
 
         ((Button) findViewById(R.id.textRendererEditSave)).setOnClickListener((View.OnClickListener) v -> {
+            TextView[] fields = {this.title, this.topic};
+            boolean errors = false;
+            for (TextView field : fields) {
+                if (field.getText().length() == 0) {
+                    field.setError("This field is required.");
+                    errors = true;
+                } else {
+                    field.setError(null);
+                }
+            }
+            if (errors) {
+                return;
+            }
+
             if (itemId != null) {
                 client.updateItem(
                         itemId,
@@ -67,7 +83,7 @@ public class TextRendererEditActivity extends AppCompatActivity {
             } else {
                 client.createItem(
                         new WorkspaceText(
-                                title.getText().toString().toLowerCase().replace(" ", "_"),
+                                String.valueOf(Math.round(Math.random() * 1e9)),
                                 title.getText().toString(),
                                 topic.getText().toString(),
                                 Integer.parseInt(span.getText().toString().equals("") ? "12" : span.getText().toString()),
@@ -76,7 +92,7 @@ public class TextRendererEditActivity extends AppCompatActivity {
                         )
                 );
             }
-            TextRendererEditActivity.this.finish();
+            TextWidgetEditActivity.this.finish();
         });
     }
 

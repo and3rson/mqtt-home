@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Theme.Home"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -45,16 +45,16 @@
 
             <fragment
                 android:id="@+id/fragment_not_connected"
-                android:name="com.dunai.home.NotConnectedFragment"
-                android:layout_width="fill_parent"
+                android:name="com.dunai.home.fragments.NotConnectedFragment"
+                android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <fragment
                 android:id="@+id/fragment_tiles"
-                android:name="com.dunai.home.TilesFragment"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" />
+                android:name="com.dunai.home.fragments.TilesFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

@@ -1,8 +1,12 @@
-package com.dunai.home;
+package com.dunai.home.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.dunai.home.R;
+import com.dunai.home.activities.SettingsActivity;
+import com.dunai.home.client.ConnectionState;
+import com.dunai.home.client.HomeClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -17,11 +21,6 @@ import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.GridLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     private HomeClient client;
@@ -51,12 +50,9 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
 
         this.client = HomeClient.getInstance();
-        this.client.setContext(this.getApplicationContext());
         client.setConnectionStateChangedListener(this::setConnectionState);
         setConnectionState(client.connectionState);
         Log.i("HomeApp", "onCreate");
-
-        client.connect();
     }
 
 //    @Override
@@ -68,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         Log.i("HomeApp.MainActivity", "onDestroy");
-        client.disconnect();
+        client.setConnectionStateChangedListener(null);
         super.onDestroy();
     }
 
@@ -109,23 +105,31 @@ public class MainActivity extends AppCompatActivity {
         }
         FragmentTransaction ft1 = getSupportFragmentManager().beginTransaction();
 
-        switch (connectionState) {
-            case OFFLINE:
-                menuConnectionStatus.setTitle("Offline");
-                ft1.hide(getSupportFragmentManager().findFragmentById(R.id.fragment_tiles));
-                ft1.show(getSupportFragmentManager().findFragmentById(R.id.fragment_not_connected));
-                ft1.commit();
-                break;
-            case CONNECTING:
-                menuConnectionStatus.setTitle("Connecting...");
-                break;
-            case CONNECTED:
-                menuConnectionStatus.setTitle("Connected");
-                ft1.hide(getSupportFragmentManager().findFragmentById(R.id.fragment_not_connected));
-                ft1.show(getSupportFragmentManager().findFragmentById(R.id.fragment_tiles));
-                ft1.commit();
-                getSupportActionBar().setTitle(PreferenceManager.getDefaultSharedPreferences(this).getString("host", ""));
-                break;
+        if (this.isDestroyed()) {
+            return;
+        }
+
+        try {
+            switch (connectionState) {
+                case OFFLINE:
+                    menuConnectionStatus.setTitle("Offline");
+                    ft1.hide(getSupportFragmentManager().findFragmentById(R.id.fragment_tiles));
+                    ft1.show(getSupportFragmentManager().findFragmentById(R.id.fragment_not_connected));
+                    ft1.commit();
+                    break;
+                case CONNECTING:
+                    menuConnectionStatus.setTitle("Connecting...");
+                    break;
+                case CONNECTED:
+                    menuConnectionStatus.setTitle("Connected");
+                    ft1.hide(getSupportFragmentManager().findFragmentById(R.id.fragment_not_connected));
+                    ft1.show(getSupportFragmentManager().findFragmentById(R.id.fragment_tiles));
+                    ft1.commit();
+                    getSupportActionBar().setTitle(PreferenceManager.getDefaultSharedPreferences(this).getString("host", ""));
+                    break;
+            }
+        } catch(IllegalStateException e) { // Hack for java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+            e.printStackTrace();
         }
     }
 }

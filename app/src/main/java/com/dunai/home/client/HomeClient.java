@@ -1,4 +1,4 @@
-package com.dunai.home;
+package com.dunai.home.client;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -24,112 +24,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-
-interface WorkspaceChangedListener {
-    void onWorkspaceChanged(Workspace workspace);
-}
-
-interface DataReceivedListener {
-    void onDataReceived(String topic, String payload);
-}
-
-interface ConnectionStateChangedListener {
-    void onConnectionStateChanged(ConnectionState connectionState);
-}
-
-class WorkspaceItem {
-    public String id;
-    public String type;
-
-    public WorkspaceItem(String id, String type) {
-        this.id = id;
-        this.type = type;
-    }
-
-    public JSONObject serialize() {
-        JSONObject root = new JSONObject();
-        try {
-            root.put("id", this.id);
-            root.put("type", this.type);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return root;
-    }
-}
-
-class WorkspaceSection extends WorkspaceItem {
-    public String title;
-
-    public WorkspaceSection(String id, String title) {
-        super(id, "section");
-        this.title = title;
-    }
-
-    public JSONObject serialize() {
-        JSONObject root = super.serialize();
-        try {
-            root.put("title", this.title);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return root;
-    }
-}
-
-class WorkspaceText extends WorkspaceItem {
-    public String title;
-    public String topic;
-    public int span;
-    public String suffix;
-    public String bgColor;
-
-    public WorkspaceText(String id, String title, String topic, int span, String suffix, String bgColor) {
-        super(id, "text");
-        this.title = title;
-        this.topic = topic;
-        this.span = span;
-        this.suffix = suffix;
-        this.bgColor = bgColor;
-    }
-
-    public JSONObject serialize() {
-        JSONObject root = super.serialize();
-        try {
-            root.put("title", this.title);
-            root.put("topic", this.topic);
-            root.put("span", this.span);
-            root.put("suffix", this.suffix);
-            root.put("bgColor", this.bgColor);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return root;
-    }
-}
-
-class Workspace {
-    public ArrayList<WorkspaceItem> items = new ArrayList<>();
-    public JSONObject serialize() {
-        JSONArray items = new JSONArray();
-        JSONObject root = new JSONObject();
-        for (int i = 0; i < this.items.size(); i++) {
-            items.put(this.items.get(i).serialize());
-        }
-        try {
-            root.put("items", items);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return root;
-    }
-}
-
-enum ConnectionState {
-    OFFLINE,
-    CONNECTING,
-    CONNECTED
-}
 
 public class HomeClient {
     private static HomeClient instance = null;
@@ -222,7 +116,6 @@ public class HomeClient {
 
             @Override
             public void messageArrived(String topic, MqttMessage message) {
-                Log.i("HomeApp", topic + ": " + new String(message.getPayload()));
                 if (topic.equals("workspace")) {
                     if (HomeClient.this.workspaceChangedListener != null) {
                         try {

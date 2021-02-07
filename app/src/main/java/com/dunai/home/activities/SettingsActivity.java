@@ -1,13 +1,15 @@
-package com.dunai.home;
+package com.dunai.home.activities;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
+
+import com.dunai.home.R;
+import com.dunai.home.client.HomeClient;
 
 public class SettingsActivity extends AppCompatActivity {
 

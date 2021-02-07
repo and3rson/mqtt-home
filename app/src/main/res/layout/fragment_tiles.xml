@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TilesFragment">
+    tools:context=".fragments.TilesFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -21,10 +21,10 @@
 
             <GridLayout
                 android:id="@+id/tiles"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:columnCount="12"
-                android:useDefaultMargins="true" />
+                android:useDefaultMargins="false" />
         </LinearLayout>
     </ScrollView>
 

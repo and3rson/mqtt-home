@@ -13,22 +13,23 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Home">
-        <activity android:name=".SectionRendererEditActivity"></activity>
-        <activity android:name=".TextRendererEditActivity" />
+        android:theme="@style/Theme.Home"
+        android:name=".HomeApplication">
+        <activity android:name=".activities.SectionWidgetEditActivity"></activity>
+        <activity android:name=".activities.TextWidgetEditActivity" />
         <activity
-            android:name=".EditItemsActivity"
+            android:name=".activities.EditItemsActivity"
             android:label="@string/title_activity_edit_items" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.dunai.home.MainActivity" />
+                android:value="com.dunai.home.activities.MainActivity" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.Home.NoActionBar">
             <intent-filter>

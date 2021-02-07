@@ -1,4 +1,4 @@
-package com.dunai.home;
+package com.dunai.home.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +10,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class SectionRendererEditActivity extends AppCompatActivity {
+import com.dunai.home.R;
+import com.dunai.home.client.HomeClient;
+import com.dunai.home.client.WorkspaceSection;
+
+public class SectionWidgetEditActivity extends AppCompatActivity {
     private String itemId;
     private TextView title;
     private HomeClient client;
@@ -41,6 +45,20 @@ public class SectionRendererEditActivity extends AppCompatActivity {
         }
 
         ((Button) findViewById(R.id.sectionRendererEditSave)).setOnClickListener((View.OnClickListener) v -> {
+            TextView[] fields = {this.title};
+            boolean errors = false;
+            for (TextView field : fields) {
+                if (field.getText().length() == 0) {
+                    field.setError("This field is required.");
+                    errors = true;
+                } else {
+                    field.setError(null);
+                }
+            }
+            if (errors) {
+                return;
+            }
+
             if (itemId != null) {
                 client.updateItem(
                         itemId,
@@ -52,12 +70,12 @@ public class SectionRendererEditActivity extends AppCompatActivity {
             } else {
                 client.createItem(
                         new WorkspaceSection(
-                                title.getText().toString().toLowerCase().replace(" ", "_"),
+                                String.valueOf(Math.round(Math.random() * 1e9)),
                                 title.getText().toString()
                         )
                 );
             }
-            SectionRendererEditActivity.this.finish();
+            SectionWidgetEditActivity.this.finish();
         });
     }
 

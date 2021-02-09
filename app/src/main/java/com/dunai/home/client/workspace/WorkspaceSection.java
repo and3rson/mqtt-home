@@ -1,9 +1,12 @@
-package com.dunai.home.client;
+package com.dunai.home.client.workspace;
+
+import com.dunai.home.client.workspace.annotations.Editable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class WorkspaceSection extends WorkspaceItem {
+    @Editable(key = "Title", type = Editable.Type.STRING)
     public String title;
 
     public WorkspaceSection(String id, String title) {

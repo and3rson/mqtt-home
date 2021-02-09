@@ -1,6 +1,6 @@
 package com.dunai.home.client;
 
-import com.dunai.home.client.WorkspaceItem;
+import com.dunai.home.client.workspace.WorkspaceItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;

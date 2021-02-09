@@ -9,6 +9,12 @@ import android.widget.Toast;
 
 import androidx.preference.PreferenceManager;
 
+import com.dunai.home.client.interfaces.ConnectionStateChangedListener;
+import com.dunai.home.client.interfaces.DataReceivedListener;
+import com.dunai.home.client.interfaces.WorkspaceChangedListener;
+import com.dunai.home.client.workspace.WorkspaceItem;
+import com.dunai.home.client.workspace.WorkspaceItemFactory;
+
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -126,21 +132,8 @@ public class HomeClient {
                             Log.i("HomeApp", "Tiles: " + String.valueOf(items.length()));
                             for (int i = 0; i < items.length(); i++) {
                                 JSONObject item = items.getJSONObject(i);
-                                if (item.getString("type").equals("text")) {
-                                    workspace.items.add(new WorkspaceText(
-                                            item.getString("id"),
-                                            item.getString("title"),
-                                            item.getString("topic"),
-                                            item.has("span") ? item.getInt("span") : 12,
-                                            item.has("suffix") ? item.getString("suffix") : "",
-                                            item.has("bgColor") ? item.getString("bgColor") : null
-                                    ));
-                                } else {
-                                    workspace.items.add(new WorkspaceSection(
-                                            item.getString("id"),
-                                            item.getString("title")
-                                    ));
-                                }
+                                WorkspaceItem workspaceItem = WorkspaceItemFactory.createFromJSONObject(item);
+                                workspace.items.add(workspaceItem);
                             }
                             HomeClient.this.workspace = workspace;
                             workspaceChangedListener.onWorkspaceChanged(workspace);
@@ -310,5 +303,14 @@ public class HomeClient {
             return null;
         }
         return this.workspace.items.get(index);
+    }
+
+    public void publish(String topic, String value, boolean retain) {
+        try {
+            this.mqttClient.publish(topic, value.getBytes(), 0, retain);
+        } catch (MqttException e) {
+            Toast.makeText(context, "Failed to publish: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
     }
 }

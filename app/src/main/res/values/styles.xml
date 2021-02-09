@@ -3,4 +3,12 @@
 <!--        <item name="android:background">@color/gray_400</item>-->
 <!--        <item name="android:textColor">@color/white</item>-->
     </style>
+
+    <style name="HomePopupMenu">
+        <item name="android:background">#00F000</item>
+    </style>
+
+    <style name="HomeActionBarStyle">
+        <item name="android:background">#FF0000</item>
+    </style>
 </resources>

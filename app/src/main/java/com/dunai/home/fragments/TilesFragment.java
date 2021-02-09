@@ -22,23 +22,35 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dunai.home.R;
-import com.dunai.home.activities.SectionWidgetEditActivity;
+import com.dunai.home.activities.DropdownWidgetEditActivity;
+import com.dunai.home.activities.GraphWidgetEditActivity;
+import com.dunai.home.activities.SectionEditActivity;
+import com.dunai.home.activities.SwitchWidgetEditActivity;
 import com.dunai.home.activities.TextWidgetEditActivity;
 import com.dunai.home.client.HomeClient;
 import com.dunai.home.client.Workspace;
-import com.dunai.home.client.WorkspaceItem;
-import com.dunai.home.client.WorkspaceSection;
-import com.dunai.home.client.WorkspaceText;
-import com.dunai.home.widgets.Section;
-import com.dunai.home.widgets.TextWidget;
+import com.dunai.home.client.workspace.WorkspaceDropdownWidget;
+import com.dunai.home.client.workspace.WorkspaceGraphWidget;
+import com.dunai.home.client.workspace.WorkspaceItem;
+import com.dunai.home.client.workspace.WorkspaceSection;
+import com.dunai.home.client.workspace.WorkspaceSwitchWidget;
+import com.dunai.home.client.workspace.WorkspaceTextWidget;
+import com.dunai.home.client.workspace.WorkspaceWidget;
+import com.dunai.home.renderers.DropdownWidgetRenderer;
+import com.dunai.home.renderers.GraphWidgetRenderer;
+import com.dunai.home.renderers.SectionRenderer;
+import com.dunai.home.renderers.SwitchWidgetRenderer;
+import com.dunai.home.renderers.TextWidgetRenderer;
+import com.dunai.home.renderers.WidgetRenderer;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TilesFragment extends Fragment {
     private HomeClient client;
     private Workspace workspace;
-    private HashMap<String, View> topicRendererMap = new HashMap<>();
+    private HashMap<String, ArrayList<WidgetRenderer>> topicRenderersMap = new HashMap<>();
     private HashMap<String, String> topicValueMap = new HashMap<>();
 
     public TilesFragment() {
@@ -49,6 +61,7 @@ public class TilesFragment extends Fragment {
             GridLayout tiles = getView().findViewById(R.id.tiles);
             try {
                 tiles.removeAllViews();
+                topicRenderersMap.clear();
                 Log.i("HomeApp", "Workspace: " + workspace);
 
                 DisplayMetrics metrics = new DisplayMetrics();
@@ -59,31 +72,39 @@ public class TilesFragment extends Fragment {
                     WorkspaceItem item = workspace.items.get(i);
                     View renderer;
                     if (item instanceof WorkspaceSection) {
-                        renderer = new Section(getContext(), (WorkspaceSection) item);
+                        renderer = new SectionRenderer(getContext(), (WorkspaceSection) item);
                         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                         params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 12);
-//                        params.width = metrics.widthPixels;
                         renderer.setLayoutParams(params);
-                    } else if (item instanceof WorkspaceText) {
-                        renderer = new TextWidget(getContext(), (WorkspaceText) item, this.topicValueMap.get((((WorkspaceText) item).topic)));
-                        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, ((WorkspaceText) item).span);
-                        // params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, ((WorkspaceText) item).span, (float) ((WorkspaceText) item).span);
-//                        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, ((WorkspaceText) item).span, ((WorkspaceText) item).span);
-                        //                        params.columnSpec = GridLayout.Spec(GridLayout.UNDEFINED, 6, GridLayout.ALIGN_BOUNDS, 1);
-                        params.width = metrics.widthPixels * ((WorkspaceText) item).span / 12;
-                        renderer.setLayoutParams(params);
-                        topicRendererMap.put(((WorkspaceText) item).topic, renderer);
                     } else {
-                        throw new Exception("Unknown item type: " + item.type);
+                        if (item instanceof WorkspaceTextWidget) {
+                            renderer = new TextWidgetRenderer(getContext(), (WorkspaceTextWidget) item, this.topicValueMap.get((((WorkspaceTextWidget) item).topic)));
+                        } else if (item instanceof WorkspaceSwitchWidget) {
+                            renderer = new SwitchWidgetRenderer(getContext(), (WorkspaceSwitchWidget) item, this.topicValueMap.get((((WorkspaceSwitchWidget) item).topic)));
+                        } else if (item instanceof WorkspaceGraphWidget) {
+                            renderer = new GraphWidgetRenderer(getContext(), (WorkspaceGraphWidget) item, this.topicValueMap.get((((WorkspaceGraphWidget) item).topic)));
+                        } else if (item instanceof WorkspaceDropdownWidget) {
+                            renderer = new DropdownWidgetRenderer(getContext(), (WorkspaceDropdownWidget) item, this.topicValueMap.get((((WorkspaceDropdownWidget) item).topic)));
+                        } else {
+                            throw new Exception("Unknown item type: " + item.type);
+                        }
+                        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+                        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, ((WorkspaceWidget) item).span);
+                        params.width = metrics.widthPixels * ((WorkspaceWidget) item).span / 12;
+                        renderer.setLayoutParams(params);
+                        ArrayList<WidgetRenderer> renderers = topicRenderersMap.get(((WorkspaceWidget) item).topic);
+                        if (renderers == null) {
+                            renderers = new ArrayList<>();
+                        }
+                        renderers.add((WidgetRenderer) renderer);
+                        topicRenderersMap.put(((WorkspaceWidget) item).topic, renderers);
                     }
-//                    renderer.setOnLongClickListener(v -> true);
                     tiles.addView(renderer);
                     registerForContextMenu(renderer);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(getContext(), "Failed to populate workspace:" + e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Failed to populate workspace: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
             if (this.workspace.items.size() == 0) {
                 TextView noWorkspace = new TextView(this.getContext());
@@ -95,9 +116,9 @@ public class TilesFragment extends Fragment {
         client.setDataReceivedListener((topic, payload) -> {
 //            Log.i("HomeApp", topic + " -> " + payload);
             topicValueMap.put(topic, payload);
-            View view = topicRendererMap.get(topic);
-            if (view != null) {
-                ((TextWidget) view).setValue(payload);
+            ArrayList<WidgetRenderer> renderers = topicRenderersMap.get(topic);
+            if (renderers != null) {
+                renderers.forEach(renderer -> renderer.setValue(payload));
             }
         });
     }
@@ -112,15 +133,24 @@ public class TilesFragment extends Fragment {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             final String[] items = {
                     "Section",
-                    "Text widget"
+                    "Text widget",
+                    "Switch widget",
+                    "Graph widget",
+                    "Dropdown widget"
             };
             builder.setTitle("Create new item");
             builder.setItems(items, ((dialog, which) -> {
                 Class<? extends AppCompatActivity> cls;
                 if (which == 0) {
-                    cls = SectionWidgetEditActivity.class;
+                    cls = SectionEditActivity.class;
                 } else if (which == 1) {
                     cls = TextWidgetEditActivity.class;
+                } else if (which == 2) {
+                    cls = SwitchWidgetEditActivity.class;
+                } else if (which == 3) {
+                    cls = GraphWidgetEditActivity.class;
+                } else if (which == 4) {
+                    cls = DropdownWidgetEditActivity.class;
                 } else {
                     cls = null;
                 }
@@ -166,10 +196,16 @@ public class TilesFragment extends Fragment {
                 // Edit
                 WorkspaceItem workspaceItem = client.getItem(workspaceItemId);
                 Class<? extends AppCompatActivity> cls;
-                if (workspaceItem instanceof WorkspaceText) {
+                if (workspaceItem instanceof WorkspaceSection) {
+                    cls = SectionEditActivity.class;
+                } else if (workspaceItem instanceof WorkspaceTextWidget) {
                     cls = TextWidgetEditActivity.class;
-                } else if (workspaceItem instanceof WorkspaceSection) {
-                    cls = SectionWidgetEditActivity.class;
+                } else if (workspaceItem instanceof WorkspaceSwitchWidget) {
+                    cls = SwitchWidgetEditActivity.class;
+                } else if (workspaceItem instanceof WorkspaceGraphWidget) {
+                    cls = GraphWidgetEditActivity.class;
+                } else if (workspaceItem instanceof WorkspaceDropdownWidget) {
+                    cls = DropdownWidgetEditActivity.class;
                 } else {
                     cls = null;
                 }

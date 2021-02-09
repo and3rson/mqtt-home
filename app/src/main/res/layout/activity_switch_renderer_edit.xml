@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="8sp"
-            tools:context=".activities.TextWidgetEditActivity">
+            tools:context=".activities.SwitchWidgetEditActivity">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -46,7 +46,7 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/textRendererEditTitle"
+                        android:id="@+id/switchRendererEditTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8sp"
@@ -58,7 +58,7 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/textRendererEditTopic"
+                        android:id="@+id/switchRendererEditTopic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8sp"
@@ -66,7 +66,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="12sp"
@@ -74,7 +74,7 @@
                     android:textSize="16sp" />
 
                 <SeekBar
-                    android:id="@+id/textRendererEditSpan"
+                    android:id="@+id/switchRendererEditSpan"
                     style="@style/Theme.Home.SeekBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -89,11 +89,23 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/textRendererEditSuffix"
+                        android:id="@+id/switchRendererEditOnValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8sp"
-                        android:hint="Suffix" />
+                        android:hint="On value" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/switchRendererEditOffValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8sp"
+                        android:hint="Off value" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>

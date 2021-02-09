@@ -1,28 +1,29 @@
 package com.dunai.home.activities;
 
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.Toolbar;
+
 import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
-import com.dunai.home.client.workspace.WorkspaceTextWidget;
+import com.dunai.home.client.workspace.WorkspaceSwitchWidget;
 
-public class TextWidgetEditActivity extends AbstractEditActivity {
+public class SwitchWidgetEditActivity extends AbstractEditActivity {
     private String itemId;
     private TextView title;
     private TextView topic;
     private SeekBar span;
-    private TextView suffix;
+    private TextView onValue;
+    private TextView offValue;
     private HomeClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_text_renderer_edit);
+        setContentView(R.layout.activity_switch_renderer_edit);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -30,15 +31,16 @@ public class TextWidgetEditActivity extends AbstractEditActivity {
 
         client = HomeClient.getInstance();
 
-        title = findViewById(R.id.textRendererEditTitle);
-        topic = findViewById(R.id.textRendererEditTopic);
-        span = findViewById(R.id.textRendererEditSpan);
-        suffix = findViewById(R.id.textRendererEditSuffix);
+        title = findViewById(R.id.switchRendererEditTitle);
+        topic = findViewById(R.id.switchRendererEditTopic);
+        span = findViewById(R.id.switchRendererEditSpan);
+        onValue = findViewById(R.id.switchRendererEditOnValue);
+        offValue = findViewById(R.id.switchRendererEditOffValue);
 
         Intent intent = getIntent();
         if (intent.hasExtra("item_id")) {
             itemId = intent.getStringExtra("item_id");
-            WorkspaceTextWidget item = ((WorkspaceTextWidget) client.getItem(itemId));
+            WorkspaceSwitchWidget item = ((WorkspaceSwitchWidget) client.getItem(itemId));
             if (item == null) {
                 finish();
                 return;
@@ -46,16 +48,17 @@ public class TextWidgetEditActivity extends AbstractEditActivity {
             title.setText(item.title);
             topic.setText(item.topic);
             span.setProgress(item.span - 1);
-            suffix.setText(item.suffix);
-            this.setTitle("Edit text widget \"" + item.title + "\"");
+            onValue.setText(item.onValue);
+            offValue.setText(item.offValue);
+            this.setTitle("Edit switch widget \"" + item.title + "\"");
         } else {
-            this.setTitle("Create text widget");
+            this.setTitle("Create switch widget");
         }
     }
 
     @Override
     void onSavePressed() {
-        TextView[] fields = {this.topic};
+        TextView[] fields = {this.topic, this.onValue, this.offValue};
         boolean errors = false;
         for (TextView field : fields) {
             if (field.getText().length() == 0) {
@@ -72,27 +75,29 @@ public class TextWidgetEditActivity extends AbstractEditActivity {
         if (itemId != null) {
             client.updateItem(
                     itemId,
-                    new WorkspaceTextWidget(
+                    new WorkspaceSwitchWidget(
                             itemId,
                             title.getText().toString(),
                             topic.getText().toString(),
                             span.getProgress() + 1,
-                            suffix.getText().toString(),
+                            onValue.getText().toString(),
+                            offValue.getText().toString(),
                             null
                     )
             );
         } else {
             client.createItem(
-                    new WorkspaceTextWidget(
+                    new WorkspaceSwitchWidget(
                             String.valueOf(Math.round(Math.random() * 1e9)),
                             title.getText().toString(),
                             topic.getText().toString(),
                             span.getProgress() + 1,
-                            suffix.getText().toString(),
+                            onValue.getText().toString(),
+                            offValue.getText().toString(),
                             null
                     )
             );
         }
-        TextWidgetEditActivity.this.finish();
+        SwitchWidgetEditActivity.this.finish();
     }
 }

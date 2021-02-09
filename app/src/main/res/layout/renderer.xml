@@ -14,6 +14,7 @@
         android:theme="@style/Theme.Home.TextRenderer">
 
         <LinearLayout
+            android:id="@+id/rendererTitleContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -36,6 +37,13 @@
                 android:layout_marginTop="4sp"
                 android:layout_marginRight="4sp"
                 android:background="@drawable/pin" />
+
+            <ImageButton
+                android:id="@+id/rendererMoreButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                app:srcCompat="@drawable/ic_more" />
         </LinearLayout>
 
         <LinearLayout

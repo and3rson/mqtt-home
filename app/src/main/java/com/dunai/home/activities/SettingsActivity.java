@@ -1,45 +1,65 @@
 package com.dunai.home.activities;
 
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
 
 public class SettingsActivity extends AppCompatActivity {
+    private SettingsFragment settingsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings_activity);
+        setContentView(R.layout.activity_settings);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        settingsFragment = new SettingsFragment();
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.settings, new SettingsFragment())
+                    .replace(R.id.settings, settingsFragment)
                     .commit();
-        }
-        this.setTitle("Settings");
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
 
-    public static class SettingsFragment extends PreferenceFragmentCompat {
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        System.out.println("Config changed!");
+        super.onConfigurationChanged(newConfig);
+    }
+
+    public static class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+        public boolean settingsChanged = false;
+
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
+            getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        }
+
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            this.settingsChanged = true;
         }
     }
 
     @Override
     public void onStop() {
-        HomeClient.getInstance().reconnect();
+        if (this.settingsFragment.settingsChanged) {
+            HomeClient.getInstance().reconnect();
+        }
         super.onStop();
     }
 

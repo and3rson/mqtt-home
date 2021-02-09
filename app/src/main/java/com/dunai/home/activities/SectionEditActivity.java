@@ -4,25 +4,21 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
-import com.dunai.home.client.workspace.WorkspaceTextWidget;
+import com.dunai.home.client.workspace.WorkspaceSection;
 
-public class TextWidgetEditActivity extends AbstractEditActivity {
+public class SectionEditActivity extends AbstractEditActivity {
     private String itemId;
     private TextView title;
-    private TextView topic;
-    private SeekBar span;
-    private TextView suffix;
     private HomeClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_text_renderer_edit);
+        setContentView(R.layout.activity_section_renderer_edit);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -30,32 +26,28 @@ public class TextWidgetEditActivity extends AbstractEditActivity {
 
         client = HomeClient.getInstance();
 
-        title = findViewById(R.id.textRendererEditTitle);
-        topic = findViewById(R.id.textRendererEditTopic);
-        span = findViewById(R.id.textRendererEditSpan);
-        suffix = findViewById(R.id.textRendererEditSuffix);
+        title = findViewById(R.id.sectionRendererEditTitle);
+
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         if (intent.hasExtra("item_id")) {
             itemId = intent.getStringExtra("item_id");
-            WorkspaceTextWidget item = ((WorkspaceTextWidget) client.getItem(itemId));
+            WorkspaceSection item = ((WorkspaceSection) client.getItem(itemId));
             if (item == null) {
                 finish();
                 return;
             }
             title.setText(item.title);
-            topic.setText(item.topic);
-            span.setProgress(item.span - 1);
-            suffix.setText(item.suffix);
-            this.setTitle("Edit text widget \"" + item.title + "\"");
+            this.setTitle("Edit section \"" + item.title + "\"");
         } else {
-            this.setTitle("Create text widget");
+            this.setTitle("Create section");
         }
     }
 
     @Override
     void onSavePressed() {
-        TextView[] fields = {this.topic};
+        TextView[] fields = {this.title};
         boolean errors = false;
         for (TextView field : fields) {
             if (field.getText().length() == 0) {
@@ -72,27 +64,19 @@ public class TextWidgetEditActivity extends AbstractEditActivity {
         if (itemId != null) {
             client.updateItem(
                     itemId,
-                    new WorkspaceTextWidget(
+                    new WorkspaceSection(
                             itemId,
-                            title.getText().toString(),
-                            topic.getText().toString(),
-                            span.getProgress() + 1,
-                            suffix.getText().toString(),
-                            null
+                            title.getText().toString()
                     )
             );
         } else {
             client.createItem(
-                    new WorkspaceTextWidget(
+                    new WorkspaceSection(
                             String.valueOf(Math.round(Math.random() * 1e9)),
-                            title.getText().toString(),
-                            topic.getText().toString(),
-                            span.getProgress() + 1,
-                            suffix.getText().toString(),
-                            null
+                            title.getText().toString()
                     )
             );
         }
-        TextWidgetEditActivity.this.finish();
+        SectionEditActivity.this.finish();
     }
 }

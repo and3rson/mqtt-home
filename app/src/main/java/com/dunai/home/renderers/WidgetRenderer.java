@@ -1,4 +1,4 @@
-package com.dunai.home.widgets;
+package com.dunai.home.renderers;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
@@ -7,16 +7,18 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dunai.home.R;
+import com.dunai.home.client.workspace.WorkspaceWidget;
 
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Widget extends LinearLayout {
+public abstract class WidgetRenderer extends LinearLayout {
     private final Timer lastUpdateTimer;
     private LinearLayout root;
     private TextView title;
@@ -26,7 +28,7 @@ public class Widget extends LinearLayout {
     private int bgColor;
     private Date lastUpdateDate;
 
-    public Widget(Context context, String title, String bgColor) {
+    public WidgetRenderer(Context context, WorkspaceWidget workspaceWidget) {
         super(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.renderer, this, true);
@@ -36,10 +38,21 @@ public class Widget extends LinearLayout {
         this.pin = this.findViewById(R.id.rendererPin);
         this.lastUpdate = this.findViewById(R.id.rendererLastUpdate);
 
-        this.title.setText(title);
+        if (workspaceWidget.title.isEmpty()) {
+            findViewById(R.id.rendererTitleContainer).setVisibility(GONE);
+        } else {
+            this.title.setText(workspaceWidget.title);
+        }
 
-        if (bgColor != null) {
-            this.bgColor = Color.parseColor(bgColor);
+        findViewById(R.id.rendererMoreButton).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showContextMenu();
+            }
+        });
+
+        if (workspaceWidget.bgColor != null) {
+            this.bgColor = Color.parseColor(workspaceWidget.bgColor);
         } else {
             this.bgColor = Color.parseColor("#FF282828");
         }
@@ -64,8 +77,14 @@ public class Widget extends LinearLayout {
                 long diff = (new Date().getTime() - this.lastUpdateDate.getTime()) / 1000;
                 if (diff < 10) {
                     this.lastUpdate.setText("just now");
+                } else if (diff < 60) {
+                    this.lastUpdate.setText("" + diff + " sec ago");
+                } else if (diff < 3600) {
+                    this.lastUpdate.setText("" + (diff / 60) + " min ago");
+                } else if (diff < 86400) {
+                    this.lastUpdate.setText("" + (diff / 3600) + " hours ago");
                 } else {
-                    this.lastUpdate.setText("" + diff + " s ago");
+                    this.lastUpdate.setText("" + (diff / 86400) + " days ago");
                 }
                 this.lastUpdate.setTextColor(Color.parseColor("#777777"));
             } else {
@@ -97,4 +116,6 @@ public class Widget extends LinearLayout {
         this.lastUpdateDate = new Date();
         this.refreshLastUpdate();
     }
+
+    public abstract void setValue(String value);
 }

@@ -21,18 +21,18 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
 
+        android:fillViewport="true"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8sp"
-            tools:context=".activities.TextWidgetEditActivity">
+            android:layout_height="wrap_content"
+            android:padding="8sp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -46,7 +46,7 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/textRendererEditTitle"
+                        android:id="@+id/dropdownRendererEditTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8sp"
@@ -58,7 +58,7 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/textRendererEditTopic"
+                        android:id="@+id/dropdownRendererEditTopic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8sp"
@@ -66,7 +66,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="12sp"
@@ -74,7 +74,7 @@
                     android:textSize="16sp" />
 
                 <SeekBar
-                    android:id="@+id/textRendererEditSpan"
+                    android:id="@+id/dropdownRendererEditSpan"
                     style="@style/Theme.Home.SeekBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -84,23 +84,39 @@
                     android:paddingBottom="12sp"
                     android:progress="5" />
 
-                <com.google.android.material.textfield.TextInputLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/textRendererEditSuffix"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8sp"
-                        android:hint="Suffix" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_weight="1"
+                        android:paddingLeft="12sp"
+                        android:text="Items"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/dropdownRendererEditAdd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_add"
+                        android:text="Add" />
+
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/dropdownRendererEditList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

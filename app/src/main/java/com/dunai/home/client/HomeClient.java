@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
 import com.dunai.home.client.interfaces.ConnectionStateChangedListener;
@@ -57,14 +58,17 @@ public class HomeClient {
         return this.workspace;
     }
 
-    private MqttConnectOptions getConnectionOptions() {
+    private @Nullable MqttConnectOptions getConnectionOptions() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.context);
         MqttConnectOptions opts = new MqttConnectOptions();
-        opts.setKeepAliveInterval(10);
+        opts.setKeepAliveInterval(Integer.parseInt(prefs.getString("keepAliveInterval", "10")));
         opts.setAutomaticReconnect(true);
         opts.setCleanSession(true);
-        opts.setConnectionTimeout(5);
+        opts.setConnectionTimeout(Integer.parseInt(prefs.getString("connectionTimeout", "5")));
         String[] uris = new String[1];
+        if (prefs.getString("host", "").isEmpty()) {
+            return null;
+        }
         uris[0] = "tcp://" + prefs.getString("host", "127.0.0.1") + ":" + prefs.getString("port", "1883");
         opts.setServerURIs(uris);
         String username = prefs.getString("username", "");
@@ -90,9 +94,18 @@ public class HomeClient {
                 }
             }, 0, 3000);
         }
-        this.setConnectionState(ConnectionState.CONNECTING);
         MqttConnectOptions opts = this.getConnectionOptions();
-        this.mqttClient = new MqttAndroidClient(this.context, opts.getServerURIs()[0], "homeclient-" + Math.random());
+        if (opts == null) {
+            this.setConnectionState(ConnectionState.NO_CONF);
+            return;
+        }
+        this.setConnectionState(ConnectionState.CONNECTING);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.context);
+        String clientId = prefs.getString("clientId", "automatic");
+        if (clientId.equals("automatic")) {
+            clientId = "homeclient-" + Math.round(Math.random() * 1e6);
+        }
+        this.mqttClient = new MqttAndroidClient(this.context, opts.getServerURIs()[0], clientId);
         try {
             this.mqttClient.connect(this.getConnectionOptions()).setActionCallback(new IMqttActionListener() {
                 @Override
@@ -179,18 +192,22 @@ public class HomeClient {
 
     public void reconnect() {
         try {
-            this.mqttClient.disconnect().setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    HomeClient.this.connect();
-                }
+            if (this.mqttClient != null && this.mqttClient.isConnected()) {
+                this.mqttClient.disconnect().setActionCallback(new IMqttActionListener() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
+                        HomeClient.this.connect();
+                    }
 
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Log.e("HomeApp", "Failed to disconnect from MQTT");
-                    Toast.makeText(context, "Failed to disconnect: " + exception.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                        Log.e("HomeApp", "Failed to disconnect from MQTT");
+                        Toast.makeText(context, "Failed to disconnect: " + exception.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
+            } else {
+                HomeClient.this.connect();
+            }
         } catch (MqttException e) {
             Log.e("HomeApp", "Failed to disconnect from MQTT");
             e.printStackTrace();
@@ -316,5 +333,9 @@ public class HomeClient {
             Toast.makeText(context, "Failed to publish: " + e.getMessage(), Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
+    }
+
+    public ConnectionState getConnectionState() {
+        return connectionState;
     }
 }

@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings || (id == R.id.menuConnectionStatus && client.getConnectionState() == ConnectionState.NO_CONF)) {
             Intent intent = new Intent(this, SettingsActivity.class);
             this.startActivity(intent);
             return true;
@@ -111,6 +111,12 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             switch (connectionState) {
+                case NO_CONF:
+                    menuConnectionStatus.setTitle("Configure");
+                    ft1.hide(getSupportFragmentManager().findFragmentById(R.id.fragment_tiles));
+                    ft1.show(getSupportFragmentManager().findFragmentById(R.id.fragment_not_connected));
+                    ft1.commit();
+                    break;
                 case OFFLINE:
                     menuConnectionStatus.setTitle("Offline");
                     ft1.hide(getSupportFragmentManager().findFragmentById(R.id.fragment_tiles));
@@ -121,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                     menuConnectionStatus.setTitle("Connecting...");
                     break;
                 case CONNECTED:
-                    menuConnectionStatus.setTitle("Connected");
+                    menuConnectionStatus.setTitle("On air");
                     ft1.hide(getSupportFragmentManager().findFragmentById(R.id.fragment_not_connected));
                     ft1.show(getSupportFragmentManager().findFragmentById(R.id.fragment_tiles));
                     ft1.commit();

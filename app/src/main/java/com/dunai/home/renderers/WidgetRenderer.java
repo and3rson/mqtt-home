@@ -46,10 +46,14 @@ public abstract class WidgetRenderer extends LinearLayout {
             this.lastUpdate.setVisibility(GONE);
         }
 
-        if (widget.title.isEmpty()) {
+        if (widget.title.isEmpty() || prefs.getBoolean("hideAllTitles", false)) {
             findViewById(R.id.rendererTitleContainer).setVisibility(GONE);
         } else {
             this.title.setText(widget.title);
+        }
+
+        if (!prefs.getBoolean("showMenuDots", true)) {
+            findViewById(R.id.rendererMoreButton).setVisibility(GONE);
         }
 
         findViewById(R.id.rendererMoreButton).setOnClickListener(new OnClickListener() {

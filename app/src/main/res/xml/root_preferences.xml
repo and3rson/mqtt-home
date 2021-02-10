@@ -1,10 +1,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="Connection">
+    <PreferenceCategory
+        app:icon="@drawable/ic_plug"
+        app:title="Connection">
 
         <EditTextPreference
-            android:icon="@drawable/ic_server"
             android:key="host"
             android:selectAllOnFocus="true"
             android:singleLine="true"
@@ -13,7 +14,6 @@
         <EditTextPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/ic_port"
             android:inputType="number"
             android:key="port"
             android:selectAllOnFocus="true"
@@ -24,7 +24,6 @@
         <EditTextPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/ic_username"
             android:key="username"
             android:selectAllOnFocus="true"
             android:singleLine="true"
@@ -33,22 +32,62 @@
         <EditTextPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/ic_password"
             android:inputType="textPassword"
             android:key="password"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="Password"
             app:useSimpleSummaryProvider="false" />
+        <EditTextPreference
+            android:defaultValue="automatic"
+            android:key="clientId"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Client ID"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            android:inputType="number"
+            android:key="connectionTimeout"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Connection timeout"
+            app:defaultValue="5"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:key="keepAliveInterval"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Keep-alive interval"
+            app:defaultValue="10"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
-    <PreferenceCategory android:title="Interface">
+    <PreferenceCategory
+        android:title="Interface"
+        app:icon="@drawable/ic_ui">
 
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="showLastUpdateTime"
             android:title="Show last update time"
             app:summary="Disable this to have more free space vertically." />
+        <CheckBoxPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="false"
+            android:key="hideAllTitles"
+            android:title="Hide widget titles"
+            app:summary="Enable this to forcibly hide all widget titles." />
+        <CheckBoxPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="true"
+            android:key="showMenuDots"
+            android:title="Show menu dots on widgets"
+            app:summary="Disable this to hide menu icon from widgets. You can still long-click the widget to open the menu." />
     </PreferenceCategory>
 
 </PreferenceScreen>

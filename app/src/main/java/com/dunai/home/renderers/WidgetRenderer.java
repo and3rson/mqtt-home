@@ -3,6 +3,7 @@ package com.dunai.home.renderers;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,8 +12,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.preference.PreferenceManager;
+
 import com.dunai.home.R;
-import com.dunai.home.client.workspace.WorkspaceWidget;
+import com.dunai.home.client.workspace.Widget;
 
 import java.util.Date;
 import java.util.Timer;
@@ -28,7 +31,7 @@ public abstract class WidgetRenderer extends LinearLayout {
     private int bgColor;
     private Date lastUpdateDate;
 
-    public WidgetRenderer(Context context, WorkspaceWidget workspaceWidget) {
+    public WidgetRenderer(Context context, Widget widget) {
         super(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.renderer, this, true);
@@ -38,10 +41,15 @@ public abstract class WidgetRenderer extends LinearLayout {
         this.pin = this.findViewById(R.id.rendererPin);
         this.lastUpdate = this.findViewById(R.id.rendererLastUpdate);
 
-        if (workspaceWidget.title.isEmpty()) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        if (!prefs.getBoolean("showLastUpdateTime", true)) {
+            this.lastUpdate.setVisibility(GONE);
+        }
+
+        if (widget.title.isEmpty()) {
             findViewById(R.id.rendererTitleContainer).setVisibility(GONE);
         } else {
-            this.title.setText(workspaceWidget.title);
+            this.title.setText(widget.title);
         }
 
         findViewById(R.id.rendererMoreButton).setOnClickListener(new OnClickListener() {
@@ -51,8 +59,8 @@ public abstract class WidgetRenderer extends LinearLayout {
             }
         });
 
-        if (workspaceWidget.bgColor != null) {
-            this.bgColor = Color.parseColor(workspaceWidget.bgColor);
+        if (widget.bgColor != null) {
+            this.bgColor = Color.parseColor(widget.bgColor);
         } else {
             this.bgColor = Color.parseColor("#FF282828");
         }

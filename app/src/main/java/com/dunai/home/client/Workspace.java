@@ -1,6 +1,6 @@
 package com.dunai.home.client;
 
-import com.dunai.home.client.workspace.WorkspaceItem;
+import com.dunai.home.client.workspace.Item;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class Workspace {
-    public ArrayList<WorkspaceItem> items = new ArrayList<>();
+    public ArrayList<Item> items = new ArrayList<>();
     public JSONObject serialize() {
         JSONArray items = new JSONArray();
         JSONObject root = new JSONObject();

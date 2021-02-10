@@ -10,22 +10,21 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
-import com.dunai.home.client.workspace.SwitchWidget;
+import com.dunai.home.client.workspace.ColorWidget;
 
-public class SwitchWidgetEditActivity extends AbstractEditActivity {
+public class ColorWidgetEditActivity extends AbstractEditActivity {
     private String itemId;
     private TextView title;
-    private TextView topic;
     private CheckBox retain;
+    private TextView topic;
     private SeekBar span;
-    private TextView onValue;
-    private TextView offValue;
+    private CheckBox alpha;
     private HomeClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_switch_renderer_edit);
+        setContentView(R.layout.activity_color_renderer_edit);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -33,17 +32,16 @@ public class SwitchWidgetEditActivity extends AbstractEditActivity {
 
         client = HomeClient.getInstance();
 
-        title = findViewById(R.id.switchRendererEditTitle);
-        topic = findViewById(R.id.switchRendererEditTopic);
-        retain = findViewById(R.id.switchRendererEditRetain);
-        span = findViewById(R.id.switchRendererEditSpan);
-        onValue = findViewById(R.id.switchRendererEditOnValue);
-        offValue = findViewById(R.id.switchRendererEditOffValue);
+        title = findViewById(R.id.colorRendererEditTitle);
+        retain = findViewById(R.id.colorRendererEditRetain);
+        topic = findViewById(R.id.colorRendererEditTopic);
+        span = findViewById(R.id.colorRendererEditSpan);
+        alpha = findViewById(R.id.colorRendererAlpha);
 
         Intent intent = getIntent();
         if (intent.hasExtra("item_id")) {
             itemId = intent.getStringExtra("item_id");
-            SwitchWidget item = ((SwitchWidget) client.getItem(itemId));
+            ColorWidget item = ((ColorWidget) client.getItem(itemId));
             if (item == null) {
                 finish();
                 return;
@@ -52,17 +50,16 @@ public class SwitchWidgetEditActivity extends AbstractEditActivity {
             topic.setText(item.topic);
             retain.setChecked(item.retain);
             span.setProgress(item.span - 1);
-            onValue.setText(item.onValue);
-            offValue.setText(item.offValue);
-            this.setTitle("Edit switch widget \"" + item.title + "\"");
+            alpha.setChecked(item.alpha);
+            this.setTitle("Edit color widget \"" + item.title + "\"");
         } else {
-            this.setTitle("Create switch widget");
+            this.setTitle("Create color widget");
         }
     }
 
     @Override
     void onSavePressed() {
-        TextView[] fields = {this.topic, this.onValue, this.offValue};
+        TextView[] fields = {this.topic};
         boolean errors = false;
         for (TextView field : fields) {
             if (field.getText().length() == 0) {
@@ -79,31 +76,31 @@ public class SwitchWidgetEditActivity extends AbstractEditActivity {
         if (itemId != null) {
             client.updateItem(
                     itemId,
-                    new SwitchWidget(
+                    new ColorWidget(
                             itemId,
                             title.getText().toString(),
                             topic.getText().toString(),
                             retain.isChecked(),
                             span.getProgress() + 1,
                             null,
-                            onValue.getText().toString(),
-                            offValue.getText().toString()
+                            "HTML", // TODO
+                            alpha.isChecked()
                     )
             );
         } else {
             client.createItem(
-                    new SwitchWidget(
+                    new ColorWidget(
                             String.valueOf(Math.round(Math.random() * 1e9)),
                             title.getText().toString(),
                             topic.getText().toString(),
                             retain.isChecked(),
                             span.getProgress() + 1,
                             null,
-                            onValue.getText().toString(),
-                            offValue.getText().toString()
+                            "HTML", // TODO
+                            alpha.isChecked()
                     )
             );
         }
-        SwitchWidgetEditActivity.this.finish();
+        ColorWidgetEditActivity.this.finish();
     }
 }

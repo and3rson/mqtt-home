@@ -23,6 +23,8 @@
         <activity android:name=".activities.SwitchWidgetEditActivity" />
         <activity android:name=".activities.GraphWidgetEditActivity" />
         <activity android:name=".activities.DropdownWidgetEditActivity" />
+        <activity android:name=".activities.ColorWidgetEditActivity" />
+        <activity android:name=".activities.ButtonWidgetEditActivity" />
         <activity
             android:name=".activities.EditItemsActivity"
             android:label="@string/title_activity_edit_items" />

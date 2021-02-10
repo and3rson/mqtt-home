@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="8sp"
-            tools:context=".activities.SwitchWidgetEditActivity">
+            tools:context=".activities.ColorWidgetEditActivity">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -46,7 +46,7 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/switchRendererEditTitle"
+                        android:id="@+id/colorRendererEditTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8sp"
@@ -58,7 +58,7 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/switchRendererEditTopic"
+                        android:id="@+id/colorRendererEditTopic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8sp"
@@ -66,7 +66,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <CheckBox
-                    android:id="@+id/switchRendererEditRetain"
+                    android:id="@+id/colorRendererEditRetain"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -84,7 +84,7 @@
                     android:textSize="16sp" />
 
                 <SeekBar
-                    android:id="@+id/switchRendererEditSpan"
+                    android:id="@+id/colorRendererEditSpan"
                     style="@style/Theme.Home.SeekBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -94,29 +94,14 @@
                     android:paddingBottom="12sp"
                     android:progress="5" />
 
-                <com.google.android.material.textfield.TextInputLayout
+                <CheckBox
+                    android:id="@+id/colorRendererAlpha"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/switchRendererEditOnValue"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8sp"
-                        android:hint="On value" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/switchRendererEditOffValue"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8sp"
-                        android:hint="Off value" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+                    android:text="Allow transparent colors" />
 
             </LinearLayout>
 

@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dunai.home.R;
+import com.dunai.home.activities.ButtonWidgetEditActivity;
+import com.dunai.home.activities.ColorWidgetEditActivity;
 import com.dunai.home.activities.DropdownWidgetEditActivity;
 import com.dunai.home.activities.GraphWidgetEditActivity;
 import com.dunai.home.activities.SectionEditActivity;
@@ -29,13 +31,17 @@ import com.dunai.home.activities.SwitchWidgetEditActivity;
 import com.dunai.home.activities.TextWidgetEditActivity;
 import com.dunai.home.client.HomeClient;
 import com.dunai.home.client.Workspace;
-import com.dunai.home.client.workspace.WorkspaceDropdownWidget;
-import com.dunai.home.client.workspace.WorkspaceGraphWidget;
-import com.dunai.home.client.workspace.WorkspaceItem;
-import com.dunai.home.client.workspace.WorkspaceSection;
-import com.dunai.home.client.workspace.WorkspaceSwitchWidget;
-import com.dunai.home.client.workspace.WorkspaceTextWidget;
-import com.dunai.home.client.workspace.WorkspaceWidget;
+import com.dunai.home.client.workspace.ButtonWidget;
+import com.dunai.home.client.workspace.ColorWidget;
+import com.dunai.home.client.workspace.DropdownWidget;
+import com.dunai.home.client.workspace.GraphWidget;
+import com.dunai.home.client.workspace.Item;
+import com.dunai.home.client.workspace.Section;
+import com.dunai.home.client.workspace.SwitchWidget;
+import com.dunai.home.client.workspace.TextWidget;
+import com.dunai.home.client.workspace.Widget;
+import com.dunai.home.renderers.ButtonWidgetRenderer;
+import com.dunai.home.renderers.ColorWidgetRenderer;
 import com.dunai.home.renderers.DropdownWidgetRenderer;
 import com.dunai.home.renderers.GraphWidgetRenderer;
 import com.dunai.home.renderers.SectionRenderer;
@@ -69,35 +75,40 @@ public class TilesFragment extends Fragment {
 
                 Log.i("HomeApp", "Creating tiles: " + String.valueOf(workspace.items.size()));
                 for (int i = 0; i < workspace.items.size(); i++) {
-                    WorkspaceItem item = workspace.items.get(i);
+                    Item item = workspace.items.get(i);
                     View renderer;
-                    if (item instanceof WorkspaceSection) {
-                        renderer = new SectionRenderer(getContext(), (WorkspaceSection) item);
+                    if (item instanceof Section) {
+                        renderer = new SectionRenderer(getContext(), (Section) item);
                         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                         params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 12);
                         renderer.setLayoutParams(params);
                     } else {
-                        if (item instanceof WorkspaceTextWidget) {
-                            renderer = new TextWidgetRenderer(getContext(), (WorkspaceTextWidget) item, this.topicValueMap.get((((WorkspaceTextWidget) item).topic)));
-                        } else if (item instanceof WorkspaceSwitchWidget) {
-                            renderer = new SwitchWidgetRenderer(getContext(), (WorkspaceSwitchWidget) item, this.topicValueMap.get((((WorkspaceSwitchWidget) item).topic)));
-                        } else if (item instanceof WorkspaceGraphWidget) {
-                            renderer = new GraphWidgetRenderer(getContext(), (WorkspaceGraphWidget) item, this.topicValueMap.get((((WorkspaceGraphWidget) item).topic)));
-                        } else if (item instanceof WorkspaceDropdownWidget) {
-                            renderer = new DropdownWidgetRenderer(getContext(), (WorkspaceDropdownWidget) item, this.topicValueMap.get((((WorkspaceDropdownWidget) item).topic)));
+                        final String topic = this.topicValueMap.get((((Widget) item).topic));
+                        if (item instanceof TextWidget) {
+                            renderer = new TextWidgetRenderer(getContext(), (TextWidget) item, topic);
+                        } else if (item instanceof SwitchWidget) {
+                            renderer = new SwitchWidgetRenderer(getContext(), (SwitchWidget) item, topic);
+                        } else if (item instanceof GraphWidget) {
+                            renderer = new GraphWidgetRenderer(getContext(), (GraphWidget) item, topic);
+                        } else if (item instanceof DropdownWidget) {
+                            renderer = new DropdownWidgetRenderer(getContext(), (DropdownWidget) item, topic);
+                        } else if (item instanceof ColorWidget) {
+                            renderer = new ColorWidgetRenderer(getContext(), (ColorWidget) item, topic);
+                        } else if (item instanceof ButtonWidget) {
+                            renderer = new ButtonWidgetRenderer(getContext(), (ButtonWidget) item, topic);
                         } else {
                             throw new Exception("Unknown item type: " + item.type);
                         }
                         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, ((WorkspaceWidget) item).span);
-                        params.width = metrics.widthPixels * ((WorkspaceWidget) item).span / 12;
+                        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, ((Widget) item).span);
+                        params.width = metrics.widthPixels * ((Widget) item).span / 12;
                         renderer.setLayoutParams(params);
-                        ArrayList<WidgetRenderer> renderers = topicRenderersMap.get(((WorkspaceWidget) item).topic);
+                        ArrayList<WidgetRenderer> renderers = topicRenderersMap.get(((Widget) item).topic);
                         if (renderers == null) {
                             renderers = new ArrayList<>();
                         }
                         renderers.add((WidgetRenderer) renderer);
-                        topicRenderersMap.put(((WorkspaceWidget) item).topic, renderers);
+                        topicRenderersMap.put(((Widget) item).topic, renderers);
                     }
                     tiles.addView(renderer);
                     registerForContextMenu(renderer);
@@ -136,7 +147,9 @@ public class TilesFragment extends Fragment {
                     "Text widget",
                     "Switch widget",
                     "Graph widget",
-                    "Dropdown widget"
+                    "Dropdown widget",
+                    "Color widget",
+                    "Button widget"
             };
             builder.setTitle("Create new item");
             builder.setItems(items, ((dialog, which) -> {
@@ -151,6 +164,10 @@ public class TilesFragment extends Fragment {
                     cls = GraphWidgetEditActivity.class;
                 } else if (which == 4) {
                     cls = DropdownWidgetEditActivity.class;
+                } else if (which == 5) {
+                    cls = ColorWidgetEditActivity.class;
+                } else if (which == 6) {
+                    cls = ButtonWidgetEditActivity.class;
                 } else {
                     cls = null;
                 }
@@ -194,18 +211,22 @@ public class TilesFragment extends Fragment {
                 break;
             case 2:
                 // Edit
-                WorkspaceItem workspaceItem = client.getItem(workspaceItemId);
+                Item workspaceItem = client.getItem(workspaceItemId);
                 Class<? extends AppCompatActivity> cls;
-                if (workspaceItem instanceof WorkspaceSection) {
+                if (workspaceItem instanceof Section) {
                     cls = SectionEditActivity.class;
-                } else if (workspaceItem instanceof WorkspaceTextWidget) {
+                } else if (workspaceItem instanceof TextWidget) {
                     cls = TextWidgetEditActivity.class;
-                } else if (workspaceItem instanceof WorkspaceSwitchWidget) {
+                } else if (workspaceItem instanceof SwitchWidget) {
                     cls = SwitchWidgetEditActivity.class;
-                } else if (workspaceItem instanceof WorkspaceGraphWidget) {
+                } else if (workspaceItem instanceof GraphWidget) {
                     cls = GraphWidgetEditActivity.class;
-                } else if (workspaceItem instanceof WorkspaceDropdownWidget) {
+                } else if (workspaceItem instanceof DropdownWidget) {
                     cls = DropdownWidgetEditActivity.class;
+                } else if (workspaceItem instanceof ColorWidget) {
+                    cls = ColorWidgetEditActivity.class;
+                } else if (workspaceItem instanceof ButtonWidget) {
+                    cls = ButtonWidgetEditActivity.class;
                 } else {
                     cls = null;
                 }

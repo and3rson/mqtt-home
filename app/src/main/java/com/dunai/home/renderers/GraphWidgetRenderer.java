@@ -2,33 +2,34 @@ package com.dunai.home.renderers;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.widget.TextView;
 
 import androidx.core.content.res.ResourcesCompat;
 
 import com.dunai.home.R;
-import com.dunai.home.client.workspace.WorkspaceGraphWidget;
-import com.dunai.home.client.workspace.WorkspaceTextWidget;
+import com.dunai.home.client.workspace.GraphWidget;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
-import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-
-import java.util.ArrayList;
 
 /**
  * TODO: document your custom view class.
  */
 public class GraphWidgetRenderer extends WidgetRenderer {
-    private WorkspaceGraphWidget workspaceGraphWidget;
+    private GraphWidget workspaceGraphWidget;
 
     private GraphView graphView;
 
-    public GraphWidgetRenderer(Context context, WorkspaceGraphWidget workspaceGraphWidget, String value) {
+    public GraphWidgetRenderer(Context context, GraphWidget workspaceGraphWidget, String value) {
         super(context, workspaceGraphWidget);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            this.setForceDarkAllowed(false);
+        }
+
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.graph_renderer, this.findViewById(R.id.rendererContainer), true);
 
@@ -38,6 +39,7 @@ public class GraphWidgetRenderer extends WidgetRenderer {
         this.graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
         this.graphView.getGridLabelRenderer().setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getResources().getDisplayMetrics()));
         this.graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.HORIZONTAL);
+        this.graphView.getGridLabelRenderer().setGridColor(Color.parseColor("#444444"));
 //        this.graphView.getGridLabelRenderer().setGridColor(ResourcesCompat.getColor(getResources(), R.color.gray_400, null));
 //        graphView.getViewport().setScalable(true);
 //        graphView.getViewport().setScalableY(true);

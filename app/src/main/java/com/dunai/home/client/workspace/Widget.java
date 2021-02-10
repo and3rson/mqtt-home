@@ -5,7 +5,7 @@ import com.dunai.home.client.workspace.annotations.Editable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class WorkspaceWidget extends WorkspaceItem {
+public class Widget extends Item {
     @Editable(key = "Title", type = Editable.Type.STRING)
     public String title;
     public String bgColor;
@@ -13,11 +13,13 @@ public class WorkspaceWidget extends WorkspaceItem {
     public String topic;
     @Editable(key = "Width", type = Editable.Type.NUMBER, minValue = 1, maxValue = 12)
     public int span;
+    public boolean retain;
 
-    public WorkspaceWidget(String id, String type, String title, String topic, int span, String bgColor) {
+    public Widget(String id, String type, String title, String topic, boolean retain, int span, String bgColor) {
         super(id, type);
         this.title = title;
         this.topic = topic;
+        this.retain = retain;
         this.bgColor = bgColor;
         this.span = span;
     }
@@ -27,6 +29,7 @@ public class WorkspaceWidget extends WorkspaceItem {
         try {
             root.put("title", this.title);
             root.put("topic", this.topic);
+            root.put("retain", this.retain);
             root.put("bgColor", this.bgColor);
             root.put("span", this.span);
         } catch (JSONException e) {

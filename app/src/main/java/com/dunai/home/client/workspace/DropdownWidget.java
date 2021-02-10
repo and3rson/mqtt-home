@@ -1,15 +1,12 @@
 package com.dunai.home.client.workspace;
 
-import android.util.Pair;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 
-public class WorkspaceDropdownWidget extends WorkspaceWidget {
+public class DropdownWidget extends Widget {
     public static class KeyValue {
         private String key;
         private String value;
@@ -39,8 +36,8 @@ public class WorkspaceDropdownWidget extends WorkspaceWidget {
     public String suffix;
     public ArrayList<KeyValue> keyValues;
 
-    public WorkspaceDropdownWidget(String id, String title, String topic, int span, ArrayList<KeyValue> keyValues, String bgColor) {
-        super(id, "dropdown", title, topic, span, bgColor);
+    public DropdownWidget(String id, String title, String topic, boolean retain, int span, String bgColor, ArrayList<KeyValue> keyValues) {
+        super(id, "dropdown", title, topic, retain, span, bgColor);
         this.keyValues = keyValues;
     }
 

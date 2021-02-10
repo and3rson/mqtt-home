@@ -5,18 +5,18 @@ import android.view.LayoutInflater;
 import android.widget.TextView;
 
 import com.dunai.home.R;
-import com.dunai.home.client.workspace.WorkspaceTextWidget;
+import com.dunai.home.client.workspace.TextWidget;
 
 /**
  * TODO: document your custom view class.
  */
 public class TextWidgetRenderer extends WidgetRenderer {
-    private WorkspaceTextWidget workspaceTextWidget;
+    private TextWidget workspaceTextWidget;
 
     private TextView valueView;
     private TextView suffixView;
 
-    public TextWidgetRenderer(Context context, WorkspaceTextWidget workspaceTextWidget, String value) {
+    public TextWidgetRenderer(Context context, TextWidget workspaceTextWidget, String value) {
         super(context, workspaceTextWidget);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.text_renderer, this.findViewById(R.id.rendererContainer), true);

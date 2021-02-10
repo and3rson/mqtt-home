@@ -4,15 +4,10 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.dunai.home.R;
-import com.dunai.home.client.workspace.WorkspaceDropdownWidget;
 import com.google.android.material.textfield.TextInputEditText;
-
-import org.w3c.dom.Text;
 
 public class KeyValueView extends LinearLayout {
     private OnClickListener onMoveUpRequestedListener;

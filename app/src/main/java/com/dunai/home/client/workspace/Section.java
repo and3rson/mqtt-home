@@ -5,11 +5,11 @@ import com.dunai.home.client.workspace.annotations.Editable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class WorkspaceSection extends WorkspaceItem {
+public class Section extends Item {
     @Editable(key = "Title", type = Editable.Type.STRING)
     public String title;
 
-    public WorkspaceSection(String id, String title) {
+    public Section(String id, String title) {
         super(id, "section");
         this.title = title;
     }

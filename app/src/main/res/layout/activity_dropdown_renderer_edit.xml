@@ -65,6 +65,16 @@
                         android:hint="Topic" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <CheckBox
+                    android:id="@+id/dropdownRendererEditRetain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+                    android:text="Retain" />
+
                 <TextView
                     android:id="@+id/textView"
                     android:layout_width="match_parent"

@@ -3,11 +3,11 @@ package com.dunai.home.client.workspace;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class WorkspaceTextWidget extends WorkspaceWidget {
+public class TextWidget extends Widget {
     public String suffix;
 
-    public WorkspaceTextWidget(String id, String title, String topic, int span, String suffix, String bgColor) {
-        super(id, "text", title, topic, span, bgColor);
+    public TextWidget(String id, String title, String topic, boolean retain, int span, String bgColor, String suffix) {
+        super(id, "text", title, topic, retain, span, bgColor);
         this.suffix = suffix;
     }
 

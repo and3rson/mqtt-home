@@ -5,14 +5,14 @@ import com.dunai.home.client.workspace.annotations.Editable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class WorkspaceSwitchWidget extends WorkspaceWidget {
+public class SwitchWidget extends Widget {
     @Editable(key = "On value", type = Editable.Type.STRING)
     public String onValue;
     @Editable(key = "Off value", type = Editable.Type.STRING)
     public String offValue;
 
-    public WorkspaceSwitchWidget(String id, String title, String topic, int span, String onValue, String offValue, String bgColor) {
-        super(id, "switch", title, topic, span, bgColor);
+    public SwitchWidget(String id, String title, String topic, boolean retain, int span, String bgColor, String onValue, String offValue) {
+        super(id, "switch", title, topic, retain, span, bgColor);
         this.onValue = onValue;
         this.offValue = offValue;
     }

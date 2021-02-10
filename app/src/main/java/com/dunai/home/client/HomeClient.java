@@ -12,8 +12,8 @@ import androidx.preference.PreferenceManager;
 import com.dunai.home.client.interfaces.ConnectionStateChangedListener;
 import com.dunai.home.client.interfaces.DataReceivedListener;
 import com.dunai.home.client.interfaces.WorkspaceChangedListener;
-import com.dunai.home.client.workspace.WorkspaceItem;
-import com.dunai.home.client.workspace.WorkspaceItemFactory;
+import com.dunai.home.client.workspace.Item;
+import com.dunai.home.client.workspace.ItemFactory;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -32,7 +32,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class HomeClient {
-    private static HomeClient instance = null;
+    private static HomeClient instance = null; // TODO: Memory leak?
     private MqttAndroidClient mqttClient;
     private Context context;
     private WorkspaceChangedListener workspaceChangedListener;
@@ -132,7 +132,7 @@ public class HomeClient {
                             Log.i("HomeApp", "Tiles: " + String.valueOf(items.length()));
                             for (int i = 0; i < items.length(); i++) {
                                 JSONObject item = items.getJSONObject(i);
-                                WorkspaceItem workspaceItem = WorkspaceItemFactory.createFromJSONObject(item);
+                                Item workspaceItem = ItemFactory.createFromJSONObject(item);
                                 workspace.items.add(workspaceItem);
                             }
                             HomeClient.this.workspace = workspace;
@@ -241,8 +241,8 @@ public class HomeClient {
             return;
         }
         Workspace newWorkspace = new Workspace();
-        newWorkspace.items = (ArrayList<WorkspaceItem>) this.workspace.items.clone();
-        WorkspaceItem tmp = newWorkspace.items.get(index - 1);
+        newWorkspace.items = (ArrayList<Item>) this.workspace.items.clone();
+        Item tmp = newWorkspace.items.get(index - 1);
         newWorkspace.items.set(index - 1, newWorkspace.items.get(index));
         newWorkspace.items.set(index, tmp);
         this.publishWorkspace(newWorkspace);
@@ -258,23 +258,23 @@ public class HomeClient {
             return;
         }
         Workspace newWorkspace = new Workspace();
-        newWorkspace.items = (ArrayList<WorkspaceItem>) this.workspace.items.clone();
-        WorkspaceItem tmp = newWorkspace.items.get(index + 1);
+        newWorkspace.items = (ArrayList<Item>) this.workspace.items.clone();
+        Item tmp = newWorkspace.items.get(index + 1);
         newWorkspace.items.set(index + 1, newWorkspace.items.get(index));
         newWorkspace.items.set(index, tmp);
         this.publishWorkspace(newWorkspace);
     }
 
-    public void createItem(WorkspaceItem item) {
+    public void createItem(Item item) {
         Workspace newWorkspace = new Workspace();
-        newWorkspace.items = (ArrayList<WorkspaceItem>) this.workspace.items.clone();
+        newWorkspace.items = (ArrayList<Item>) this.workspace.items.clone();
         newWorkspace.items.add(item);
         this.publishWorkspace(newWorkspace);
     }
 
-    public void updateItem(String id, WorkspaceItem item) {
+    public void updateItem(String id, Item item) {
         Workspace newWorkspace = new Workspace();
-        newWorkspace.items = (ArrayList<WorkspaceItem>) this.workspace.items.clone();
+        newWorkspace.items = (ArrayList<Item>) this.workspace.items.clone();
         int index = this.findItem(id);
         if (index == -1) {
             Toast.makeText(context, "Item with ID " + id + " not found", Toast.LENGTH_SHORT).show();
@@ -286,7 +286,7 @@ public class HomeClient {
 
     public void deleteItem(String id) {
         Workspace newWorkspace = new Workspace();
-        newWorkspace.items = (ArrayList<WorkspaceItem>) this.workspace.items.clone();
+        newWorkspace.items = (ArrayList<Item>) this.workspace.items.clone();
         int index = this.findItem(id);
         if (index == -1) {
             Toast.makeText(context, "Item with ID " + id + " not found", Toast.LENGTH_SHORT).show();
@@ -296,7 +296,7 @@ public class HomeClient {
         this.publishWorkspace(newWorkspace);
     }
 
-    public WorkspaceItem getItem(String id) {
+    public Item getItem(String id) {
         int index = this.findItem(id);
         if (index == -1) {
             Toast.makeText(context, "Item with ID " + id + " not found", Toast.LENGTH_SHORT).show();

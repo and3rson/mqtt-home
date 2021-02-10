@@ -42,5 +42,13 @@
             app:useSimpleSummaryProvider="false" />
 
     </PreferenceCategory>
+    <PreferenceCategory android:title="Interface">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="showLastUpdateTime"
+            android:title="Show last update time"
+            app:summary="Disable this to have more free space vertically." />
+    </PreferenceCategory>
 
 </PreferenceScreen>

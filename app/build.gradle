@@ -35,6 +35,9 @@ repositories {
     maven {
         url "https://repo.eclipse.org/content/repositories/paho-snapshots/"
     }
+    maven {
+        url 'https://jitpack.io'
+    }
 }
 
 dependencies {
@@ -57,4 +60,6 @@ dependencies {
     implementation group: 'androidx.gridlayout', name: 'gridlayout', version: '1.0.0'
     implementation 'com.jjoe64:graphview:4.2.2'
     implementation 'com.github.woxthebox:draglistview:1.7.2'
+//    implementation "com.github.skydoves:colorpickerview:2.2.2"
+    implementation 'com.github.QuadFlask:colorpicker:0.0.15'
 }

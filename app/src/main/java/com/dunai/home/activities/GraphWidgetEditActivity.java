@@ -9,8 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
-import com.dunai.home.client.workspace.WorkspaceGraphWidget;
-import com.dunai.home.client.workspace.WorkspaceTextWidget;
+import com.dunai.home.client.workspace.GraphWidget;
 
 public class GraphWidgetEditActivity extends AbstractEditActivity {
     private String itemId;
@@ -37,7 +36,7 @@ public class GraphWidgetEditActivity extends AbstractEditActivity {
         Intent intent = getIntent();
         if (intent.hasExtra("item_id")) {
             itemId = intent.getStringExtra("item_id");
-            WorkspaceGraphWidget item = ((WorkspaceGraphWidget) client.getItem(itemId));
+            GraphWidget item = ((GraphWidget) client.getItem(itemId));
             if (item == null) {
                 finish();
                 return;
@@ -70,20 +69,22 @@ public class GraphWidgetEditActivity extends AbstractEditActivity {
         if (itemId != null) {
             client.updateItem(
                     itemId,
-                    new WorkspaceGraphWidget(
+                    new GraphWidget(
                             itemId,
                             title.getText().toString(),
                             topic.getText().toString(),
+                            false,
                             span.getProgress() + 1,
                             null
                     )
             );
         } else {
             client.createItem(
-                    new WorkspaceGraphWidget(
+                    new GraphWidget(
                             String.valueOf(Math.round(Math.random() * 1e9)),
                             title.getText().toString(),
                             topic.getText().toString(),
+                            false,
                             span.getProgress() + 1,
                             null
                     )

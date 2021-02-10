@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
-import com.dunai.home.client.workspace.WorkspaceTextWidget;
+import com.dunai.home.client.workspace.TextWidget;
 
 public class TextWidgetEditActivity extends AbstractEditActivity {
     private String itemId;
@@ -38,7 +38,7 @@ public class TextWidgetEditActivity extends AbstractEditActivity {
         Intent intent = getIntent();
         if (intent.hasExtra("item_id")) {
             itemId = intent.getStringExtra("item_id");
-            WorkspaceTextWidget item = ((WorkspaceTextWidget) client.getItem(itemId));
+            TextWidget item = ((TextWidget) client.getItem(itemId));
             if (item == null) {
                 finish();
                 return;
@@ -72,24 +72,26 @@ public class TextWidgetEditActivity extends AbstractEditActivity {
         if (itemId != null) {
             client.updateItem(
                     itemId,
-                    new WorkspaceTextWidget(
+                    new TextWidget(
                             itemId,
                             title.getText().toString(),
                             topic.getText().toString(),
+                            false,
                             span.getProgress() + 1,
-                            suffix.getText().toString(),
-                            null
+                            null,
+                            suffix.getText().toString()
                     )
             );
         } else {
             client.createItem(
-                    new WorkspaceTextWidget(
+                    new TextWidget(
                             String.valueOf(Math.round(Math.random() * 1e9)),
                             title.getText().toString(),
                             topic.getText().toString(),
+                            false,
                             span.getProgress() + 1,
-                            suffix.getText().toString(),
-                            null
+                            null,
+                            suffix.getText().toString()
                     )
             );
         }

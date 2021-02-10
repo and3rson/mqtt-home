@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
-import com.dunai.home.client.workspace.WorkspaceSection;
+import com.dunai.home.client.workspace.Section;
 
 public class SectionEditActivity extends AbstractEditActivity {
     private String itemId;
@@ -33,7 +33,7 @@ public class SectionEditActivity extends AbstractEditActivity {
         Intent intent = getIntent();
         if (intent.hasExtra("item_id")) {
             itemId = intent.getStringExtra("item_id");
-            WorkspaceSection item = ((WorkspaceSection) client.getItem(itemId));
+            Section item = ((Section) client.getItem(itemId));
             if (item == null) {
                 finish();
                 return;
@@ -64,14 +64,14 @@ public class SectionEditActivity extends AbstractEditActivity {
         if (itemId != null) {
             client.updateItem(
                     itemId,
-                    new WorkspaceSection(
+                    new Section(
                             itemId,
                             title.getText().toString()
                     )
             );
         } else {
             client.createItem(
-                    new WorkspaceSection(
+                    new Section(
                             String.valueOf(Math.round(Math.random() * 1e9)),
                             title.getText().toString()
                     )

@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
-import com.dunai.home.client.workspace.WorkspaceDropdownWidget;
+import com.dunai.home.client.workspace.DropdownWidget;
 
 import java.util.List;
 
@@ -22,12 +22,12 @@ import java.util.List;
  * TODO: document your custom view class.
  */
 public class DropdownWidgetRenderer extends WidgetRenderer {
-    private WorkspaceDropdownWidget workspaceDropdownWidget;
+    private DropdownWidget workspaceDropdownWidget;
 
     private Spinner spinnerView;
 
-    public class DropdownAdapter extends ArrayAdapter<WorkspaceDropdownWidget.KeyValue> {
-        public DropdownAdapter(@NonNull Context context, int resource, @NonNull List<WorkspaceDropdownWidget.KeyValue> objects) {
+    public class DropdownAdapter extends ArrayAdapter<DropdownWidget.KeyValue> {
+        public DropdownAdapter(@NonNull Context context, int resource, @NonNull List<DropdownWidget.KeyValue> objects) {
             super(context, resource, objects);
         }
 
@@ -60,7 +60,7 @@ public class DropdownWidgetRenderer extends WidgetRenderer {
         }
     }
 
-    public DropdownWidgetRenderer(Context context, WorkspaceDropdownWidget workspaceDropdownWidget, String value) {
+    public DropdownWidgetRenderer(Context context, DropdownWidget workspaceDropdownWidget, String value) {
         super(context, workspaceDropdownWidget);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.dropdown_renderer, this.findViewById(R.id.rendererContainer), true);
@@ -72,7 +72,11 @@ public class DropdownWidgetRenderer extends WidgetRenderer {
         this.spinnerView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                HomeClient.getInstance().publish(workspaceDropdownWidget.topic, workspaceDropdownWidget.keyValues.get(position).getValue(), true);
+                HomeClient.getInstance().publish(
+                        workspaceDropdownWidget.topic,
+                        workspaceDropdownWidget.keyValues.get(position).getValue(),
+                        workspaceDropdownWidget.retain
+                );
             }
 
             @Override
@@ -90,7 +94,7 @@ public class DropdownWidgetRenderer extends WidgetRenderer {
     public void setValue(String value) {
         int index = -1;
         int i = 0;
-        for (WorkspaceDropdownWidget.KeyValue keyValue : this.workspaceDropdownWidget.keyValues) {
+        for (DropdownWidget.KeyValue keyValue : this.workspaceDropdownWidget.keyValues) {
             if (keyValue.getValue().equals(value)) {
                 index = i;
             }

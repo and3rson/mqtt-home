@@ -6,16 +6,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dunai.home.R;
-import com.dunai.home.client.workspace.WorkspaceSection;
+import com.dunai.home.client.workspace.Section;
 
 /**
  * TODO: document your custom view class.
  */
 public class SectionRenderer extends LinearLayout {
-    private WorkspaceSection workspaceSection;
+    private Section workspaceSection;
     private TextView titleView;
 
-    public SectionRenderer(Context context, WorkspaceSection workspaceSection) {
+    public SectionRenderer(Context context, Section workspaceSection) {
         super(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.section_renderer, this, true);

@@ -10,22 +10,22 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
-import com.dunai.home.client.workspace.SwitchWidget;
+import com.dunai.home.client.workspace.ButtonWidget;
 
-public class SwitchWidgetEditActivity extends AbstractEditActivity {
+public class ButtonWidgetEditActivity extends AbstractEditActivity {
     private String itemId;
     private TextView title;
     private TextView topic;
     private CheckBox retain;
     private SeekBar span;
-    private TextView onValue;
-    private TextView offValue;
+    private TextView caption;
+    private TextView payload;
     private HomeClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_switch_renderer_edit);
+        setContentView(R.layout.activity_button_renderer_edit);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -33,17 +33,17 @@ public class SwitchWidgetEditActivity extends AbstractEditActivity {
 
         client = HomeClient.getInstance();
 
-        title = findViewById(R.id.switchRendererEditTitle);
-        topic = findViewById(R.id.switchRendererEditTopic);
-        retain = findViewById(R.id.switchRendererEditRetain);
-        span = findViewById(R.id.switchRendererEditSpan);
-        onValue = findViewById(R.id.switchRendererEditOnValue);
-        offValue = findViewById(R.id.switchRendererEditOffValue);
+        title = findViewById(R.id.buttonRendererEditTitle);
+        topic = findViewById(R.id.buttonRendererEditTopic);
+        retain = findViewById(R.id.buttonRendererEditRetain);
+        span = findViewById(R.id.buttonRendererEditSpan);
+        caption = findViewById(R.id.buttonRendererEditCaption);
+        payload = findViewById(R.id.buttonRendererEditPayload);
 
         Intent intent = getIntent();
         if (intent.hasExtra("item_id")) {
             itemId = intent.getStringExtra("item_id");
-            SwitchWidget item = ((SwitchWidget) client.getItem(itemId));
+            ButtonWidget item = ((ButtonWidget) client.getItem(itemId));
             if (item == null) {
                 finish();
                 return;
@@ -52,17 +52,17 @@ public class SwitchWidgetEditActivity extends AbstractEditActivity {
             topic.setText(item.topic);
             retain.setChecked(item.retain);
             span.setProgress(item.span - 1);
-            onValue.setText(item.onValue);
-            offValue.setText(item.offValue);
-            this.setTitle("Edit switch widget \"" + item.title + "\"");
+            caption.setText(item.caption);
+            payload.setText(item.payload);
+            this.setTitle("Edit button widget \"" + item.title + "\"");
         } else {
-            this.setTitle("Create switch widget");
+            this.setTitle("Create button widget");
         }
     }
 
     @Override
     void onSavePressed() {
-        TextView[] fields = {this.topic, this.onValue, this.offValue};
+        TextView[] fields = {this.topic, this.caption, this.payload};
         boolean errors = false;
         for (TextView field : fields) {
             if (field.getText().length() == 0) {
@@ -79,31 +79,31 @@ public class SwitchWidgetEditActivity extends AbstractEditActivity {
         if (itemId != null) {
             client.updateItem(
                     itemId,
-                    new SwitchWidget(
+                    new ButtonWidget(
                             itemId,
                             title.getText().toString(),
                             topic.getText().toString(),
                             retain.isChecked(),
                             span.getProgress() + 1,
                             null,
-                            onValue.getText().toString(),
-                            offValue.getText().toString()
+                            caption.getText().toString(),
+                            payload.getText().toString()
                     )
             );
         } else {
             client.createItem(
-                    new SwitchWidget(
+                    new ButtonWidget(
                             String.valueOf(Math.round(Math.random() * 1e9)),
                             title.getText().toString(),
                             topic.getText().toString(),
                             retain.isChecked(),
                             span.getProgress() + 1,
                             null,
-                            onValue.getText().toString(),
-                            offValue.getText().toString()
+                            caption.getText().toString(),
+                            payload.getText().toString()
                     )
             );
         }
-        SwitchWidgetEditActivity.this.finish();
+        ButtonWidgetEditActivity.this.finish();
     }
 }

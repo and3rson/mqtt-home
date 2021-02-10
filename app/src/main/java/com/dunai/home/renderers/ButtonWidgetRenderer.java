@@ -2,7 +2,10 @@ package com.dunai.home.renderers;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
@@ -14,8 +17,7 @@ import com.dunai.home.client.workspace.ButtonWidget;
 public class ButtonWidgetRenderer extends WidgetRenderer {
     private ButtonWidget workspaceButtonWidget;
 
-//    private ToggleButton button;
-    private Button button;
+  private LinearLayout layout;
 
     public ButtonWidgetRenderer(Context context, ButtonWidget workspaceButtonWidget, String value) {
         super(context, workspaceButtonWidget);
@@ -24,20 +26,38 @@ public class ButtonWidgetRenderer extends WidgetRenderer {
 
         this.workspaceButtonWidget = workspaceButtonWidget;
 
-        this.button = this.findViewById(R.id.buttonRendererButton);
-        this.button.setText(this.workspaceButtonWidget.caption);
+        this.layout = this.findViewById(R.id.buttonRendererLayout);
+        this.layout.removeAllViews();
+
+        if (this.workspaceButtonWidget.orientation == ButtonWidget.Orientation.HORIZONTAL) {
+            this.layout.setOrientation(HORIZONTAL);
+        } else {
+            this.layout.setOrientation(VERTICAL);
+        }
+
+        for (ButtonWidget.KeyValue keyValue : this.workspaceButtonWidget.keyValues) {
+            Button button = new Button(getContext());
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            if (this.workspaceButtonWidget.orientation == ButtonWidget.Orientation.VERTICAL) {
+                params.width = LayoutParams.MATCH_PARENT;
+            }
+            params.weight = 1.0f;
+            button.setLayoutParams(params);
+            button.setText(keyValue.getKey());
+
+            final ButtonWidget.KeyValue kv = keyValue;
+
+            button.setOnClickListener(v -> HomeClient.getInstance().publish(
+                    workspaceButtonWidget.topic,
+                    kv.getValue(),
+                    workspaceButtonWidget.retain
+            ));
+            this.layout.addView(button);
+        }
 
         if (value != null) {
             this.setValue(value);
         }
-
-        this.button.setOnClickListener(v -> {
-            HomeClient.getInstance().publish(
-                    workspaceButtonWidget.topic,
-                    workspaceButtonWidget.payload,
-                    this.workspaceButtonWidget.retain
-            );
-        });
     }
 
     public void setValue(String value) {

@@ -2,6 +2,7 @@ package com.dunai.home.fragments;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -64,66 +65,9 @@ public class TilesFragment extends Fragment {
         this.client = HomeClient.getInstance();
         client.setWorkspaceChangedCallback(workspace -> {
             this.workspace = workspace;
-            GridLayout tiles = getView().findViewById(R.id.tiles);
-            try {
-                tiles.removeAllViews();
-                topicRenderersMap.clear();
-                Log.i("HomeApp", "Workspace: " + workspace);
-
-                DisplayMetrics metrics = new DisplayMetrics();
-                getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
-
-                Log.i("HomeApp", "Creating tiles: " + String.valueOf(workspace.items.size()));
-                for (int i = 0; i < workspace.items.size(); i++) {
-                    Item item = workspace.items.get(i);
-                    View renderer;
-                    if (item instanceof Section) {
-                        renderer = new SectionRenderer(getContext(), (Section) item);
-                        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 12);
-                        renderer.setLayoutParams(params);
-                    } else {
-                        final String topic = this.topicValueMap.get((((Widget) item).topic));
-                        if (item instanceof TextWidget) {
-                            renderer = new TextWidgetRenderer(getContext(), (TextWidget) item, topic);
-                        } else if (item instanceof SwitchWidget) {
-                            renderer = new SwitchWidgetRenderer(getContext(), (SwitchWidget) item, topic);
-                        } else if (item instanceof GraphWidget) {
-                            renderer = new GraphWidgetRenderer(getContext(), (GraphWidget) item, topic);
-                        } else if (item instanceof DropdownWidget) {
-                            renderer = new DropdownWidgetRenderer(getContext(), (DropdownWidget) item, topic);
-                        } else if (item instanceof ColorWidget) {
-                            renderer = new ColorWidgetRenderer(getContext(), (ColorWidget) item, topic);
-                        } else if (item instanceof ButtonWidget) {
-                            renderer = new ButtonWidgetRenderer(getContext(), (ButtonWidget) item, topic);
-                        } else {
-                            throw new Exception("Unknown item type: " + item.type);
-                        }
-                        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, ((Widget) item).span);
-                        params.width = metrics.widthPixels * ((Widget) item).span / 12;
-                        renderer.setLayoutParams(params);
-                        ArrayList<WidgetRenderer> renderers = topicRenderersMap.get(((Widget) item).topic);
-                        if (renderers == null) {
-                            renderers = new ArrayList<>();
-                        }
-                        renderers.add((WidgetRenderer) renderer);
-                        topicRenderersMap.put(((Widget) item).topic, renderers);
-                    }
-                    tiles.addView(renderer);
-                    registerForContextMenu(renderer);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(getContext(), "Failed to populate workspace: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-            if (this.workspace.items.size() == 0) {
-                TextView noWorkspace = new TextView(this.getContext());
-                noWorkspace.setText("No workspace items defined.");
-                noWorkspace.setGravity(Gravity.CENTER);
-                tiles.addView(noWorkspace, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            }
+            this.renderWorkspace();
         });
+        this.workspace = HomeClient.getInstance().getWorkspace();
         client.setDataReceivedListener((topic, payload) -> {
 //            Log.i("HomeApp", topic + " -> " + payload);
             topicValueMap.put(topic, payload);
@@ -134,11 +78,93 @@ public class TilesFragment extends Fragment {
         });
     }
 
+    private void renderWorkspace() {
+        GridLayout tiles = getView().findViewById(R.id.tiles);
+        if (this.workspace == null) {
+            return;
+        }
+        try {
+            tiles.removeAllViews();
+            topicRenderersMap.clear();
+            Log.i("HomeApp", "Workspace: " + workspace);
+
+            DisplayMetrics metrics = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
+
+            Log.i("HomeApp", "Creating tiles: " + String.valueOf(workspace.items.size()));
+            for (int i = 0; i < workspace.items.size(); i++) {
+                Item item = workspace.items.get(i);
+                View renderer;
+                if (item instanceof Section) {
+                    renderer = new SectionRenderer(getContext(), (Section) item);
+                    GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+                    params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 12);
+                    renderer.setLayoutParams(params);
+                } else {
+                    final String topic = this.topicValueMap.get((((Widget) item).topic));
+                    if (item instanceof TextWidget) {
+                        renderer = new TextWidgetRenderer(getContext(), (TextWidget) item, topic);
+                    } else if (item instanceof SwitchWidget) {
+                        renderer = new SwitchWidgetRenderer(getContext(), (SwitchWidget) item, topic);
+                    } else if (item instanceof GraphWidget) {
+                        renderer = new GraphWidgetRenderer(getContext(), (GraphWidget) item, topic);
+                    } else if (item instanceof DropdownWidget) {
+                        renderer = new DropdownWidgetRenderer(getContext(), (DropdownWidget) item, topic);
+                    } else if (item instanceof ColorWidget) {
+                        renderer = new ColorWidgetRenderer(getContext(), (ColorWidget) item, topic);
+                    } else if (item instanceof ButtonWidget) {
+                        renderer = new ButtonWidgetRenderer(getContext(), (ButtonWidget) item, topic);
+                    } else {
+                        throw new Exception("Unknown item type: " + item.type);
+                    }
+                    GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+                    params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, ((Widget) item).span);
+                    params.width = metrics.widthPixels * ((Widget) item).span / 12;
+                    renderer.setLayoutParams(params);
+                    ArrayList<WidgetRenderer> renderers = topicRenderersMap.get(((Widget) item).topic);
+                    if (renderers == null) {
+                        renderers = new ArrayList<>();
+                    }
+                    renderers.add((WidgetRenderer) renderer);
+                    topicRenderersMap.put(((Widget) item).topic, renderers);
+                }
+                tiles.addView(renderer);
+                registerForContextMenu(renderer);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getContext(), "Failed to populate workspace: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+        if (this.workspace.items.size() == 0) {
+            TextView noWorkspace = new TextView(this.getContext());
+            noWorkspace.setText("No workspace items defined.");
+            noWorkspace.setGravity(Gravity.CENTER);
+            tiles.addView(noWorkspace, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (savedInstanceState != null) {
+            this.topicValueMap = (HashMap<String, String>) savedInstanceState.getSerializable("topicValueMap");
+        }
+        this.renderWorkspace();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tiles, container, false);
+
+        this.workspace = HomeClient.getInstance().getWorkspace();
 
         ((FloatingActionButton) view.findViewById(R.id.tilesFab)).setOnClickListener((View.OnClickListener) v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -250,5 +276,14 @@ public class TilesFragment extends Fragment {
         return super.onContextItemSelected(item);
     }
 
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putSerializable("topicValueMap", this.topicValueMap);
+        super.onSaveInstanceState(outState);
+    }
 }

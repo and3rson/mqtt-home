@@ -21,3 +21,5 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class com.woxthebox.draglistview.** { *; }
+-keepattributes LineNumberTable,SourceFile
+-printmapping build/outputs/mapping/release/mapping.txt

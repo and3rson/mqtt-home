@@ -21,11 +21,9 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,7 +41,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/buttonRendererEditTitle"
@@ -55,7 +53,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/buttonRendererEditTopic"
@@ -94,35 +92,64 @@
                     android:paddingBottom="12sp"
                     android:progress="5" />
 
-                <com.google.android.material.textfield.TextInputLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/buttonRendererEditCaption"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8sp"
-                        android:hint="Caption" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_weight="1"
+                        android:paddingLeft="12sp"
+                        android:text="Items"
+                        android:textSize="16sp" />
 
-                <com.google.android.material.textfield.TextInputLayout
+                    <Button
+                        android:id="@+id/buttonRendererEditAdd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_add"
+                        android:text="Add" />
+
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/buttonRendererEditList"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="0dp"
+                    android:layout_weight="1000">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/buttonRendererEditPayload"
-                        android:layout_width="match_parent"
+                </ListView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8sp"
-                        android:hint="Payload" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_weight="1"
+                        android:paddingLeft="12sp"
+                        android:text="Display"
+                        android:textSize="16sp" />
+
+                    <ToggleButton
+                        android:id="@+id/buttonRendererEditOrientation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ToggleButton"
+                        android:textOff="Horizontal"
+                        android:textOn="Vertical" />
+                </LinearLayout>
 
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

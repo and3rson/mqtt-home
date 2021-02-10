@@ -1,5 +1,6 @@
 package com.dunai.home.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,9 +16,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.DropDownPreference;
 
 import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
+import com.dunai.home.client.workspace.ButtonWidget;
 import com.dunai.home.client.workspace.DropdownWidget;
 import com.dunai.home.views.KeyValueView;
 
@@ -72,10 +75,14 @@ public class DropdownWidgetEditActivity extends AbstractEditActivity {
                 keyValue.setKey(key);
                 keyValue.setValue(value);
             });
-            view.setOnDeleteRequestedListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    remove(keyValue);
+            view.setOnDeleteRequestedListener(v -> {
+                if (getCount() > 1) {
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Confirm deletion")
+                            .setMessage("Do you want to delete this item?")
+                            .setPositiveButton("Yes", (dialog, which) -> remove(keyValue))
+                            .setNegativeButton("No", null)
+                            .show();
                 }
             });
             return view;
@@ -118,6 +125,7 @@ public class DropdownWidgetEditActivity extends AbstractEditActivity {
             this.setTitle("Edit dropdown widget \"" + item.title + "\"");
         } else {
             this.setTitle("Create dropdown widget");
+            keyValues.add(new DropdownWidget.KeyValue("", ""));
         }
 
         this.adapter = new KeyValueAdapter(this, this.keyValues);

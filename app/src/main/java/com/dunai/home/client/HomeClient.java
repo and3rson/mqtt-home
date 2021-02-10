@@ -53,6 +53,10 @@ public class HomeClient {
         return HomeClient.instance;
     }
 
+    public Workspace getWorkspace() {
+        return this.workspace;
+    }
+
     private MqttConnectOptions getConnectionOptions() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.context);
         MqttConnectOptions opts = new MqttConnectOptions();

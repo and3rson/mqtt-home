@@ -71,11 +71,11 @@ public class ItemFactory {
                         bgColor
                 );
             case "dropdown":
-                ArrayList<DropdownWidget.KeyValue> keyValues = new ArrayList<>();
-                JSONArray list = item.getJSONArray("keyValues");
-                for (int i = 0; i < list.length(); i++) {
-                    JSONObject obj = list.getJSONObject(i);
-                    keyValues.add(new DropdownWidget.KeyValue(obj.getString("key"), obj.getString("value")));
+                ArrayList<DropdownWidget.KeyValue> dropdownKeyValues = new ArrayList<>();
+                JSONArray dropdownList = item.getJSONArray("keyValues");
+                for (int i = 0; i < dropdownList.length(); i++) {
+                    JSONObject obj = dropdownList.getJSONObject(i);
+                    dropdownKeyValues.add(new DropdownWidget.KeyValue(obj.getString("key"), obj.getString("value")));
                 }
                 return new DropdownWidget(
                         id,
@@ -84,7 +84,7 @@ public class ItemFactory {
                         retain,
                         span,
                         bgColor,
-                        keyValues
+                        dropdownKeyValues
                 );
             case "color":
                 return new ColorWidget(
@@ -98,6 +98,14 @@ public class ItemFactory {
                         item.getBoolean("alpha")
                 );
             case "button":
+                ArrayList<ButtonWidget.KeyValue> buttonKeyValues = new ArrayList<>();
+                if (item.has("keyValues")) {
+                    JSONArray buttonList = item.getJSONArray("keyValues");
+                    for (int i = 0; i < buttonList.length(); i++) {
+                        JSONObject obj = buttonList.getJSONObject(i);
+                        buttonKeyValues.add(new ButtonWidget.KeyValue(obj.getString("key"), obj.getString("value")));
+                    }
+                }
                 return new ButtonWidget(
                         id,
                         title,
@@ -105,8 +113,8 @@ public class ItemFactory {
                         retain,
                         span,
                         bgColor,
-                        item.getString("caption"),
-                        item.getString("payload")
+                        buttonKeyValues,
+                        ButtonWidget.Orientation.valueOf(item.has("orientation") ? item.getString("orientation") : "HORIZONTAL")
                 );
             default:
                 throw new Exception("Unknown item type: " + item.getString("type"));

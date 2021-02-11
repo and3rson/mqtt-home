@@ -11,8 +11,13 @@ import androidx.appcompat.widget.Toolbar;
 import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
 import com.dunai.home.client.workspace.SwitchWidget;
+import com.dunai.home.client.workspace.Widget;
 
-public class SwitchWidgetEditActivity extends AbstractEditActivity {
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class SwitchWidgetEditActivity extends AbstractWidgetEditActivity {
     private String itemId;
     private TextView title;
     private TextView topic;
@@ -24,91 +29,36 @@ public class SwitchWidgetEditActivity extends AbstractEditActivity {
     private HomeClient client;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_switch_renderer_edit);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        client = HomeClient.getInstance();
-
-        title = findViewById(R.id.switchRendererEditTitle);
-        topic = findViewById(R.id.switchRendererEditTopic);
-        retain = findViewById(R.id.switchRendererEditRetain);
-        spanPortrait = findViewById(R.id.switchRendererEditSpanPortrait);
-        spanLandscape = findViewById(R.id.switchRendererEditSpanLandscape);
-        onValue = findViewById(R.id.switchRendererEditOnValue);
-        offValue = findViewById(R.id.switchRendererEditOffValue);
-
-        Intent intent = getIntent();
-        if (intent.hasExtra("item_id")) {
-            itemId = intent.getStringExtra("item_id");
-            SwitchWidget item = ((SwitchWidget) client.getItem(itemId));
-            if (item == null) {
-                finish();
-                return;
-            }
-            title.setText(item.title);
-            topic.setText(item.topic);
-            retain.setChecked(item.retain);
-            spanPortrait.setProgress(item.spanPortrait - 1);
-            spanLandscape.setProgress(item.spanLandscape - 1);
-            onValue.setText(item.onValue);
-            offValue.setText(item.offValue);
-            this.setTitle("Edit switch widget \"" + item.title + "\"");
-        } else {
-            this.setTitle("Create switch widget");
-        }
+    protected int getLayoutResource() {
+        return R.layout.activity_switch_renderer_edit;
     }
 
     @Override
-    void onSavePressed() {
-        TextView[] fields = {this.topic, this.onValue, this.offValue};
-        boolean errors = false;
-        for (TextView field : fields) {
-            if (field.getText().length() == 0) {
-                field.setError("This field is required.");
-                errors = true;
-            } else {
-                field.setError(null);
-            }
-        }
-        if (errors) {
-            return;
-        }
+    protected String getType() {
+        return "switch";
+    }
 
-        if (itemId != null) {
-            client.updateItem(
-                    itemId,
-                    new SwitchWidget(
-                            itemId,
-                            title.getText().toString(),
-                            topic.getText().toString(),
-                            retain.isChecked(),
-                            spanPortrait.getProgress() + 1,
-                            spanLandscape.getProgress() + 1,
-                            null,
-                            onValue.getText().toString(),
-                            offValue.getText().toString()
-                    )
-            );
-        } else {
-            client.createItem(
-                    new SwitchWidget(
-                            String.valueOf(Math.round(Math.random() * 1e9)),
-                            title.getText().toString(),
-                            topic.getText().toString(),
-                            retain.isChecked(),
-                            spanPortrait.getProgress() + 1,
-                            spanLandscape.getProgress() + 1,
-                            null,
-                            onValue.getText().toString(),
-                            offValue.getText().toString()
-                    )
-            );
+    @Override
+    protected List<TextView> getRequiredFields() {
+        return Arrays.asList(this.onValue, this.offValue);
+    }
+
+    @Override
+    protected Widget construct(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor) {
+        return new SwitchWidget(id, title, topic, retain, spanPortrait, spanLandscape, bgColor, onValue.getText().toString(), offValue.getText().toString());
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        onValue = findViewById(R.id.switchRendererEditOnValue);
+        offValue = findViewById(R.id.switchRendererEditOffValue);
+
+        SwitchWidget item = (SwitchWidget) getExisting();
+        if (item != null) {
+            onValue.setText(item.onValue);
+            offValue.setText(item.offValue);
         }
-        SwitchWidgetEditActivity.this.finish();
     }
 }

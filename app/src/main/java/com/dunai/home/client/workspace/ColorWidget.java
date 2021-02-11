@@ -15,7 +15,7 @@ public class ColorWidget extends Widget {
     }
 
     public ColorWidget(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor, String format, boolean alpha) {
-        super(id, "color", title, topic, retain, spanPortrait, spanLandscape, bgColor);
+        super(id, title, topic, retain, spanPortrait, spanLandscape, bgColor);
         this.format = ColorFormat.valueOf(format);
         this.alpha = alpha;
     }
@@ -29,5 +29,10 @@ public class ColorWidget extends Widget {
             e.printStackTrace();
         }
         return root;
+    }
+
+    @Override
+    public String getType() {
+        return "color";
     }
 }

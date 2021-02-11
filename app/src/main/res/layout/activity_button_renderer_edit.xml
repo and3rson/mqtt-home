@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/buttonRendererEditTitle"
+                        android:id="@+id/rendererEditTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8sp"
@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/buttonRendererEditTopic"
+                        android:id="@+id/rendererEditTopic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8sp"
@@ -64,7 +64,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <CheckBox
-                    android:id="@+id/buttonRendererEditRetain"
+                    android:id="@+id/rendererEditRetain"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -90,7 +90,7 @@
                         app:layout_row="0" />
 
                     <SeekBar
-                        android:id="@+id/buttonRendererEditSpanPortrait"
+                        android:id="@+id/rendererEditSpanPortrait"
                         style="@style/Theme.Home.SeekBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
                         app:layout_row="1" />
 
                     <SeekBar
-                        android:id="@+id/buttonRendererEditSpanLandscape"
+                        android:id="@+id/rendererEditSpanLandscape"
                         style="@style/Theme.Home.SeekBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -129,20 +129,6 @@
                         app:layout_row="1" />
 
                 </androidx.gridlayout.widget.GridLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

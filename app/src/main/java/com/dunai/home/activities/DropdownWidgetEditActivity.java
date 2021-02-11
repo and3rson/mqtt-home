@@ -22,13 +22,14 @@ import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
 import com.dunai.home.client.workspace.ButtonWidget;
 import com.dunai.home.client.workspace.DropdownWidget;
+import com.dunai.home.client.workspace.Widget;
 import com.dunai.home.views.KeyValueView;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class DropdownWidgetEditActivity extends AbstractEditActivity {
+public class DropdownWidgetEditActivity extends AbstractWidgetEditActivity {
     private String itemId;
     private TextView title;
     private TextView topic;
@@ -91,94 +92,40 @@ public class DropdownWidgetEditActivity extends AbstractEditActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dropdown_renderer_edit);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        client = HomeClient.getInstance();
-
-        title = findViewById(R.id.dropdownRendererEditTitle);
-        topic = findViewById(R.id.dropdownRendererEditTopic);
-        retain = findViewById(R.id.dropdownRendererEditRetain);
-        spanPortrait = findViewById(R.id.dropdownRendererEditSpanPortrait);
-        spanLandscape = findViewById(R.id.dropdownRendererEditSpanLandscape);
-        list = findViewById(R.id.dropdownRendererEditList);
-
-        ((Button) findViewById(R.id.dropdownRendererEditAdd)).setOnClickListener((View.OnClickListener) v -> adapter.add(new DropdownWidget.KeyValue("", "")));
-
-        Intent intent = getIntent();
-        if (intent.hasExtra("item_id")) {
-            itemId = intent.getStringExtra("item_id");
-            DropdownWidget item = ((DropdownWidget) client.getItem(itemId));
-            if (item == null) {
-                finish();
-                return;
-            }
-            title.setText(item.title);
-            topic.setText(item.topic);
-            retain.setChecked(item.retain);
-            spanPortrait.setProgress(item.spanPortrait - 1);
-            spanLandscape.setProgress(item.spanLandscape - 1);
-            this.keyValues.addAll(item.keyValues);
-            // TODO
-            this.setTitle("Edit dropdown widget \"" + item.title + "\"");
-        } else {
-            this.setTitle("Create dropdown widget");
-            keyValues.add(new DropdownWidget.KeyValue("", ""));
-        }
-
-        this.adapter = new KeyValueAdapter(this, this.keyValues);
-        list.setAdapter(this.adapter);
+    protected int getLayoutResource() {
+        return R.layout.activity_dropdown_renderer_edit;
     }
 
     @Override
-    void onSavePressed() {
-        TextView[] fields = {this.topic};
-        boolean errors = false;
-        for (TextView field : fields) {
-            if (field.getText().length() == 0) {
-                field.setError("This field is required.");
-                errors = true;
-            } else {
-                field.setError(null);
-            }
-        }
-        if (errors) {
-            return;
+    protected String getType() {
+        return "dropdown";
+    }
+
+    @Override
+    protected List<TextView> getRequiredFields() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected Widget construct(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor) {
+        return new DropdownWidget(id, title, topic, retain, spanPortrait, spanLandscape, bgColor, this.keyValues);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        list = findViewById(R.id.dropdownRendererEditList);
+
+        ((Button) findViewById(R.id.dropdownRendererEditAdd)).setOnClickListener(v -> adapter.add(new DropdownWidget.KeyValue("", "")));
+
+        DropdownWidget item = (DropdownWidget) getExisting();
+        if (item != null) {
+            keyValues.addAll(item.keyValues);
+        } else {
+            keyValues.add(new DropdownWidget.KeyValue("", ""));
         }
 
-        if (itemId != null) {
-            client.updateItem(
-                    itemId,
-                    new DropdownWidget(
-                            itemId,
-                            title.getText().toString(),
-                            topic.getText().toString(),
-                            retain.isChecked(),
-                            spanPortrait.getProgress() + 1,
-                            spanLandscape.getProgress() + 1,
-                            null,
-                            this.keyValues
-                    )
-            );
-        } else {
-            client.createItem(
-                    new DropdownWidget(
-                            String.valueOf(Math.round(Math.random() * 1e9)),
-                            title.getText().toString(),
-                            topic.getText().toString(),
-                            retain.isChecked(),
-                            spanPortrait.getProgress() + 1,
-                            spanLandscape.getProgress() + 1,
-                            null,
-                            this.keyValues
-                    )
-            );
-        }
-        DropdownWidgetEditActivity.this.finish();
+        adapter = new KeyValueAdapter(this, keyValues);
+        list.setAdapter(adapter);
     }
 }

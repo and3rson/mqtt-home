@@ -1,16 +1,13 @@
 package com.dunai.home.client.workspace;
 
-import com.dunai.home.client.workspace.annotations.Editable;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Section extends Item {
-    @Editable(key = "Title", type = Editable.Type.STRING)
     public String title;
 
     public Section(String id, String title) {
-        super(id, "section");
+        super(id);
         this.title = title;
     }
 
@@ -22,5 +19,10 @@ public class Section extends Item {
             e.printStackTrace();
         }
         return root;
+    }
+
+    @Override
+    public String getType() {
+        return "section";
     }
 }

@@ -10,8 +10,12 @@ import android.widget.TextView;
 import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
 import com.dunai.home.client.workspace.TextWidget;
+import com.dunai.home.client.workspace.Widget;
 
-public class TextWidgetEditActivity extends AbstractEditActivity {
+import java.util.Collections;
+import java.util.List;
+
+public class TextWidgetEditActivity extends AbstractWidgetEditActivity {
     private String itemId;
     private TextView title;
     private TextView topic;
@@ -21,85 +25,34 @@ public class TextWidgetEditActivity extends AbstractEditActivity {
     private HomeClient client;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_text_renderer_edit);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        client = HomeClient.getInstance();
-
-        title = findViewById(R.id.textRendererEditTitle);
-        topic = findViewById(R.id.textRendererEditTopic);
-        spanPortrait = findViewById(R.id.textRendererEditSpanPortrait);
-        spanLandscape = findViewById(R.id.textRendererEditSpanLandscape);
-        suffix = findViewById(R.id.textRendererEditSuffix);
-
-        Intent intent = getIntent();
-        if (intent.hasExtra("item_id")) {
-            itemId = intent.getStringExtra("item_id");
-            TextWidget item = ((TextWidget) client.getItem(itemId));
-            if (item == null) {
-                finish();
-                return;
-            }
-            title.setText(item.title);
-            topic.setText(item.topic);
-            spanPortrait.setProgress(item.spanPortrait - 1);
-            spanLandscape.setProgress(item.spanLandscape - 1);
-            suffix.setText(item.suffix);
-            this.setTitle("Edit text widget \"" + item.title + "\"");
-        } else {
-            this.setTitle("Create text widget");
-        }
+    protected int getLayoutResource() {
+        return R.layout.activity_text_renderer_edit;
     }
 
     @Override
-    void onSavePressed() {
-        TextView[] fields = {this.topic};
-        boolean errors = false;
-        for (TextView field : fields) {
-            if (field.getText().length() == 0) {
-                field.setError("This field is required.");
-                errors = true;
-            } else {
-                field.setError(null);
-            }
-        }
-        if (errors) {
-            return;
-        }
+    protected String getType() {
+        return "text";
+    }
 
-        if (itemId != null) {
-            client.updateItem(
-                    itemId,
-                    new TextWidget(
-                            itemId,
-                            title.getText().toString(),
-                            topic.getText().toString(),
-                            false,
-                            spanPortrait.getProgress() + 1,
-                            spanLandscape.getProgress() + 1,
-                            null,
-                            suffix.getText().toString()
-                    )
-            );
-        } else {
-            client.createItem(
-                    new TextWidget(
-                            String.valueOf(Math.round(Math.random() * 1e9)),
-                            title.getText().toString(),
-                            topic.getText().toString(),
-                            false,
-                            spanPortrait.getProgress() + 1,
-                            spanLandscape.getProgress() + 1,
-                            null,
-                            suffix.getText().toString()
-                    )
-            );
+    @Override
+    protected List<TextView> getRequiredFields() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected Widget construct(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor) {
+        return new TextWidget(id, title, topic, retain, spanPortrait, spanLandscape, bgColor, suffix.getText().toString());
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        suffix = findViewById(R.id.textRendererEditSuffix);
+
+        TextWidget item = (TextWidget) getExisting();
+        if (item != null) {
+            suffix.setText(((TextWidget) item).suffix);
         }
-        TextWidgetEditActivity.this.finish();
     }
 }

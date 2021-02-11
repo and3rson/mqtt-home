@@ -21,19 +21,16 @@ import androidx.appcompat.widget.Toolbar;
 import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
 import com.dunai.home.client.workspace.ButtonWidget;
+import com.dunai.home.client.workspace.Widget;
 import com.dunai.home.views.KeyValueView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class ButtonWidgetEditActivity extends AbstractEditActivity {
+public class ButtonWidgetEditActivity extends AbstractWidgetEditActivity {
     private String itemId;
-    private TextView title;
-    private TextView topic;
-    private CheckBox retain;
-    private SeekBar spanPortrait;
-    private SeekBar spanLandscape;
     private ListView list;
     private ToggleButton orientation;
     private HomeClient client;
@@ -94,97 +91,43 @@ public class ButtonWidgetEditActivity extends AbstractEditActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_button_renderer_edit);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        client = HomeClient.getInstance();
-
-        title = findViewById(R.id.buttonRendererEditTitle);
-        topic = findViewById(R.id.buttonRendererEditTopic);
-        retain = findViewById(R.id.buttonRendererEditRetain);
-        spanPortrait = findViewById(R.id.buttonRendererEditSpanPortrait);
-        spanLandscape = findViewById(R.id.buttonRendererEditSpanLandscape);
-        list = findViewById(R.id.buttonRendererEditList);
-        orientation = findViewById(R.id.buttonRendererEditOrientation);
-
-        ((Button) findViewById(R.id.buttonRendererEditAdd)).setOnClickListener((View.OnClickListener) v -> adapter.add(new ButtonWidget.KeyValue("", "")));
-
-        Intent intent = getIntent();
-        if (intent.hasExtra("item_id")) {
-            itemId = intent.getStringExtra("item_id");
-            ButtonWidget item = ((ButtonWidget) client.getItem(itemId));
-            if (item == null) {
-                finish();
-                return;
-            }
-            title.setText(item.title);
-            topic.setText(item.topic);
-            retain.setChecked(item.retain);
-            spanPortrait.setProgress(item.spanPortrait - 1);
-            spanLandscape.setProgress(item.spanLandscape - 1);
-            this.keyValues.addAll(item.keyValues);
-            orientation.setChecked(item.orientation == ButtonWidget.Orientation.VERTICAL);
-            this.setTitle("Edit button widget \"" + item.title + "\"");
-        } else {
-            this.setTitle("Create button widget");
-            keyValues.add(new ButtonWidget.KeyValue("", ""));
-        }
-
-        this.adapter = new ButtonWidgetEditActivity.KeyValueAdapter(this, this.keyValues);
-        list.setAdapter(this.adapter);
+    protected int getLayoutResource() {
+        return R.layout.activity_button_renderer_edit;
     }
 
     @Override
-    void onSavePressed() {
-        TextView[] fields = {this.topic};
-        boolean errors = false;
-        for (TextView field : fields) {
-            if (field.getText().length() == 0) {
-                field.setError("This field is required.");
-                errors = true;
-            } else {
-                field.setError(null);
-            }
-        }
-        if (errors) {
-            return;
+    protected String getType() {
+        return "button";
+    }
+
+    @Override
+    protected List<TextView> getRequiredFields() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected Widget construct(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor) {
+        ButtonWidget.Orientation orientation = this.orientation.isChecked() ? ButtonWidget.Orientation.VERTICAL : ButtonWidget.Orientation.HORIZONTAL;
+        return new ButtonWidget(id, title, topic, retain, spanPortrait, spanLandscape, bgColor, keyValues, orientation);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        list = findViewById(R.id.buttonRendererEditList);
+        orientation = findViewById(R.id.buttonRendererEditOrientation);
+
+        ((Button) findViewById(R.id.buttonRendererEditAdd)).setOnClickListener(v -> adapter.add(new ButtonWidget.KeyValue("", "")));
+
+        ButtonWidget item = (ButtonWidget) getExisting();
+        if (item != null) {
+            keyValues.addAll(item.keyValues);
+            orientation.setChecked(item.orientation == ButtonWidget.Orientation.VERTICAL);
+        } else {
+            keyValues.add(new ButtonWidget.KeyValue("", ""));
         }
 
-        if (itemId != null) {
-            client.updateItem(
-                    itemId,
-                    new ButtonWidget(
-                            itemId,
-                            title.getText().toString(),
-                            topic.getText().toString(),
-                            retain.isChecked(),
-                            spanPortrait.getProgress() + 1,
-                            spanLandscape.getProgress() + 1,
-                            null,
-                            keyValues,
-                            orientation.isChecked() ? ButtonWidget.Orientation.VERTICAL : ButtonWidget.Orientation.HORIZONTAL
-                    )
-            );
-        } else {
-            client.createItem(
-                    new ButtonWidget(
-                            String.valueOf(Math.round(Math.random() * 1e9)),
-                            title.getText().toString(),
-                            topic.getText().toString(),
-                            retain.isChecked(),
-                            spanPortrait.getProgress() + 1,
-                            spanLandscape.getProgress() + 1,
-                            null,
-                            keyValues,
-                            orientation.isChecked() ? ButtonWidget.Orientation.VERTICAL : ButtonWidget.Orientation.HORIZONTAL
-                    )
-            );
-        }
-        ButtonWidgetEditActivity.this.finish();
+        adapter = new KeyValueAdapter(this, keyValues);
+        list.setAdapter(adapter);
     }
 }

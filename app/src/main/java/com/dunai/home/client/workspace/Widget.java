@@ -1,11 +1,9 @@
 package com.dunai.home.client.workspace;
 
-import com.dunai.home.client.workspace.annotations.Editable;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Widget extends Item {
+public abstract class Widget extends Item {
     public String title;
     public String bgColor;
     public String topic;
@@ -13,8 +11,8 @@ public class Widget extends Item {
     public int spanLandscape;
     public boolean retain;
 
-    public Widget(String id, String type, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor) {
-        super(id, type);
+    public Widget(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor) {
+        super(id);
         this.title = title;
         this.topic = topic;
         this.retain = retain;

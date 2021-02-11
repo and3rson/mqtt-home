@@ -6,13 +6,18 @@ import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
 import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
 import com.dunai.home.client.workspace.ColorWidget;
+import com.dunai.home.client.workspace.Widget;
 
-public class ColorWidgetEditActivity extends AbstractEditActivity {
+import java.util.Collections;
+import java.util.List;
+
+public class ColorWidgetEditActivity extends AbstractWidgetEditActivity {
     private String itemId;
     private TextView title;
     private CheckBox retain;
@@ -23,89 +28,34 @@ public class ColorWidgetEditActivity extends AbstractEditActivity {
     private HomeClient client;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_color_renderer_edit);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        client = HomeClient.getInstance();
-
-        title = findViewById(R.id.colorRendererEditTitle);
-        retain = findViewById(R.id.colorRendererEditRetain);
-        topic = findViewById(R.id.colorRendererEditTopic);
-        spanPortrait = findViewById(R.id.colorRendererEditSpanPortrait);
-        spanLandscape = findViewById(R.id.colorRendererEditSpanLandscape);
-        alpha = findViewById(R.id.colorRendererAlpha);
-
-        Intent intent = getIntent();
-        if (intent.hasExtra("item_id")) {
-            itemId = intent.getStringExtra("item_id");
-            ColorWidget item = ((ColorWidget) client.getItem(itemId));
-            if (item == null) {
-                finish();
-                return;
-            }
-            title.setText(item.title);
-            topic.setText(item.topic);
-            retain.setChecked(item.retain);
-            spanPortrait.setProgress(item.spanPortrait - 1);
-            spanLandscape.setProgress(item.spanLandscape - 1);
-            alpha.setChecked(item.alpha);
-            this.setTitle("Edit color widget \"" + item.title + "\"");
-        } else {
-            this.setTitle("Create color widget");
-        }
+    protected int getLayoutResource() {
+        return R.layout.activity_color_renderer_edit;
     }
 
     @Override
-    void onSavePressed() {
-        TextView[] fields = {this.topic};
-        boolean errors = false;
-        for (TextView field : fields) {
-            if (field.getText().length() == 0) {
-                field.setError("This field is required.");
-                errors = true;
-            } else {
-                field.setError(null);
-            }
-        }
-        if (errors) {
-            return;
-        }
+    protected String getType() {
+        return "color";
+    }
 
-        if (itemId != null) {
-            client.updateItem(
-                    itemId,
-                    new ColorWidget(
-                            itemId,
-                            title.getText().toString(),
-                            topic.getText().toString(),
-                            retain.isChecked(),
-                            spanPortrait.getProgress() + 1,
-                            spanLandscape.getProgress() + 1,
-                            null,
-                            "HTML", // TODO
-                            alpha.isChecked()
-                    )
-            );
-        } else {
-            client.createItem(
-                    new ColorWidget(
-                            String.valueOf(Math.round(Math.random() * 1e9)),
-                            title.getText().toString(),
-                            topic.getText().toString(),
-                            retain.isChecked(),
-                            spanPortrait.getProgress() + 1,
-                            spanLandscape.getProgress() + 1,
-                            null,
-                            "HTML", // TODO
-                            alpha.isChecked()
-                    )
-            );
+    @Override
+    protected List<TextView> getRequiredFields() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected Widget construct(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor) {
+        return new ColorWidget(id, title, topic, retain, spanPortrait, spanLandscape, bgColor, "HTML", alpha.isChecked()); // TODO: format arg
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        alpha = findViewById(R.id.colorRendererAlpha);
+
+        ColorWidget item = (ColorWidget) getExisting();
+        if (item != null) {
+            alpha.setChecked(item.alpha);
         }
-        ColorWidgetEditActivity.this.finish();
     }
 }

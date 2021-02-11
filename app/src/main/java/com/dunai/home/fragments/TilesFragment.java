@@ -112,7 +112,7 @@ public class TilesFragment extends Fragment {
                     } else if (item instanceof ButtonWidget) {
                         renderer = new ButtonWidgetRenderer(getContext(), (ButtonWidget) item, topic);
                     } else {
-                        throw new Exception("Unknown item type: " + item.type);
+                        throw new Exception("Unknown item type: " + item.getType());
                     }
                     ArrayList<WidgetRenderer> renderers = topicRenderersMap.get(((Widget) item).topic);
                     if (renderers == null) {

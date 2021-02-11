@@ -37,7 +37,7 @@ public class DropdownWidget extends Widget {
     public ArrayList<KeyValue> keyValues;
 
     public DropdownWidget(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor, ArrayList<KeyValue> keyValues) {
-        super(id, "dropdown", title, topic, retain, spanPortrait, spanLandscape, bgColor);
+        super(id, title, topic, retain, spanPortrait, spanLandscape, bgColor);
         this.keyValues = keyValues;
     }
 
@@ -56,5 +56,10 @@ public class DropdownWidget extends Widget {
             e.printStackTrace();
         }
         return root;
+    }
+
+    @Override
+    public String getType() {
+        return "dropdown";
     }
 }

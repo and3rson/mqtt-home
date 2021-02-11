@@ -1,13 +1,10 @@
 package com.dunai.home.client.workspace;
 
-import android.widget.LinearLayout;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ButtonWidget extends Widget {
     public ArrayList<KeyValue> keyValues;
@@ -45,7 +42,7 @@ public class ButtonWidget extends Widget {
     }
 
     public ButtonWidget(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor, ArrayList<KeyValue> keyValues, Orientation orientation) {
-        super(id, "button", title, topic, retain, spanPortrait, spanLandscape, bgColor);
+        super(id, title, topic, retain, spanPortrait, spanLandscape, bgColor);
         this.keyValues = keyValues;
         this.orientation = orientation;
     }
@@ -66,5 +63,10 @@ public class ButtonWidget extends Widget {
             e.printStackTrace();
         }
         return root;
+    }
+
+    @Override
+    public String getType() {
+        return "button";
     }
 }

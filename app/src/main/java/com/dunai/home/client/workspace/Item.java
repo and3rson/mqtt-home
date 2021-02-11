@@ -1,27 +1,25 @@
 package com.dunai.home.client.workspace;
 
-import com.dunai.home.client.workspace.annotations.Editable;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Item {
+public abstract class Item {
     public String id;
-    public String type;
 
-    public Item(String id, String type) {
+    public Item(String id) {
         this.id = id;
-        this.type = type;
     }
 
     public JSONObject serialize() {
         JSONObject root = new JSONObject();
         try {
             root.put("id", this.id);
-            root.put("type", this.type);
+            root.put("type", this.getType());
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return root;
     }
+
+    public abstract String getType();
 }

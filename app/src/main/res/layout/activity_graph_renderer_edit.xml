@@ -46,7 +46,7 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/graphRendererEditTitle"
+                        android:id="@+id/rendererEditTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8sp"
@@ -58,7 +58,7 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/graphRendererEditTopic"
+                        android:id="@+id/rendererEditTopic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8sp"
@@ -82,7 +82,7 @@
                         app:layout_row="0" />
 
                     <SeekBar
-                        android:id="@+id/graphRendererEditSpanPortrait"
+                        android:id="@+id/rendererEditSpanPortrait"
                         style="@style/Theme.Home.SeekBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
                         app:layout_row="1" />
 
                     <SeekBar
-                        android:id="@+id/graphRendererEditSpanLandscape"
+                        android:id="@+id/rendererEditSpanLandscape"
                         style="@style/Theme.Home.SeekBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

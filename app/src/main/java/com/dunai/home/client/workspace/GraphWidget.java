@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 public class GraphWidget extends Widget {
     public GraphWidget(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor) {
-        super(id, "graph", title, topic, retain, spanPortrait, spanLandscape, bgColor);
+        super(id, title, topic, retain, spanPortrait, spanLandscape, bgColor);
     }
 
     public JSONObject serialize() {
@@ -15,5 +15,10 @@ public class GraphWidget extends Widget {
 //            e.printStackTrace();
 //        }
         return root;
+    }
+
+    @Override
+    public String getType() {
+        return "graph";
     }
 }

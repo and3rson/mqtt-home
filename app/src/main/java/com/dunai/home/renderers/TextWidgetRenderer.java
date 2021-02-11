@@ -28,8 +28,9 @@ public class TextWidgetRenderer extends WidgetRenderer {
 
         if (value != null) {
             this.setValue(value);
+        } else {
+            this.suffixView.setText("");
         }
-        this.suffixView.setText("");
     }
 
     public void setValue(String value) {

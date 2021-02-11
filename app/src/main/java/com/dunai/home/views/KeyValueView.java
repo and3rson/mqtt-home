@@ -10,17 +10,12 @@ import com.dunai.home.R;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class KeyValueView extends LinearLayout {
+    TextInputEditText keyEdit;
+    TextInputEditText valueEdit;
     private OnClickListener onMoveUpRequestedListener;
     private OnClickListener onMoveDownRequestedListener;
     private OnClickListener onDeleteRequestedListener;
     private OnKeyValueChangedListener onKeyValueChangedListener;
-
-    TextInputEditText keyEdit;
-    TextInputEditText valueEdit;
-
-    public interface OnKeyValueChangedListener {
-        void keyValueChanged(String key, String value);
-    }
 
     public KeyValueView(Context context) {
         super(context);
@@ -31,19 +26,19 @@ public class KeyValueView extends LinearLayout {
         this.keyEdit = findViewById(R.id.keyEdit);
         this.valueEdit = findViewById(R.id.valueEdit);
 
-        this.findViewById(R.id.upButton).setOnClickListener((OnClickListener) v -> {
+        this.findViewById(R.id.upButton).setOnClickListener(v -> {
             if (onMoveUpRequestedListener != null) {
                 onMoveUpRequestedListener.onClick(v);
             }
         });
 
-        this.findViewById(R.id.downButton).setOnClickListener((OnClickListener) v -> {
+        this.findViewById(R.id.downButton).setOnClickListener(v -> {
             if (onMoveDownRequestedListener != null) {
                 onMoveDownRequestedListener.onClick(v);
             }
         });
 
-        this.findViewById(R.id.deleteButton).setOnClickListener((OnClickListener) v -> {
+        this.findViewById(R.id.deleteButton).setOnClickListener(v -> {
             if (onDeleteRequestedListener != null) {
                 this.onDeleteRequestedListener.onClick(v);
             }
@@ -51,6 +46,7 @@ public class KeyValueView extends LinearLayout {
 
         this.keyEdit.addTextChangedListener(new TextWatcher() {
             private String lastKey = "";
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -69,6 +65,7 @@ public class KeyValueView extends LinearLayout {
         });
         this.valueEdit.addTextChangedListener(new TextWatcher() {
             private String lastValue = "";
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -109,5 +106,9 @@ public class KeyValueView extends LinearLayout {
 
     public void setValue(String value) {
         this.valueEdit.setText(value);
+    }
+
+    public interface OnKeyValueChangedListener {
+        void keyValueChanged(String key, String value);
     }
 }

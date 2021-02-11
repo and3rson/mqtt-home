@@ -22,43 +22,9 @@ import java.util.List;
  * TODO: document your custom view class.
  */
 public class DropdownWidgetRenderer extends WidgetRenderer {
-    private DropdownWidget workspaceDropdownWidget;
+    private final DropdownWidget workspaceDropdownWidget;
 
-    private Spinner spinnerView;
-
-    public class DropdownAdapter extends ArrayAdapter<DropdownWidget.KeyValue> {
-        public DropdownAdapter(@NonNull Context context, int resource, @NonNull List<DropdownWidget.KeyValue> objects) {
-            super(context, resource, objects);
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            return this.getCustomView(position, convertView, parent, false);
-        }
-
-        @Override
-        public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            return this.getCustomView(position, convertView, parent, true);
-        }
-
-        public View getCustomView(int position, @Nullable View convertView, @NonNull ViewGroup parent, boolean showLine2) {
-            View view = convertView;
-            if (view == null) {
-                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.two_column_list_item, parent, false);
-            }
-            ((TextView) view.findViewById(R.id.itemLine1)).setText(this.getItem(position).getKey());
-            TextView line2 = view.findViewById(R.id.itemLine2);
-            if (showLine2) {
-                line2.setVisibility(VISIBLE);
-                line2.setText(this.getItem(position).getValue());
-            } else {
-                line2.setVisibility(GONE);
-            }
-            return view;
-        }
-    }
+    private final Spinner spinnerView;
 
     public DropdownWidgetRenderer(Context context, DropdownWidget workspaceDropdownWidget, String value) {
         super(context, workspaceDropdownWidget);
@@ -108,5 +74,39 @@ public class DropdownWidgetRenderer extends WidgetRenderer {
 //            this.suffixView.setText(this.workspaceTextWidget.suffix);
 //        }
         super.notifyValueChanged();
+    }
+
+    public class DropdownAdapter extends ArrayAdapter<DropdownWidget.KeyValue> {
+        public DropdownAdapter(@NonNull Context context, int resource, @NonNull List<DropdownWidget.KeyValue> objects) {
+            super(context, resource, objects);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            return this.getCustomView(position, convertView, parent, false);
+        }
+
+        @Override
+        public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            return this.getCustomView(position, convertView, parent, true);
+        }
+
+        public View getCustomView(int position, @Nullable View convertView, @NonNull ViewGroup parent, boolean showLine2) {
+            View view = convertView;
+            if (view == null) {
+                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(R.layout.two_column_list_item, parent, false);
+            }
+            ((TextView) view.findViewById(R.id.itemLine1)).setText(this.getItem(position).getKey());
+            TextView line2 = view.findViewById(R.id.itemLine2);
+            if (showLine2) {
+                line2.setVisibility(VISIBLE);
+                line2.setText(this.getItem(position).getValue());
+            } else {
+                line2.setVisibility(GONE);
+            }
+            return view;
+        }
     }
 }

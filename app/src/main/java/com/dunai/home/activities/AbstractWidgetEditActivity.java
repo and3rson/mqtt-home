@@ -13,7 +13,6 @@ import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
 import com.dunai.home.client.workspace.Widget;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
@@ -29,8 +28,11 @@ public abstract class AbstractWidgetEditActivity extends AbstractEditActivity {
     private Widget existing;
 
     protected abstract int getLayoutResource();
+
     protected abstract String getType();
+
     protected abstract List<TextView> getRequiredFields();
+
     protected abstract Widget construct(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor);
 
     @Override
@@ -66,7 +68,7 @@ public abstract class AbstractWidgetEditActivity extends AbstractEditActivity {
             spanPortrait.setProgress(item.spanPortrait - 1);
             spanLandscape.setProgress(item.spanLandscape - 1);
             this.existing = item;
-            this.setTitle("Edit " + this.getType() +  "widget \"" + item.title + "\"");
+            this.setTitle("Edit " + this.getType() + "widget \"" + item.title + "\"");
         } else {
             this.setTitle("Create " + this.getType() + " widget");
         }
@@ -113,7 +115,8 @@ public abstract class AbstractWidgetEditActivity extends AbstractEditActivity {
         return !errors.get();
     }
 
-    protected @Nullable Widget getExisting() {
+    protected @Nullable
+    Widget getExisting() {
         return this.existing;
     }
 }

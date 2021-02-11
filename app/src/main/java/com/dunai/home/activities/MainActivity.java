@@ -2,13 +2,10 @@ package com.dunai.home.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.dunai.home.R;
-import com.dunai.home.activities.SettingsActivity;
-import com.dunai.home.client.ConnectionState;
-import com.dunai.home.client.HomeClient;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -16,11 +13,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
-import android.util.Log;
-import android.view.View;
-
-import android.view.Menu;
-import android.view.MenuItem;
+import com.dunai.home.R;
+import com.dunai.home.client.ConnectionState;
+import com.dunai.home.client.HomeClient;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
     private HomeClient client;
@@ -133,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                     getSupportActionBar().setTitle(PreferenceManager.getDefaultSharedPreferences(this).getString("host", ""));
                     break;
             }
-        } catch(IllegalStateException e) { // Hack for java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+        } catch (IllegalStateException e) { // Hack for java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
             e.printStackTrace();
         }
     }

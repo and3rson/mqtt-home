@@ -10,37 +10,6 @@ public class ButtonWidget extends Widget {
     public ArrayList<KeyValue> keyValues;
     public Orientation orientation;
 
-    public static class KeyValue {
-        private String key;
-        private String value;
-
-        public KeyValue(String key, String value) {
-            this.key = key;
-            this.value = value;
-        }
-
-        public String getKey() {
-            return key;
-        }
-
-        public void setKey(String key) {
-            this.key = key;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
-    };
-
-    public enum Orientation {
-        HORIZONTAL,
-        VERTICAL
-    }
-
     public ButtonWidget(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor, ArrayList<KeyValue> keyValues, Orientation orientation) {
         super(id, title, topic, retain, spanPortrait, spanLandscape, bgColor);
         this.keyValues = keyValues;
@@ -68,5 +37,36 @@ public class ButtonWidget extends Widget {
     @Override
     public String getType() {
         return "button";
+    }
+
+    public enum Orientation {
+        HORIZONTAL,
+        VERTICAL
+    }
+
+    public static class KeyValue {
+        private String key;
+        private String value;
+
+        public KeyValue(String key, String value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
     }
 }

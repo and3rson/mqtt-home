@@ -34,13 +34,12 @@ import java.util.TimerTask;
 
 public class HomeClient {
     private static HomeClient instance = null; // TODO: Memory leak?
+    public ConnectionState connectionState = ConnectionState.OFFLINE;
     private MqttAndroidClient mqttClient;
     private Context context;
     private WorkspaceChangedListener workspaceChangedListener;
     private DataReceivedListener dataReceivedListener;
     private ConnectionStateChangedListener connectionStateChangedListener;
-
-    public ConnectionState connectionState = ConnectionState.OFFLINE;
     private Timer reconnectTimer;
     private Workspace workspace;
 
@@ -58,7 +57,8 @@ public class HomeClient {
         return this.workspace;
     }
 
-    private @Nullable MqttConnectOptions getConnectionOptions() {
+    private @Nullable
+    MqttConnectOptions getConnectionOptions() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.context);
         MqttConnectOptions opts = new MqttConnectOptions();
         opts.setKeepAliveInterval(Integer.parseInt(prefs.getString("keepAliveInterval", "10")));
@@ -81,6 +81,7 @@ public class HomeClient {
         }
         return opts;
     }
+
     public void connect() {
         if (this.reconnectTimer == null) {
             this.reconnectTimer = new Timer();
@@ -145,7 +146,7 @@ public class HomeClient {
                             JSONObject root = null;
                             root = new JSONObject(new String(message.getPayload()));
                             JSONArray items = root.getJSONArray("items");
-                            Log.i("HomeApp", "Tiles: " + String.valueOf(items.length()));
+                            Log.i("HomeApp", "Tiles: " + items.length());
                             for (int i = 0; i < items.length(); i++) {
                                 JSONObject item = items.getJSONObject(i);
                                 Item workspaceItem = ItemFactory.createFromJSONObject(item);
@@ -211,13 +212,6 @@ public class HomeClient {
             Log.e("HomeApp", "Failed to disconnect from MQTT");
             e.printStackTrace();
             Toast.makeText(context, "Failed to disconnect: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    void setConnectionState(ConnectionState connectionState) {
-        this.connectionState = connectionState;
-        if (this.connectionStateChangedListener != null) {
-            this.connectionStateChangedListener.onConnectionStateChanged(connectionState);
         }
     }
 
@@ -336,5 +330,12 @@ public class HomeClient {
 
     public ConnectionState getConnectionState() {
         return connectionState;
+    }
+
+    void setConnectionState(ConnectionState connectionState) {
+        this.connectionState = connectionState;
+        if (this.connectionStateChangedListener != null) {
+            this.connectionStateChangedListener.onConnectionStateChanged(connectionState);
+        }
     }
 }

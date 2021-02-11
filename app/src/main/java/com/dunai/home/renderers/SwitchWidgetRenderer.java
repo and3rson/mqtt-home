@@ -15,10 +15,10 @@ import com.dunai.home.client.workspace.SwitchWidget;
  * TODO: document your custom view class.
  */
 public class SwitchWidgetRenderer extends WidgetRenderer {
-    private SwitchWidget workspaceSwitchWidget;
+    private final SwitchWidget workspaceSwitchWidget;
 
-//    private ToggleButton button;
-    private ImageButton button;
+    //    private ToggleButton button;
+    private final ImageButton button;
     private boolean isChecked = false;
 
     public SwitchWidgetRenderer(Context context, SwitchWidget workspaceSwitchWidget, String value) {

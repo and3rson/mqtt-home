@@ -2,8 +2,6 @@ package com.dunai.home.renderers;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -15,9 +13,9 @@ import com.dunai.home.client.workspace.ButtonWidget;
  * TODO: document your custom view class.
  */
 public class ButtonWidgetRenderer extends WidgetRenderer {
-    private ButtonWidget workspaceButtonWidget;
+    private final ButtonWidget workspaceButtonWidget;
 
-  private LinearLayout layout;
+    private final LinearLayout layout;
 
     public ButtonWidgetRenderer(Context context, ButtonWidget workspaceButtonWidget, String value) {
         super(context, workspaceButtonWidget);

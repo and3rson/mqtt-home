@@ -1,12 +1,9 @@
 package com.dunai.home.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-import androidx.appcompat.widget.Toolbar;
 
 import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
@@ -14,7 +11,6 @@ import com.dunai.home.client.workspace.SwitchWidget;
 import com.dunai.home.client.workspace.Widget;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class SwitchWidgetEditActivity extends AbstractWidgetEditActivity {

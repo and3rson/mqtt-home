@@ -4,12 +4,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -18,9 +12,15 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.dunai.home.R;
 import com.dunai.home.activities.ButtonWidgetEditActivity;
@@ -49,15 +49,15 @@ import com.dunai.home.renderers.SectionRenderer;
 import com.dunai.home.renderers.SwitchWidgetRenderer;
 import com.dunai.home.renderers.TextWidgetRenderer;
 import com.dunai.home.renderers.WidgetRenderer;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class TilesFragment extends Fragment {
-    private HomeClient client;
+    private final HomeClient client;
     private Workspace workspace;
-    private HashMap<String, ArrayList<WidgetRenderer>> topicRenderersMap = new HashMap<>();
+    private final HashMap<String, ArrayList<WidgetRenderer>> topicRenderersMap = new HashMap<>();
     private HashMap<String, String> topicValueMap = new HashMap<>();
 
     public TilesFragment() {
@@ -91,7 +91,7 @@ public class TilesFragment extends Fragment {
             DisplayMetrics metrics = new DisplayMetrics();
             getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
 
-            Log.i("HomeApp", "Creating tiles: " + String.valueOf(workspace.items.size()));
+            Log.i("HomeApp", "Creating tiles: " + workspace.items.size());
             for (int i = 0; i < workspace.items.size(); i++) {
                 Item item = workspace.items.get(i);
                 View renderer;
@@ -159,41 +159,50 @@ public class TilesFragment extends Fragment {
 
         this.workspace = HomeClient.getInstance().getWorkspace();
 
-        ((FloatingActionButton) view.findViewById(R.id.tilesFab)).setOnClickListener((View.OnClickListener) v -> {
+        class AlertItem {
+            public final String title;
+            public final int icon;
+            public final Class<? extends AppCompatActivity> activityClass;
+
+            public AlertItem(String title, int icon, Class<? extends AppCompatActivity> activityClass) {
+                this.title = title;
+                this.icon = icon;
+                this.activityClass = activityClass;
+            }
+        }
+
+        ArrayAdapter<AlertItem> alertAdapter = new ArrayAdapter<AlertItem>(getContext(), android.R.layout.simple_list_item_1) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                AlertItem item = getItem(position);
+                View view = super.getView(position, convertView, parent);
+                TextView textView = view.findViewById(android.R.id.text1);
+                textView.setText(item.title);
+                textView.setCompoundDrawablesWithIntrinsicBounds(item.icon, 0, 0, 0);
+                int dp5 = (int) (5 * getResources().getDisplayMetrics().density + 0.5f);
+                textView.setCompoundDrawablePadding(dp5);
+                return view;
+            }
+        };
+
+        alertAdapter.addAll(Arrays.asList(
+                new AlertItem("Section", R.drawable.ic_w_section, SectionEditActivity.class),
+                new AlertItem("Text", R.drawable.ic_w_text, TextWidgetEditActivity.class),
+                new AlertItem("Switch", R.drawable.ic_w_switch, SwitchWidgetEditActivity.class),
+                new AlertItem("Graph", R.drawable.ic_w_graph, GraphWidgetEditActivity.class),
+                new AlertItem("Dropdown", R.drawable.ic_w_dropdown, DropdownWidgetEditActivity.class),
+                new AlertItem("Color", R.drawable.ic_w_color, ColorWidgetEditActivity.class),
+                new AlertItem("Button", R.drawable.ic_w_button, ButtonWidgetEditActivity.class)
+        ));
+
+        view.findViewById(R.id.tilesFab).setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            final String[] items = {
-                    "Section",
-                    "Text widget",
-                    "Switch widget",
-                    "Graph widget",
-                    "Dropdown widget",
-                    "Color widget",
-                    "Button widget"
-            };
             builder.setTitle("Create new item");
-            builder.setItems(items, ((dialog, which) -> {
-                Class<? extends AppCompatActivity> cls;
-                if (which == 0) {
-                    cls = SectionEditActivity.class;
-                } else if (which == 1) {
-                    cls = TextWidgetEditActivity.class;
-                } else if (which == 2) {
-                    cls = SwitchWidgetEditActivity.class;
-                } else if (which == 3) {
-                    cls = GraphWidgetEditActivity.class;
-                } else if (which == 4) {
-                    cls = DropdownWidgetEditActivity.class;
-                } else if (which == 5) {
-                    cls = ColorWidgetEditActivity.class;
-                } else if (which == 6) {
-                    cls = ButtonWidgetEditActivity.class;
-                } else {
-                    cls = null;
-                }
-                if (cls != null) {
-                    Intent intent = new Intent(getContext(), cls);
-                    this.startActivity(intent);
-                }
+            builder.setAdapter(alertAdapter, ((dialog, which) -> {
+                AlertItem alertItem = alertAdapter.getItem(which);
+                Intent intent = new Intent(getContext(), alertItem.activityClass);
+                this.startActivity(intent);
             }));
             builder.show();
         });

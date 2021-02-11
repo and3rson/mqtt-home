@@ -7,35 +7,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class DropdownWidget extends Widget {
-    public static class KeyValue {
-        private String key;
-        private String value;
-
-        public KeyValue(String key, String value) {
-            this.key = key;
-            this.value = value;
-        }
-
-        public String getKey() {
-            return key;
-        }
-
-        public void setKey(String key) {
-            this.key = key;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
-    };
-
     public String suffix;
-    public ArrayList<KeyValue> keyValues;
 
+    public ArrayList<KeyValue> keyValues;
     public DropdownWidget(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor, ArrayList<KeyValue> keyValues) {
         super(id, title, topic, retain, spanPortrait, spanLandscape, bgColor);
         this.keyValues = keyValues;
@@ -61,5 +35,31 @@ public class DropdownWidget extends Widget {
     @Override
     public String getType() {
         return "dropdown";
+    }
+
+    public static class KeyValue {
+        private String key;
+        private String value;
+
+        public KeyValue(String key, String value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
     }
 }

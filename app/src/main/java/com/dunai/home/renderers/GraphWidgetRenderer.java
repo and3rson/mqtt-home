@@ -19,9 +19,9 @@ import com.jjoe64.graphview.series.LineGraphSeries;
  * TODO: document your custom view class.
  */
 public class GraphWidgetRenderer extends WidgetRenderer {
-    private GraphWidget workspaceGraphWidget;
+    private final GraphWidget workspaceGraphWidget;
 
-    private GraphView graphView;
+    private final GraphView graphView;
 
     public GraphWidgetRenderer(Context context, GraphWidget workspaceGraphWidget, String value) {
         super(context, workspaceGraphWidget);

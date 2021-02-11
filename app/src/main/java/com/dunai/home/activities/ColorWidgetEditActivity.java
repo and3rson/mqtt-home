@@ -1,13 +1,11 @@
 package com.dunai.home.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 
 import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;

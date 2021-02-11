@@ -1,8 +1,5 @@
 package com.dunai.home.activities;
 
-import androidx.appcompat.widget.Toolbar;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -52,7 +49,7 @@ public class TextWidgetEditActivity extends AbstractWidgetEditActivity {
 
         TextWidget item = (TextWidget) getExisting();
         if (item != null) {
-            suffix.setText(((TextWidget) item).suffix);
+            suffix.setText(item.suffix);
         }
     }
 }

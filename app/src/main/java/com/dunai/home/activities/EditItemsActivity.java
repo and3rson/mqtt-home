@@ -1,8 +1,8 @@
 package com.dunai.home.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.dunai.home.R;
 

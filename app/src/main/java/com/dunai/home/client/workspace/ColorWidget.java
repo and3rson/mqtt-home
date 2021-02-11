@@ -7,13 +7,6 @@ public class ColorWidget extends Widget {
     public ColorFormat format;
     public boolean alpha;
 
-    public enum ColorFormat {
-        HTML, // #102030 / #FF102030
-        COMMA, // 16,32,48 / 16,32,48,255
-        HSV, // 210,50,12 / 210,50,12,255
-        INT // 1056816 / 4279246896
-    }
-
     public ColorWidget(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor, String format, boolean alpha) {
         super(id, title, topic, retain, spanPortrait, spanLandscape, bgColor);
         this.format = ColorFormat.valueOf(format);
@@ -34,5 +27,12 @@ public class ColorWidget extends Widget {
     @Override
     public String getType() {
         return "color";
+    }
+
+    public enum ColorFormat {
+        HTML, // #102030 / #FF102030
+        COMMA, // 16,32,48 / 16,32,48,255
+        HSV, // 210,50,12 / 210,50,12,255
+        INT // 1056816 / 4279246896
     }
 }

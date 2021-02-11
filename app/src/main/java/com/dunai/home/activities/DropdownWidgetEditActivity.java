@@ -2,7 +2,6 @@ package com.dunai.home.activities;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +14,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.preference.DropDownPreference;
 
 import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
-import com.dunai.home.client.workspace.ButtonWidget;
 import com.dunai.home.client.workspace.DropdownWidget;
 import com.dunai.home.client.workspace.Widget;
 import com.dunai.home.views.KeyValueView;
@@ -39,9 +35,47 @@ public class DropdownWidgetEditActivity extends AbstractWidgetEditActivity {
     private ListView list;
     private HomeClient client;
 
-    private ArrayList<DropdownWidget.KeyValue> keyValues = new ArrayList<>();
+    private final ArrayList<DropdownWidget.KeyValue> keyValues = new ArrayList<>();
 
     private KeyValueAdapter adapter;
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.activity_dropdown_renderer_edit;
+    }
+
+    @Override
+    protected String getType() {
+        return "dropdown";
+    }
+
+    @Override
+    protected List<TextView> getRequiredFields() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected Widget construct(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor) {
+        return new DropdownWidget(id, title, topic, retain, spanPortrait, spanLandscape, bgColor, this.keyValues);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        list = findViewById(R.id.dropdownRendererEditList);
+
+        findViewById(R.id.dropdownRendererEditAdd).setOnClickListener(v -> adapter.add(new DropdownWidget.KeyValue("", "")));
+
+        DropdownWidget item = (DropdownWidget) getExisting();
+        if (item != null) {
+            keyValues.addAll(item.keyValues);
+        } else {
+            keyValues.add(new DropdownWidget.KeyValue("", ""));
+        }
+
+        adapter = new KeyValueAdapter(this, keyValues);
+        list.setAdapter(adapter);
+    }
 
     public static class KeyValueAdapter extends ArrayAdapter<DropdownWidget.KeyValue> {
         private final List<DropdownWidget.KeyValue> objects;
@@ -89,43 +123,5 @@ public class DropdownWidgetEditActivity extends AbstractWidgetEditActivity {
             });
             return view;
         }
-    }
-
-    @Override
-    protected int getLayoutResource() {
-        return R.layout.activity_dropdown_renderer_edit;
-    }
-
-    @Override
-    protected String getType() {
-        return "dropdown";
-    }
-
-    @Override
-    protected List<TextView> getRequiredFields() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    protected Widget construct(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor) {
-        return new DropdownWidget(id, title, topic, retain, spanPortrait, spanLandscape, bgColor, this.keyValues);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        list = findViewById(R.id.dropdownRendererEditList);
-
-        ((Button) findViewById(R.id.dropdownRendererEditAdd)).setOnClickListener(v -> adapter.add(new DropdownWidget.KeyValue("", "")));
-
-        DropdownWidget item = (DropdownWidget) getExisting();
-        if (item != null) {
-            keyValues.addAll(item.keyValues);
-        } else {
-            keyValues.add(new DropdownWidget.KeyValue("", ""));
-        }
-
-        adapter = new KeyValueAdapter(this, keyValues);
-        list.setAdapter(adapter);
     }
 }

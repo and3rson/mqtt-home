@@ -18,9 +18,9 @@ import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
  * TODO: document your custom view class.
  */
 public class ColorWidgetRenderer extends WidgetRenderer {
-    private ColorWidget workspaceColorWidget;
+    private final ColorWidget workspaceColorWidget;
 
-    private Button button;
+    private final Button button;
     private int color = -1;
 
     public ColorWidgetRenderer(Context context, ColorWidget workspaceColorWidget, String value) {

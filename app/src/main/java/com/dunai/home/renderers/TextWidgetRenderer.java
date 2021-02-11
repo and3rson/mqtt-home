@@ -11,10 +11,10 @@ import com.dunai.home.client.workspace.TextWidget;
  * TODO: document your custom view class.
  */
 public class TextWidgetRenderer extends WidgetRenderer {
-    private TextWidget workspaceTextWidget;
+    private final TextWidget workspaceTextWidget;
 
-    private TextView valueView;
-    private TextView suffixView;
+    private final TextView valueView;
+    private final TextView suffixView;
 
     public TextWidgetRenderer(Context context, TextWidget workspaceTextWidget, String value) {
         super(context, workspaceTextWidget);

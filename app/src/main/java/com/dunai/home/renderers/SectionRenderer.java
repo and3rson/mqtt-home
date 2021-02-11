@@ -13,8 +13,8 @@ import com.dunai.home.client.workspace.Section;
  * TODO: document your custom view class.
  */
 public class SectionRenderer extends LinearLayout {
-    private Section workspaceSection;
-    private TextView titleView;
+    private final Section workspaceSection;
+    private final TextView titleView;
 
     public SectionRenderer(Context context, Section workspaceSection) {
         super(context);

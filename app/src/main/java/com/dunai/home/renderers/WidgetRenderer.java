@@ -27,12 +27,12 @@ import java.util.TimerTask;
 
 public abstract class WidgetRenderer extends LinearLayout {
     private final Timer lastUpdateTimer;
-    private LinearLayout root;
-    private TextView title;
-    private TextView pin;
-    private TextView lastUpdate;
+    private final LinearLayout root;
+    private final TextView title;
+    private final TextView pin;
+    private final TextView lastUpdate;
 
-    private int bgColor;
+    private final int bgColor;
     private Date lastUpdateDate;
 
     public WidgetRenderer(Context context, Widget widget) {

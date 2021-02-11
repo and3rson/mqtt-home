@@ -36,7 +36,8 @@ public class ItemFactory {
         String id = item.getString("id");
         String title = item.getString("title");
         String topic = item.getString("topic");
-        int span = item.has("span") ? item.getInt("span") : 12;
+        int spanPortrait = item.has("spanPortrait") ? item.getInt("spanPortrait") : item.has("span") ? item.getInt("span") : 12;
+        int spanLandscape = item.has("spanLandscape") ? item.getInt("spanLandscape") : spanPortrait;
         boolean retain = !item.has("retain") || item.getBoolean("retain");
         String bgColor = item.has("bgColor") ? item.getString("bgColor") : null;
         switch (item.getString("type")) {
@@ -46,7 +47,8 @@ public class ItemFactory {
                         title,
                         topic,
                         retain,
-                        span,
+                        spanPortrait,
+                        spanLandscape,
                         bgColor,
                         item.has("suffix") ? item.getString("suffix") : ""
                 );
@@ -56,7 +58,8 @@ public class ItemFactory {
                         title,
                         topic,
                         retain,
-                        span,
+                        spanPortrait,
+                        spanLandscape,
                         bgColor,
                         item.getString("onValue"),
                         item.getString("offValue")
@@ -67,7 +70,8 @@ public class ItemFactory {
                         title,
                         topic,
                         retain,
-                        span,
+                        spanPortrait,
+                        spanLandscape,
                         bgColor
                 );
             case "dropdown":
@@ -82,7 +86,8 @@ public class ItemFactory {
                         title,
                         topic,
                         retain,
-                        span,
+                        spanPortrait,
+                        spanLandscape,
                         bgColor,
                         dropdownKeyValues
                 );
@@ -92,7 +97,8 @@ public class ItemFactory {
                         title,
                         topic,
                         retain,
-                        span,
+                        spanPortrait,
+                        spanLandscape,
                         bgColor,
                         item.getString("format"),
                         item.getBoolean("alpha")
@@ -111,7 +117,8 @@ public class ItemFactory {
                         title,
                         topic,
                         retain,
-                        span,
+                        spanPortrait,
+                        spanLandscape,
                         bgColor,
                         buttonKeyValues,
                         ButtonWidget.Orientation.valueOf(item.has("orientation") ? item.getString("orientation") : "HORIZONTAL")

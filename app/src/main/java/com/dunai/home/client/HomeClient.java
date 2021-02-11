@@ -122,7 +122,6 @@ public class HomeClient {
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    System.out.println("Offline");
                     setConnectionState(ConnectionState.OFFLINE);
                 }
             });

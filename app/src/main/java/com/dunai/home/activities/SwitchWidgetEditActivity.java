@@ -17,7 +17,8 @@ public class SwitchWidgetEditActivity extends AbstractEditActivity {
     private TextView title;
     private TextView topic;
     private CheckBox retain;
-    private SeekBar span;
+    private SeekBar spanPortrait;
+    private SeekBar spanLandscape;
     private TextView onValue;
     private TextView offValue;
     private HomeClient client;
@@ -36,7 +37,8 @@ public class SwitchWidgetEditActivity extends AbstractEditActivity {
         title = findViewById(R.id.switchRendererEditTitle);
         topic = findViewById(R.id.switchRendererEditTopic);
         retain = findViewById(R.id.switchRendererEditRetain);
-        span = findViewById(R.id.switchRendererEditSpan);
+        spanPortrait = findViewById(R.id.switchRendererEditSpanPortrait);
+        spanLandscape = findViewById(R.id.switchRendererEditSpanLandscape);
         onValue = findViewById(R.id.switchRendererEditOnValue);
         offValue = findViewById(R.id.switchRendererEditOffValue);
 
@@ -51,7 +53,8 @@ public class SwitchWidgetEditActivity extends AbstractEditActivity {
             title.setText(item.title);
             topic.setText(item.topic);
             retain.setChecked(item.retain);
-            span.setProgress(item.span - 1);
+            spanPortrait.setProgress(item.spanPortrait - 1);
+            spanLandscape.setProgress(item.spanLandscape - 1);
             onValue.setText(item.onValue);
             offValue.setText(item.offValue);
             this.setTitle("Edit switch widget \"" + item.title + "\"");
@@ -84,7 +87,8 @@ public class SwitchWidgetEditActivity extends AbstractEditActivity {
                             title.getText().toString(),
                             topic.getText().toString(),
                             retain.isChecked(),
-                            span.getProgress() + 1,
+                            spanPortrait.getProgress() + 1,
+                            spanLandscape.getProgress() + 1,
                             null,
                             onValue.getText().toString(),
                             offValue.getText().toString()
@@ -97,7 +101,8 @@ public class SwitchWidgetEditActivity extends AbstractEditActivity {
                             title.getText().toString(),
                             topic.getText().toString(),
                             retain.isChecked(),
-                            span.getProgress() + 1,
+                            spanPortrait.getProgress() + 1,
+                            spanLandscape.getProgress() + 1,
                             null,
                             onValue.getText().toString(),
                             offValue.getText().toString()

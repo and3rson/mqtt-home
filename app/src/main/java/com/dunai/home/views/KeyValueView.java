@@ -79,7 +79,6 @@ public class KeyValueView extends LinearLayout {
 
             @Override
             public void afterTextChanged(Editable s) {
-                System.out.println(lastValue + " -> " + s.toString());
                 if (onKeyValueChangedListener != null && !lastValue.equals(s.toString())) {
                     onKeyValueChangedListener.keyValueChanged(keyEdit.getText().toString(), valueEdit.getText().toString());
                 }

@@ -87,6 +87,7 @@ public class ColorWidgetRenderer extends WidgetRenderer {
                     })
                     .density(12)
                     .initialColor(this.color != -1 ? this.color : Color.parseColor("#FFFFFF"))
+                    .showAlphaSlider(workspaceColorWidget.alpha)
                     .build()
                     .show()
             ;

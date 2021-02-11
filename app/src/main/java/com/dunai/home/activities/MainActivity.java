@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         if (client != null) {
             setConnectionState(client.connectionState);
         }
-        System.out.println("Menu: " + menuConnectionStatus);
         return true;
     }
 

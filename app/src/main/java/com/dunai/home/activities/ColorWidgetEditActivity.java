@@ -17,7 +17,8 @@ public class ColorWidgetEditActivity extends AbstractEditActivity {
     private TextView title;
     private CheckBox retain;
     private TextView topic;
-    private SeekBar span;
+    private SeekBar spanPortrait;
+    private SeekBar spanLandscape;
     private CheckBox alpha;
     private HomeClient client;
 
@@ -35,7 +36,8 @@ public class ColorWidgetEditActivity extends AbstractEditActivity {
         title = findViewById(R.id.colorRendererEditTitle);
         retain = findViewById(R.id.colorRendererEditRetain);
         topic = findViewById(R.id.colorRendererEditTopic);
-        span = findViewById(R.id.colorRendererEditSpan);
+        spanPortrait = findViewById(R.id.colorRendererEditSpanPortrait);
+        spanLandscape = findViewById(R.id.colorRendererEditSpanLandscape);
         alpha = findViewById(R.id.colorRendererAlpha);
 
         Intent intent = getIntent();
@@ -49,7 +51,8 @@ public class ColorWidgetEditActivity extends AbstractEditActivity {
             title.setText(item.title);
             topic.setText(item.topic);
             retain.setChecked(item.retain);
-            span.setProgress(item.span - 1);
+            spanPortrait.setProgress(item.spanPortrait - 1);
+            spanLandscape.setProgress(item.spanLandscape - 1);
             alpha.setChecked(item.alpha);
             this.setTitle("Edit color widget \"" + item.title + "\"");
         } else {
@@ -81,7 +84,8 @@ public class ColorWidgetEditActivity extends AbstractEditActivity {
                             title.getText().toString(),
                             topic.getText().toString(),
                             retain.isChecked(),
-                            span.getProgress() + 1,
+                            spanPortrait.getProgress() + 1,
+                            spanLandscape.getProgress() + 1,
                             null,
                             "HTML", // TODO
                             alpha.isChecked()
@@ -94,7 +98,8 @@ public class ColorWidgetEditActivity extends AbstractEditActivity {
                             title.getText().toString(),
                             topic.getText().toString(),
                             retain.isChecked(),
-                            span.getProgress() + 1,
+                            spanPortrait.getProgress() + 1,
+                            spanLandscape.getProgress() + 1,
                             null,
                             "HTML", // TODO
                             alpha.isChecked()

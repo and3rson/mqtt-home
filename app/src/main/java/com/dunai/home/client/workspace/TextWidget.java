@@ -6,8 +6,8 @@ import org.json.JSONObject;
 public class TextWidget extends Widget {
     public String suffix;
 
-    public TextWidget(String id, String title, String topic, boolean retain, int span, String bgColor, String suffix) {
-        super(id, "text", title, topic, retain, span, bgColor);
+    public TextWidget(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor, String suffix) {
+        super(id, "text", title, topic, retain, spanPortrait, spanLandscape, bgColor);
         this.suffix = suffix;
     }
 

@@ -65,13 +65,62 @@
                         android:hint="Topic" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/textView2"
+                <androidx.gridlayout.widget.GridLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="12sp"
-                    android:text="Width"
-                    android:textSize="16sp" />
+                    android:layout_height="match_parent"
+                    app:rowCount="2">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="12sp"
+                        android:text="Width (portrait)"
+                        android:textSize="16sp"
+                        app:layout_column="0"
+                        app:layout_gravity="center_vertical"
+                        app:layout_row="0" />
+
+                    <SeekBar
+                        android:id="@+id/textRendererEditSpanPortrait"
+                        style="@style/Theme.Home.SeekBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:max="11"
+                        android:min="0"
+                        android:paddingTop="4sp"
+                        android:paddingBottom="12sp"
+                        android:progress="5"
+                        app:layout_column="1"
+                        app:layout_columnWeight="1"
+                        app:layout_row="0" />
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="12sp"
+                        android:text="Width (landscape)"
+                        android:textSize="16sp"
+                        app:layout_column="0"
+                        app:layout_gravity="center_vertical"
+                        app:layout_row="1" />
+
+                    <SeekBar
+                        android:id="@+id/textRendererEditSpanLandscape"
+                        style="@style/Theme.Home.SeekBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:max="11"
+                        android:min="0"
+                        android:paddingTop="4sp"
+                        android:paddingBottom="12sp"
+                        android:progress="5"
+                        app:layout_column="1"
+                        app:layout_columnWeight="1"
+                        app:layout_row="1" />
+
+                </androidx.gridlayout.widget.GridLayout>
 
                 <SeekBar
                     android:id="@+id/textRendererEditSpan"

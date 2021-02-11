@@ -14,8 +14,8 @@ public class ColorWidget extends Widget {
         INT // 1056816 / 4279246896
     }
 
-    public ColorWidget(String id, String title, String topic, boolean retain, int span, String bgColor, String format, boolean alpha) {
-        super(id, "color", title, topic, retain, span, bgColor);
+    public ColorWidget(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor, String format, boolean alpha) {
+        super(id, "color", title, topic, retain, spanPortrait, spanLandscape, bgColor);
         this.format = ColorFormat.valueOf(format);
         this.alpha = alpha;
     }

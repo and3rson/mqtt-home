@@ -34,12 +34,6 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        System.out.println("Config changed!");
-        super.onConfigurationChanged(newConfig);
-    }
-
     public static class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
         public boolean settingsChanged = false;
 

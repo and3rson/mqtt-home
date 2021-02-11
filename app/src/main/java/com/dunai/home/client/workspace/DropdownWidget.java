@@ -36,8 +36,8 @@ public class DropdownWidget extends Widget {
     public String suffix;
     public ArrayList<KeyValue> keyValues;
 
-    public DropdownWidget(String id, String title, String topic, boolean retain, int span, String bgColor, ArrayList<KeyValue> keyValues) {
-        super(id, "dropdown", title, topic, retain, span, bgColor);
+    public DropdownWidget(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor, ArrayList<KeyValue> keyValues) {
+        super(id, "dropdown", title, topic, retain, spanPortrait, spanLandscape, bgColor);
         this.keyValues = keyValues;
     }
 

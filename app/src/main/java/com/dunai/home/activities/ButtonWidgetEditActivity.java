@@ -10,8 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -34,7 +32,8 @@ public class ButtonWidgetEditActivity extends AbstractEditActivity {
     private TextView title;
     private TextView topic;
     private CheckBox retain;
-    private SeekBar span;
+    private SeekBar spanPortrait;
+    private SeekBar spanLandscape;
     private ListView list;
     private ToggleButton orientation;
     private HomeClient client;
@@ -108,7 +107,8 @@ public class ButtonWidgetEditActivity extends AbstractEditActivity {
         title = findViewById(R.id.buttonRendererEditTitle);
         topic = findViewById(R.id.buttonRendererEditTopic);
         retain = findViewById(R.id.buttonRendererEditRetain);
-        span = findViewById(R.id.buttonRendererEditSpan);
+        spanPortrait = findViewById(R.id.buttonRendererEditSpanPortrait);
+        spanLandscape = findViewById(R.id.buttonRendererEditSpanLandscape);
         list = findViewById(R.id.buttonRendererEditList);
         orientation = findViewById(R.id.buttonRendererEditOrientation);
 
@@ -125,7 +125,8 @@ public class ButtonWidgetEditActivity extends AbstractEditActivity {
             title.setText(item.title);
             topic.setText(item.topic);
             retain.setChecked(item.retain);
-            span.setProgress(item.span - 1);
+            spanPortrait.setProgress(item.spanPortrait - 1);
+            spanLandscape.setProgress(item.spanLandscape - 1);
             this.keyValues.addAll(item.keyValues);
             orientation.setChecked(item.orientation == ButtonWidget.Orientation.VERTICAL);
             this.setTitle("Edit button widget \"" + item.title + "\"");
@@ -162,7 +163,8 @@ public class ButtonWidgetEditActivity extends AbstractEditActivity {
                             title.getText().toString(),
                             topic.getText().toString(),
                             retain.isChecked(),
-                            span.getProgress() + 1,
+                            spanPortrait.getProgress() + 1,
+                            spanLandscape.getProgress() + 1,
                             null,
                             keyValues,
                             orientation.isChecked() ? ButtonWidget.Orientation.VERTICAL : ButtonWidget.Orientation.HORIZONTAL
@@ -175,7 +177,8 @@ public class ButtonWidgetEditActivity extends AbstractEditActivity {
                             title.getText().toString(),
                             topic.getText().toString(),
                             retain.isChecked(),
-                            span.getProgress() + 1,
+                            spanPortrait.getProgress() + 1,
+                            spanLandscape.getProgress() + 1,
                             null,
                             keyValues,
                             orientation.isChecked() ? ButtonWidget.Orientation.VERTICAL : ButtonWidget.Orientation.HORIZONTAL

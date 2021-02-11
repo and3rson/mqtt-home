@@ -2,6 +2,7 @@ package com.dunai.home.renderers;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,5 +25,9 @@ public class SectionRenderer extends LinearLayout {
 
         this.titleView = this.findViewById(R.id.sectionRendererTitle);
         this.titleView.setText(workspaceSection.title);
+
+        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 12);
+        this.setLayoutParams(params);
     }
 }

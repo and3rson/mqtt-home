@@ -15,7 +15,8 @@ public class TextWidgetEditActivity extends AbstractEditActivity {
     private String itemId;
     private TextView title;
     private TextView topic;
-    private SeekBar span;
+    private SeekBar spanPortrait;
+    private SeekBar spanLandscape;
     private TextView suffix;
     private HomeClient client;
 
@@ -32,7 +33,8 @@ public class TextWidgetEditActivity extends AbstractEditActivity {
 
         title = findViewById(R.id.textRendererEditTitle);
         topic = findViewById(R.id.textRendererEditTopic);
-        span = findViewById(R.id.textRendererEditSpan);
+        spanPortrait = findViewById(R.id.textRendererEditSpanPortrait);
+        spanLandscape = findViewById(R.id.textRendererEditSpanLandscape);
         suffix = findViewById(R.id.textRendererEditSuffix);
 
         Intent intent = getIntent();
@@ -45,7 +47,8 @@ public class TextWidgetEditActivity extends AbstractEditActivity {
             }
             title.setText(item.title);
             topic.setText(item.topic);
-            span.setProgress(item.span - 1);
+            spanPortrait.setProgress(item.spanPortrait - 1);
+            spanLandscape.setProgress(item.spanLandscape - 1);
             suffix.setText(item.suffix);
             this.setTitle("Edit text widget \"" + item.title + "\"");
         } else {
@@ -77,7 +80,8 @@ public class TextWidgetEditActivity extends AbstractEditActivity {
                             title.getText().toString(),
                             topic.getText().toString(),
                             false,
-                            span.getProgress() + 1,
+                            spanPortrait.getProgress() + 1,
+                            spanLandscape.getProgress() + 1,
                             null,
                             suffix.getText().toString()
                     )
@@ -89,7 +93,8 @@ public class TextWidgetEditActivity extends AbstractEditActivity {
                             title.getText().toString(),
                             topic.getText().toString(),
                             false,
-                            span.getProgress() + 1,
+                            spanPortrait.getProgress() + 1,
+                            spanLandscape.getProgress() + 1,
                             null,
                             suffix.getText().toString()
                     )

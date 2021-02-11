@@ -15,7 +15,8 @@ public class GraphWidgetEditActivity extends AbstractEditActivity {
     private String itemId;
     private TextView title;
     private TextView topic;
-    private SeekBar span;
+    private SeekBar spanPortrait;
+    private SeekBar spanLandscape;
     private HomeClient client;
 
     @Override
@@ -31,7 +32,8 @@ public class GraphWidgetEditActivity extends AbstractEditActivity {
 
         title = findViewById(R.id.graphRendererEditTitle);
         topic = findViewById(R.id.graphRendererEditTopic);
-        span = findViewById(R.id.graphRendererEditSpan);
+        spanPortrait = findViewById(R.id.graphRendererEditSpanPortrait);
+        spanLandscape = findViewById(R.id.graphRendererEditSpanLandscape);
 
         Intent intent = getIntent();
         if (intent.hasExtra("item_id")) {
@@ -43,7 +45,8 @@ public class GraphWidgetEditActivity extends AbstractEditActivity {
             }
             title.setText(item.title);
             topic.setText(item.topic);
-            span.setProgress(item.span - 1);
+            spanPortrait.setProgress(item.spanPortrait - 1);
+            spanLandscape.setProgress(item.spanLandscape - 1);
             this.setTitle("Edit graph widget \"" + item.title + "\"");
         } else {
             this.setTitle("Create graph widget");
@@ -74,7 +77,8 @@ public class GraphWidgetEditActivity extends AbstractEditActivity {
                             title.getText().toString(),
                             topic.getText().toString(),
                             false,
-                            span.getProgress() + 1,
+                            spanPortrait.getProgress() + 1,
+                            spanLandscape.getProgress() + 1,
                             null
                     )
             );
@@ -85,7 +89,8 @@ public class GraphWidgetEditActivity extends AbstractEditActivity {
                             title.getText().toString(),
                             topic.getText().toString(),
                             false,
-                            span.getProgress() + 1,
+                            spanPortrait.getProgress() + 1,
+                            spanLandscape.getProgress() + 1,
                             null
                     )
             );

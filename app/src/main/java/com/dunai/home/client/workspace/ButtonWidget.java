@@ -44,8 +44,8 @@ public class ButtonWidget extends Widget {
         VERTICAL
     }
 
-    public ButtonWidget(String id, String title, String topic, boolean retain, int span, String bgColor, ArrayList<KeyValue> keyValues, Orientation orientation) {
-        super(id, "button", title, topic, retain, span, bgColor);
+    public ButtonWidget(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor, ArrayList<KeyValue> keyValues, Orientation orientation) {
+        super(id, "button", title, topic, retain, spanPortrait, spanLandscape, bgColor);
         this.keyValues = keyValues;
         this.orientation = orientation;
     }

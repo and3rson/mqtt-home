@@ -6,22 +6,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Widget extends Item {
-    @Editable(key = "Title", type = Editable.Type.STRING)
     public String title;
     public String bgColor;
-    @Editable(key = "Topic", type = Editable.Type.STRING)
     public String topic;
-    @Editable(key = "Width", type = Editable.Type.NUMBER, minValue = 1, maxValue = 12)
-    public int span;
+    public int spanPortrait;
+    public int spanLandscape;
     public boolean retain;
 
-    public Widget(String id, String type, String title, String topic, boolean retain, int span, String bgColor) {
+    public Widget(String id, String type, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor) {
         super(id, type);
         this.title = title;
         this.topic = topic;
         this.retain = retain;
         this.bgColor = bgColor;
-        this.span = span;
+        this.spanPortrait = spanPortrait;
+        this.spanLandscape = spanLandscape;
     }
 
     public JSONObject serialize() {
@@ -31,7 +30,8 @@ public class Widget extends Item {
             root.put("topic", this.topic);
             root.put("retain", this.retain);
             root.put("bgColor", this.bgColor);
-            root.put("span", this.span);
+            root.put("spanPortrait", this.spanPortrait);
+            root.put("spanLandscape", this.spanLandscape);
         } catch (JSONException e) {
             e.printStackTrace();
         }

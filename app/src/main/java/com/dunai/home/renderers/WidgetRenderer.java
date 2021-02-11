@@ -4,11 +4,15 @@ import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -40,6 +44,17 @@ public abstract class WidgetRenderer extends LinearLayout {
         this.root = this.findViewById(R.id.rendererRoot);
         this.pin = this.findViewById(R.id.rendererPin);
         this.lastUpdate = this.findViewById(R.id.rendererLastUpdate);
+
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getRealMetrics(metrics);
+
+        boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+
+        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, isPortrait ? widget.spanPortrait : widget.spanLandscape);
+        params.width = metrics.widthPixels * (isPortrait ? widget.spanPortrait : widget.spanLandscape) / 12;
+        this.setLayoutParams(params);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         if (!prefs.getBoolean("showLastUpdateTime", true)) {

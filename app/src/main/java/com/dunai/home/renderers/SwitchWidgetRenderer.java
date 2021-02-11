@@ -46,7 +46,6 @@ public class SwitchWidgetRenderer extends WidgetRenderer {
     public void setValue(String value) {
 //        this.button.setChecked(value.equals(this.workspaceSwitchWidget.onValue));
         isChecked = value.equals(this.workspaceSwitchWidget.onValue);
-        System.out.println(isChecked);
         Drawable icon = ResourcesCompat.getDrawable(getResources(), isChecked ? R.drawable.ic_checked : R.drawable.ic_unchecked, null);
         this.button.setImageDrawable(icon);
 //        this.button.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);

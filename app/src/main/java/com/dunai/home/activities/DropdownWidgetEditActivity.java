@@ -33,7 +33,8 @@ public class DropdownWidgetEditActivity extends AbstractEditActivity {
     private TextView title;
     private TextView topic;
     private CheckBox retain;
-    private SeekBar span;
+    private SeekBar spanPortrait;
+    private SeekBar spanLandscape;
     private ListView list;
     private HomeClient client;
 
@@ -103,7 +104,8 @@ public class DropdownWidgetEditActivity extends AbstractEditActivity {
         title = findViewById(R.id.dropdownRendererEditTitle);
         topic = findViewById(R.id.dropdownRendererEditTopic);
         retain = findViewById(R.id.dropdownRendererEditRetain);
-        span = findViewById(R.id.dropdownRendererEditSpan);
+        spanPortrait = findViewById(R.id.dropdownRendererEditSpanPortrait);
+        spanLandscape = findViewById(R.id.dropdownRendererEditSpanLandscape);
         list = findViewById(R.id.dropdownRendererEditList);
 
         ((Button) findViewById(R.id.dropdownRendererEditAdd)).setOnClickListener((View.OnClickListener) v -> adapter.add(new DropdownWidget.KeyValue("", "")));
@@ -119,7 +121,8 @@ public class DropdownWidgetEditActivity extends AbstractEditActivity {
             title.setText(item.title);
             topic.setText(item.topic);
             retain.setChecked(item.retain);
-            span.setProgress(item.span - 1);
+            spanPortrait.setProgress(item.spanPortrait - 1);
+            spanLandscape.setProgress(item.spanLandscape - 1);
             this.keyValues.addAll(item.keyValues);
             // TODO
             this.setTitle("Edit dropdown widget \"" + item.title + "\"");
@@ -156,7 +159,8 @@ public class DropdownWidgetEditActivity extends AbstractEditActivity {
                             title.getText().toString(),
                             topic.getText().toString(),
                             retain.isChecked(),
-                            span.getProgress() + 1,
+                            spanPortrait.getProgress() + 1,
+                            spanLandscape.getProgress() + 1,
                             null,
                             this.keyValues
                     )
@@ -168,7 +172,8 @@ public class DropdownWidgetEditActivity extends AbstractEditActivity {
                             title.getText().toString(),
                             topic.getText().toString(),
                             retain.isChecked(),
-                            span.getProgress() + 1,
+                            spanPortrait.getProgress() + 1,
+                            spanLandscape.getProgress() + 1,
                             null,
                             this.keyValues
                     )

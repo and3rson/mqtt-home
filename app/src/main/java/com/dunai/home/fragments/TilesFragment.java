@@ -97,9 +97,6 @@ public class TilesFragment extends Fragment {
                 View renderer;
                 if (item instanceof Section) {
                     renderer = new SectionRenderer(getContext(), (Section) item);
-                    GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                    params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 12);
-                    renderer.setLayoutParams(params);
                 } else {
                     final String topic = this.topicValueMap.get((((Widget) item).topic));
                     if (item instanceof TextWidget) {
@@ -117,10 +114,6 @@ public class TilesFragment extends Fragment {
                     } else {
                         throw new Exception("Unknown item type: " + item.type);
                     }
-                    GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                    params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, ((Widget) item).span);
-                    params.width = metrics.widthPixels * ((Widget) item).span / 12;
-                    renderer.setLayoutParams(params);
                     ArrayList<WidgetRenderer> renderers = topicRenderersMap.get(((Widget) item).topic);
                     if (renderers == null) {
                         renderers = new ArrayList<>();

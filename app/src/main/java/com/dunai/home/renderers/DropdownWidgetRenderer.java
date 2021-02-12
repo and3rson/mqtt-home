@@ -35,6 +35,7 @@ public class DropdownWidgetRenderer extends WidgetRenderer {
 
         this.spinnerView = this.findViewById(R.id.dropdownRendererSpinner);
         this.spinnerView.setAdapter(new DropdownAdapter(getContext(), R.layout.two_column_list_item, this.workspaceDropdownWidget.keyValues));
+        this.spinnerView.setSelection(0, false); // Prevent setOnItemSelectedListener from firing initially
         this.spinnerView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -51,10 +52,9 @@ public class DropdownWidgetRenderer extends WidgetRenderer {
             }
         });
 
-//        if (value != null) {
-//            this.setValue(value);
-//        }
-//        this.suffixView.setText("");
+        if (value != null) {
+            this.setValue(value);
+        }
     }
 
     public void setValue(String value) {
@@ -69,10 +69,6 @@ public class DropdownWidgetRenderer extends WidgetRenderer {
         if (index != -1) {
             this.spinnerView.setSelection(index);
         }
-//        this.valueView.setText(value);
-//        if (this.workspaceTextWidget.suffix != null) {
-//            this.suffixView.setText(this.workspaceTextWidget.suffix);
-//        }
         super.notifyValueChanged();
     }
 

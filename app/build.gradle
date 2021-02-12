@@ -10,8 +10,8 @@ android {
         applicationId "com.dunai.home"
         minSdkVersion 28
         targetSdkVersion 30
-        versionCode 12
-        versionName "1.11"
+        versionCode 14
+        versionName "1.13"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -51,6 +51,7 @@ dependencies {
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-process:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.work:work-runtime:2.3.4'
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -62,4 +63,7 @@ dependencies {
     implementation 'com.github.woxthebox:draglistview:1.7.2'
 //    implementation "com.github.skydoves:colorpickerview:2.2.2"
     implementation 'com.github.QuadFlask:colorpicker:0.0.15'
+    implementation "com.github.abhishekti7:UnicornFilePicker:1.0.1"
+    implementation group: 'org.bouncycastle', name: 'bcprov-jdk15to18', version: '1.68'
+    implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15to18', version: '1.68'
 }

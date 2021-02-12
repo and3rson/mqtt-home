@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.dunai.home">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -17,7 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Home"
         android:name=".HomeApplication"
-        android:banner="@drawable/banner">
+        android:banner="@drawable/banner"
+        android:requestLegacyExternalStorage="true">
         <activity android:name=".activities.SectionEditActivity" />
         <activity android:name=".activities.TextWidgetEditActivity" />
         <activity android:name=".activities.SwitchWidgetEditActivity" />

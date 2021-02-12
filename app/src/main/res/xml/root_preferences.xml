@@ -38,6 +38,39 @@
             android:singleLine="true"
             android:title="Password"
             app:useSimpleSummaryProvider="false" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="useSSL"
+            android:title="Use TLS"
+            app:summary="Don't forget to change port (if needed) when using TLS." />
+<!--        <Preference-->
+<!--            android:key="caCert"-->
+<!--            android:title="    CA cert" />-->
+<!--        <Preference-->
+<!--            android:key="clientCert"-->
+<!--            android:title="    Client cert" />-->
+<!--        <Preference-->
+<!--            android:key="clientKey"-->
+<!--            android:title="    Client key" />-->
+        <Preference
+            android:key="clientCert"
+            android:title="    Client certificate" />
+        <EditTextPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:key="sslPassword"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="    Certificate password"
+            app:useSimpleSummaryProvider="false" />
+        <CheckBoxPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="true"
+            android:key="validateCerts"
+            android:title="   Validate certificates"
+            app:summary="     Turn this off to accept all certificates." />
         <EditTextPreference
             android:defaultValue="automatic"
             android:key="clientId"

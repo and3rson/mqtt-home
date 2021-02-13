@@ -68,7 +68,7 @@ public abstract class AbstractWidgetEditActivity extends AbstractEditActivity {
             spanPortrait.setProgress(item.spanPortrait - 1);
             spanLandscape.setProgress(item.spanLandscape - 1);
             this.existing = item;
-            this.setTitle("Edit " + this.getType() + "widget \"" + item.title + "\"");
+            this.setTitle("Edit " + this.getType() + " widget \"" + item.title + "\"");
         } else {
             this.setTitle("Create " + this.getType() + " widget");
         }

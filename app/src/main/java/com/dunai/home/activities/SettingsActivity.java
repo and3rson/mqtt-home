@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.security.KeyChain;
-import android.security.KeyChainAliasCallback;
 import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
@@ -29,7 +27,6 @@ import com.dunai.home.client.HomeClient;
 import java.util.ArrayList;
 
 import abhishekti7.unicorn.filepicker.UnicornFilePicker;
-import abhishekti7.unicorn.filepicker.utils.Constants;
 
 public class SettingsActivity extends AppCompatActivity {
     private SettingsFragment settingsFragment;
@@ -73,6 +70,32 @@ public class SettingsActivity extends AppCompatActivity {
             return true;
         }
         return super.onContextItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode >= 10001 && requestCode <= 10003 && resultCode == RESULT_OK) {
+            ArrayList<String> filePaths = data.getStringArrayListExtra("filePaths");
+            if (filePaths.size() > 0) {
+                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+                switch (requestCode) {
+                    case 10001:
+                        editor.putString("caCert", filePaths.get(0));
+                        break;
+                    case 10002:
+                        editor.putString("clientCert", filePaths.get(0));
+                        break;
+                    case 10003:
+                        editor.putString("clientKey", filePaths.get(0));
+                        break;
+                }
+                editor.apply();
+
+                settingsFragment.refreshSummaries();
+            }
+        }
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -121,7 +144,7 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                     editor.apply();
                     refreshSummaries();
-                }, new String[] {"RSA", "DSA"}, null, null, -1, clientCert);
+                }, new String[]{"RSA", "DSA"}, null, null, -1, clientCert);
                 return true;
             });
 
@@ -164,31 +187,5 @@ public class SettingsActivity extends AppCompatActivity {
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             this.settingsChanged = true;
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode >= 10001 && requestCode <= 10003 && resultCode == RESULT_OK) {
-            ArrayList<String> filePaths = data.getStringArrayListExtra("filePaths");
-            if (filePaths.size() > 0) {
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-                switch (requestCode) {
-                    case 10001:
-                        editor.putString("caCert", filePaths.get(0));
-                        break;
-                    case 10002:
-                        editor.putString("clientCert", filePaths.get(0));
-                        break;
-                    case 10003:
-                        editor.putString("clientKey", filePaths.get(0));
-                        break;
-                }
-                editor.apply();
-
-                settingsFragment.refreshSummaries();
-            }
-        };
     }
 }

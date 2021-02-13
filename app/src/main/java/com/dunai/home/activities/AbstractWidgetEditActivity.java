@@ -89,7 +89,7 @@ public abstract class AbstractWidgetEditActivity extends AbstractEditActivity {
                     null
             ));
         } else {
-            this.client.createItem(this.construct(
+            this.client.addItem(this.construct(
                     String.valueOf(Math.round(Math.random() * 1e9)),
                     title.getText().toString(),
                     topic.getText().toString(),

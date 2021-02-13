@@ -37,6 +37,7 @@ public class DropdownWidgetRenderer extends WidgetRenderer {
         this.spinnerView.setAdapter(new DropdownAdapter(getContext(), R.layout.two_column_list_item, this.workspaceDropdownWidget.keyValues));
         this.spinnerView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             boolean isInitial = true;
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (isInitial) {

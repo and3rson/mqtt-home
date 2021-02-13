@@ -1,7 +1,5 @@
 package com.dunai.home.client.workspace;
 
-import android.widget.SeekBar;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 

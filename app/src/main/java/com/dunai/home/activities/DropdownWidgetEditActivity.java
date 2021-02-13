@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.SeekBar;
@@ -26,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class DropdownWidgetEditActivity extends AbstractWidgetEditActivity {
+    private final ArrayList<DropdownWidget.KeyValue> keyValues = new ArrayList<>();
     private String itemId;
     private TextView title;
     private TextView topic;
@@ -34,9 +34,6 @@ public class DropdownWidgetEditActivity extends AbstractWidgetEditActivity {
     private SeekBar spanLandscape;
     private ListView list;
     private HomeClient client;
-
-    private final ArrayList<DropdownWidget.KeyValue> keyValues = new ArrayList<>();
-
     private KeyValueAdapter adapter;
 
     @Override

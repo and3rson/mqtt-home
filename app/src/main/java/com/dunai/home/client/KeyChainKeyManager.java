@@ -17,6 +17,13 @@ public class KeyChainKeyManager extends X509ExtendedKeyManager {
     private final X509Certificate[] mCertificateChain;
     private final PrivateKey mPrivateKey;
 
+    private KeyChainKeyManager(
+            String clientAlias, X509Certificate[] certificateChain, PrivateKey privateKey) {
+        mClientAlias = clientAlias;
+        mCertificateChain = certificateChain;
+        mPrivateKey = privateKey;
+    }
+
     /**
      * Builds an instance of a KeyChainKeyManager using the given certificate alias.
      * If for any reason retrieval of the credentials from the system {@link android.security.KeyChain} fails,
@@ -49,13 +56,6 @@ public class KeyChainKeyManager extends X509ExtendedKeyManager {
         return new KeyChainKeyManager(alias, certificateChain, privateKey);
     }
 
-    private KeyChainKeyManager(
-            String clientAlias, X509Certificate[] certificateChain, PrivateKey privateKey) {
-        mClientAlias = clientAlias;
-        mCertificateChain = certificateChain;
-        mPrivateKey = privateKey;
-    }
-
     @Override
     public String chooseClientAlias(String[] keyTypes, Principal[] issuers, Socket socket) {
         return mClientAlias;
@@ -72,7 +72,7 @@ public class KeyChainKeyManager extends X509ExtendedKeyManager {
     }
 
     @Override
-    public final String chooseServerAlias( String keyType, Principal[] issuers, Socket socket) {
+    public final String chooseServerAlias(String keyType, Principal[] issuers, Socket socket) {
         // not a client SSLSocket callback
         throw new UnsupportedOperationException();
     }

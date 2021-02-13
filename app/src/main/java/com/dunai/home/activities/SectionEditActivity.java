@@ -70,7 +70,7 @@ public class SectionEditActivity extends AbstractEditActivity {
                     )
             );
         } else {
-            client.createItem(
+            client.addItem(
                     new Section(
                             String.valueOf(Math.round(Math.random() * 1e9)),
                             title.getText().toString()

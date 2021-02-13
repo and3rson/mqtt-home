@@ -59,8 +59,8 @@ import java.util.HashMap;
 
 public class TilesFragment extends Fragment {
     private final HomeClient client;
-    private Workspace workspace;
     private final HashMap<String, ArrayList<WidgetRenderer>> topicRenderersMap = new HashMap<>();
+    private Workspace workspace;
     private HashMap<String, String> topicValueMap = new HashMap<>();
 
     public TilesFragment() {

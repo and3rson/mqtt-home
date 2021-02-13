@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -27,11 +26,11 @@ import java.util.List;
 public class ButtonWidgetEditActivity extends AbstractWidgetEditActivity {
     private static final int HORIZONTAL = 0;
     private static final int VERTICAL = 1;
+    private final ArrayList<ButtonWidget.KeyValue> keyValues = new ArrayList<>();
     private String itemId;
     private ListView list;
     private ToggleButton orientation;
     private HomeClient client;
-    private final ArrayList<ButtonWidget.KeyValue> keyValues = new ArrayList<>();
     private ButtonWidgetEditActivity.KeyValueAdapter adapter;
 
     @Override

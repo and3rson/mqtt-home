@@ -43,15 +43,15 @@
             android:key="useSSL"
             android:title="Use TLS"
             app:summary="Don't forget to change port (if needed) when using TLS." />
-<!--        <Preference-->
-<!--            android:key="caCert"-->
-<!--            android:title="    CA cert" />-->
-<!--        <Preference-->
-<!--            android:key="clientCert"-->
-<!--            android:title="    Client cert" />-->
-<!--        <Preference-->
-<!--            android:key="clientKey"-->
-<!--            android:title="    Client key" />-->
+        <!--        <Preference-->
+        <!--            android:key="caCert"-->
+        <!--            android:title="    CA cert" />-->
+        <!--        <Preference-->
+        <!--            android:key="clientCert"-->
+        <!--            android:title="    Client cert" />-->
+        <!--        <Preference-->
+        <!--            android:key="clientKey"-->
+        <!--            android:title="    Client key" />-->
         <Preference
             android:key="clientCert"
             android:title="    Client certificate" />
@@ -96,7 +96,11 @@
             android:title="Keep-alive interval"
             app:defaultValue="10"
             app:useSimpleSummaryProvider="true" />
-
+        <Preference
+            android:key="shareServerConfig"
+            android:summary="Generate a link that you can send it to your friends to easily grant them access to your server."
+            android:title="Share server configuration"
+            app:icon="@drawable/ic_share" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="Interface"
@@ -121,6 +125,10 @@
             android:key="showMenuDots"
             android:title="Show menu dots on widgets"
             app:summary="Disable this to hide menu icon from widgets. You can still long-click the widget to open the menu." />
+        <Preference
+            android:key="appVersion"
+            android:summary=""
+            android:title="App version" />
     </PreferenceCategory>
 
 </PreferenceScreen>

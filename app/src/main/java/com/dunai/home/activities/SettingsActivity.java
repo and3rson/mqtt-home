@@ -1,16 +1,24 @@
 package com.dunai.home.activities;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.security.KeyChain;
 import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,13 +26,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import com.dunai.home.R;
+import com.dunai.home.client.ConnectionState;
 import com.dunai.home.client.HomeClient;
 
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import abhishekti7.unicorn.filepicker.UnicornFilePicker;
 
@@ -100,6 +114,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
         public boolean settingsChanged = false;
+        private Timer timer;
+        private int clicks = 0;
 
         private boolean checkPermissions() {
             int permissionCheck1 = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -147,6 +163,57 @@ public class SettingsActivity extends AppCompatActivity {
                 }, new String[]{"RSA", "DSA"}, null, null, -1, clientCert);
                 return true;
             });
+
+            findPreference("shareServerConfig").setOnPreferenceClickListener(preference -> {
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Create server configuration URI")
+                        .setMessage("Warning: copied URI will contain unencrypted server credentials!\n\nAnyone who receives it will gain access to your MQTT server.\n\nMake sure to share it only with your trusted friends!\n\nNote: this app DOES NOT send this link anywhere. It is up to you if you want to give it to someone.")
+                        .setPositiveButton("Copy link to clipboard", (dialog, which) -> {
+                            Uri.Builder builder = new Uri.Builder();
+                            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+                            Uri uri = builder
+                                    .scheme("mqtthome")
+                                    .authority("autoconf")
+                                    .appendQueryParameter("host", prefs.getString("host", ""))
+                                    .appendQueryParameter("port", prefs.getString("port", "1883"))
+                                    .appendQueryParameter("username", prefs.getString("username", ""))
+                                    .appendQueryParameter("password", prefs.getString("password", ""))
+                                    .build();
+                            ClipboardManager clipboardManager = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                            clipboardManager.setPrimaryClip(ClipData.newPlainText("MQTT Home URI", uri.toString()));
+                            Toast.makeText(getContext(), "Link copied to clipboard!", Toast.LENGTH_SHORT).show();
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+
+                return true;
+            });
+
+            PackageInfo info = null;
+            try {
+                info = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), PackageManager.GET_ACTIVITIES);
+                Preference appVersion = findPreference("appVersion");
+                appVersion.setSummary(info.versionName);
+                appVersion.setOnPreferenceClickListener(preference -> {
+                    clicks++;
+                    if (clicks == 5) {
+                        clicks = 0;
+                        Intent rollIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=dQw4w9WgXcQ"));
+                        startActivity(rollIntent);
+                    }
+                    return true;
+                });
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            this.timer = new Timer();
+            this.timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    clicks = 0;
+                }
+            }, 0, 1000);
 
 //            findPreference("caCert").setOnPreferenceClickListener(preference -> {
 //                if (checkPermissions()) {

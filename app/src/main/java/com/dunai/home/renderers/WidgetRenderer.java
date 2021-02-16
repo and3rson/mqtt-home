@@ -2,6 +2,7 @@ package com.dunai.home.renderers;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -10,11 +11,15 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
 import com.dunai.home.R;
@@ -44,16 +49,25 @@ public abstract class WidgetRenderer extends LinearLayout {
         this.pin = this.findViewById(R.id.rendererPin);
         this.lastUpdate = this.findViewById(R.id.rendererLastUpdate);
 
-        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getRealMetrics(metrics);
+//        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+//        DisplayMetrics metrics = new DisplayMetrics();
+//        wm.getDefaultDisplay().getRealMetrics(metrics);
 
         boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
 
-        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, isPortrait ? widget.spanPortrait : widget.spanLandscape);
-        params.width = metrics.widthPixels * (isPortrait ? widget.spanPortrait : widget.spanLandscape) / 12;
-        this.setLayoutParams(params);
+        this.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                getViewTreeObserver().removeOnPreDrawListener(this);
+                int activityWidth = ((AppCompatActivity) context).getWindow().findViewById(Window.ID_ANDROID_CONTENT).getWidth();
+
+                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+                params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, isPortrait ? widget.spanPortrait : widget.spanLandscape);
+                params.width = activityWidth * (isPortrait ? widget.spanPortrait : widget.spanLandscape) / 12;
+                setLayoutParams(params);
+                return false;
+            }
+        });
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         if (!prefs.getBoolean("showLastUpdateTime", true)) {

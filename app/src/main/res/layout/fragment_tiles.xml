@@ -28,15 +28,4 @@
         </LinearLayout>
     </ScrollView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/tilesFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="24sp"
-        android:layout_marginBottom="24sp"
-        android:clickable="true"
-        android:src="@android:drawable/ic_input_add" />
-
 </RelativeLayout>

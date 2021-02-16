@@ -164,55 +164,6 @@ public class TilesFragment extends Fragment {
 
         this.workspace = HomeClient.getInstance().getWorkspace();
 
-        class AlertItem {
-            public final String title;
-            public final int icon;
-            public final Class<? extends AppCompatActivity> activityClass;
-
-            public AlertItem(String title, int icon, Class<? extends AppCompatActivity> activityClass) {
-                this.title = title;
-                this.icon = icon;
-                this.activityClass = activityClass;
-            }
-        }
-
-        ArrayAdapter<AlertItem> alertAdapter = new ArrayAdapter<AlertItem>(getContext(), android.R.layout.simple_list_item_1) {
-            @NonNull
-            @Override
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                AlertItem item = getItem(position);
-                View view = super.getView(position, convertView, parent);
-                TextView textView = view.findViewById(android.R.id.text1);
-                textView.setText(item.title);
-                textView.setCompoundDrawablesWithIntrinsicBounds(item.icon, 0, 0, 0);
-                int dp5 = (int) (5 * getResources().getDisplayMetrics().density + 0.5f);
-                textView.setCompoundDrawablePadding(dp5);
-                return view;
-            }
-        };
-
-        alertAdapter.addAll(Arrays.asList(
-                new AlertItem("Section", R.drawable.ic_w_section, SectionEditActivity.class),
-                new AlertItem("Text", R.drawable.ic_w_text, TextWidgetEditActivity.class),
-                new AlertItem("Switch", R.drawable.ic_w_switch, SwitchWidgetEditActivity.class),
-                new AlertItem("Graph", R.drawable.ic_w_graph, GraphWidgetEditActivity.class),
-                new AlertItem("Dropdown", R.drawable.ic_w_dropdown, DropdownWidgetEditActivity.class),
-                new AlertItem("Color", R.drawable.ic_w_color, ColorWidgetEditActivity.class),
-                new AlertItem("Button", R.drawable.ic_w_button, ButtonWidgetEditActivity.class),
-                new AlertItem("Slider", R.drawable.ic_w_slider, SliderWidgetEditActivity.class)
-        ));
-
-        view.findViewById(R.id.tilesFab).setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setTitle("Create new item");
-            builder.setAdapter(alertAdapter, ((dialog, which) -> {
-                AlertItem alertItem = alertAdapter.getItem(which);
-                Intent intent = new Intent(getContext(), alertItem.activityClass);
-                this.startActivity(intent);
-            }));
-            builder.show();
-        });
-
         return view;
     }
 

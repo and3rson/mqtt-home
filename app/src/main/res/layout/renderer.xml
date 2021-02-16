@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="4sp"
+    android:layout_margin="2sp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="4sp"
+        android:padding="2sp"
         android:theme="@style/Theme.Home.TextRenderer">
 
         <LinearLayout
@@ -50,7 +50,7 @@
             android:id="@+id/rendererContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal" />
 
         <TextView
             android:id="@+id/rendererLastUpdate"

@@ -107,18 +107,6 @@
         app:icon="@drawable/ic_ui">
 
         <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="showLastUpdateTime"
-            android:title="Show last update time"
-            app:summary="Disable this to have more free space vertically." />
-        <CheckBoxPreference
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:defaultValue="false"
-            android:key="hideAllTitles"
-            android:title="Hide widget titles"
-            app:summary="Enable this to forcibly hide all widget titles." />
-        <CheckBoxPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:defaultValue="true"

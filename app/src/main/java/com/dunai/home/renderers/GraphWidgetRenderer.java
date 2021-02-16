@@ -37,7 +37,7 @@ public class GraphWidgetRenderer extends WidgetRenderer {
 
         this.graphView = this.findViewById(R.id.graphRendererGraph);
         this.graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
-        this.graphView.getGridLabelRenderer().setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getResources().getDisplayMetrics()));
+        this.graphView.getGridLabelRenderer().setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 8, getResources().getDisplayMetrics()));
         this.graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.HORIZONTAL);
         this.graphView.getGridLabelRenderer().setGridColor(Color.parseColor("#444444"));
 //        this.graphView.getGridLabelRenderer().setGridColor(ResourcesCompat.getColor(getResources(), R.color.gray_400, null));

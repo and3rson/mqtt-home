@@ -1,5 +1,7 @@
 package com.dunai.home.client.workspace;
 
+import com.dunai.home.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,8 +13,8 @@ public class DropdownWidget extends Widget {
 
     public ArrayList<KeyValue> keyValues;
 
-    public DropdownWidget(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor, ArrayList<KeyValue> keyValues) {
-        super(id, title, topic, retain, spanPortrait, spanLandscape, bgColor);
+    public DropdownWidget(String id, String title, String topic, boolean retain, boolean showTitle, boolean showLastUpdate, int spanPortrait, int spanLandscape, String bgColor, ArrayList<KeyValue> keyValues) {
+        super(id, title, topic, retain, showTitle, showLastUpdate, spanPortrait, spanLandscape, bgColor);
         this.keyValues = keyValues;
     }
 
@@ -36,6 +38,11 @@ public class DropdownWidget extends Widget {
     @Override
     public String getType() {
         return "dropdown";
+    }
+
+    @Override
+    public int getIconResource() {
+        return R.drawable.ic_w_dropdown;
     }
 
     public static class KeyValue {

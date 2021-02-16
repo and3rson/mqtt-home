@@ -41,87 +41,10 @@
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="8dp">
 
-                <com.google.android.material.textfield.TextInputLayout
+                <include
+                    layout="@layout/activity_renderer_edit_fields"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/rendererEditTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8sp"
-                        android:hint="Title" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/rendererEditTopic"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8sp"
-                        android:hint="Topic" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <androidx.gridlayout.widget.GridLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:rowCount="2">
-
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="12sp"
-                        android:text="Width (portrait)"
-                        android:textSize="16sp"
-                        app:layout_column="0"
-                        app:layout_gravity="center_vertical"
-                        app:layout_row="0" />
-
-                    <SeekBar
-                        android:id="@+id/rendererEditSpanPortrait"
-                        style="@style/Theme.Home.SeekBar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:max="11"
-                        android:min="0"
-                        android:paddingTop="4sp"
-                        android:paddingBottom="12sp"
-                        android:progress="5"
-                        app:layout_column="1"
-                        app:layout_columnWeight="1"
-                        app:layout_row="0" />
-
-                    <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="12sp"
-                        android:text="Width (landscape)"
-                        android:textSize="16sp"
-                        app:layout_column="0"
-                        app:layout_gravity="center_vertical"
-                        app:layout_row="1" />
-
-                    <SeekBar
-                        android:id="@+id/rendererEditSpanLandscape"
-                        style="@style/Theme.Home.SeekBar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:max="11"
-                        android:min="0"
-                        android:paddingTop="4sp"
-                        android:paddingBottom="12sp"
-                        android:progress="5"
-                        app:layout_column="1"
-                        app:layout_columnWeight="1"
-                        app:layout_row="1" />
-
-                </androidx.gridlayout.widget.GridLayout>
-
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

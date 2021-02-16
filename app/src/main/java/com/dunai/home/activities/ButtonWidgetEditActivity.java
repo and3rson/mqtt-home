@@ -49,9 +49,9 @@ public class ButtonWidgetEditActivity extends AbstractWidgetEditActivity {
     }
 
     @Override
-    protected Widget construct(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor) {
+    protected Widget construct(String id, String title, String topic, boolean retain, boolean showTitle, boolean showLastUpdate, int spanPortrait, int spanLandscape, String bgColor) {
         ButtonWidget.Orientation orientation = this.orientation.isChecked() ? ButtonWidget.Orientation.VERTICAL : ButtonWidget.Orientation.HORIZONTAL;
-        return new ButtonWidget(id, title, topic, retain, spanPortrait, spanLandscape, bgColor, keyValues, orientation);
+        return new ButtonWidget(id, title, topic, retain, showTitle, showLastUpdate, spanPortrait, spanLandscape, bgColor, keyValues, orientation);
     }
 
     @Override

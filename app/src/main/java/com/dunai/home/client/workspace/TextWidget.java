@@ -1,5 +1,7 @@
 package com.dunai.home.client.workspace;
 
+import com.dunai.home.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,8 +9,8 @@ public class TextWidget extends Widget {
     public String prefix;
     public String suffix;
 
-    public TextWidget(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor, String prefix, String suffix) {
-        super(id, title, topic, retain, spanPortrait, spanLandscape, bgColor);
+    public TextWidget(String id, String title, String topic, boolean retain, boolean showTitle, boolean showLastUpdate, int spanPortrait, int spanLandscape, String bgColor, String prefix, String suffix) {
+        super(id, title, topic, retain, showTitle, showLastUpdate, spanPortrait, spanLandscape, bgColor);
         this.prefix = prefix;
         this.suffix = suffix;
     }
@@ -27,5 +29,10 @@ public class TextWidget extends Widget {
     @Override
     public String getType() {
         return "text";
+    }
+
+    @Override
+    public int getIconResource() {
+        return R.drawable.ic_w_text;
     }
 }

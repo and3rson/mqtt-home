@@ -1,5 +1,7 @@
 package com.dunai.home.client.workspace;
 
+import com.dunai.home.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,5 +26,20 @@ public class Section extends Item {
     @Override
     public String getType() {
         return "section";
+    }
+
+    @Override
+    public String getTitle() {
+        return this.title;
+    }
+
+    @Override
+    public int getIconResource() {
+        return R.drawable.ic_w_section;
+    }
+
+    @Override
+    public String getSubTitle() {
+        return "";
     }
 }

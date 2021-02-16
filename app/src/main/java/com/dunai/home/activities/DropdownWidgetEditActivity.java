@@ -52,8 +52,8 @@ public class DropdownWidgetEditActivity extends AbstractWidgetEditActivity {
     }
 
     @Override
-    protected Widget construct(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor) {
-        return new DropdownWidget(id, title, topic, retain, spanPortrait, spanLandscape, bgColor, this.keyValues);
+    protected Widget construct(String id, String title, String topic, boolean retain, boolean showTitle, boolean showLastUpdate, int spanPortrait, int spanLandscape, String bgColor) {
+        return new DropdownWidget(id, title, topic, retain, showTitle, showLastUpdate, spanPortrait, spanLandscape, bgColor, this.keyValues);
     }
 
     @Override

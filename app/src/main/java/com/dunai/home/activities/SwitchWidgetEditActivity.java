@@ -40,8 +40,8 @@ public class SwitchWidgetEditActivity extends AbstractWidgetEditActivity {
     }
 
     @Override
-    protected Widget construct(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor) {
-        return new SwitchWidget(id, title, topic, retain, spanPortrait, spanLandscape, bgColor, onValue.getText().toString(), offValue.getText().toString());
+    protected Widget construct(String id, String title, String topic, boolean retain, boolean showTitle, boolean showLastUpdate, int spanPortrait, int spanLandscape, String bgColor) {
+        return new SwitchWidget(id, title, topic, retain, showTitle, showLastUpdate, spanPortrait, spanLandscape, bgColor, onValue.getText().toString(), offValue.getText().toString());
     }
 
     @Override

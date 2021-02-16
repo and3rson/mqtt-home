@@ -22,4 +22,7 @@ public abstract class Item {
     }
 
     public abstract String getType();
+    public abstract String getTitle();
+    public abstract String getSubTitle();
+    public abstract int getIconResource();
 }

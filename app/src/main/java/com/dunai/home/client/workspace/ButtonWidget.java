@@ -1,5 +1,7 @@
 package com.dunai.home.client.workspace;
 
+import com.dunai.home.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,8 +12,8 @@ public class ButtonWidget extends Widget {
     public ArrayList<KeyValue> keyValues;
     public Orientation orientation;
 
-    public ButtonWidget(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor, ArrayList<KeyValue> keyValues, Orientation orientation) {
-        super(id, title, topic, retain, spanPortrait, spanLandscape, bgColor);
+    public ButtonWidget(String id, String title, String topic, boolean retain, boolean showTitle, boolean showLastUpdate, int spanPortrait, int spanLandscape, String bgColor, ArrayList<KeyValue> keyValues, Orientation orientation) {
+        super(id, title, topic, retain, showTitle, showLastUpdate, spanPortrait, spanLandscape, bgColor);
         this.keyValues = keyValues;
         this.orientation = orientation;
     }
@@ -37,6 +39,11 @@ public class ButtonWidget extends Widget {
     @Override
     public String getType() {
         return "button";
+    }
+
+    @Override
+    public int getIconResource() {
+        return R.drawable.ic_w_button;
     }
 
     public enum Orientation {

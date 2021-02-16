@@ -38,8 +38,13 @@ public class TextWidgetEditActivity extends AbstractWidgetEditActivity {
     }
 
     @Override
-    protected Widget construct(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor) {
-        return new TextWidget(id, title, topic, retain, spanPortrait, spanLandscape, bgColor, prefix.getText().toString(), suffix.getText().toString());
+    protected Widget construct(String id, String title, String topic, boolean retain, boolean showTitle, boolean showLastUpdate, int spanPortrait, int spanLandscape, String bgColor) {
+        return new TextWidget(id, title, topic, retain, showTitle, showLastUpdate, spanPortrait, spanLandscape, bgColor, prefix.getText().toString(), suffix.getText().toString());
+    }
+
+    @Override
+    protected boolean isRetainEditable() {
+        return false;
     }
 
     @Override

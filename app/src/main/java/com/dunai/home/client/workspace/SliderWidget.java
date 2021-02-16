@@ -1,5 +1,7 @@
 package com.dunai.home.client.workspace;
 
+import com.dunai.home.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -8,8 +10,8 @@ public class SliderWidget extends Widget {
     public int maxValue;
     public int step;
 
-    public SliderWidget(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor, int minValue, int maxValue, int step) {
-        super(id, title, topic, retain, spanPortrait, spanLandscape, bgColor);
+    public SliderWidget(String id, String title, String topic, boolean retain, boolean showTitle, boolean showLastUpdate, int spanPortrait, int spanLandscape, String bgColor, int minValue, int maxValue, int step) {
+        super(id, title, topic, retain, showTitle, showLastUpdate, spanPortrait, spanLandscape, bgColor);
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.step = step;
@@ -30,5 +32,10 @@ public class SliderWidget extends Widget {
     @Override
     public String getType() {
         return "slider";
+    }
+
+    @Override
+    public int getIconResource() {
+        return R.drawable.ic_w_slider;
     }
 }

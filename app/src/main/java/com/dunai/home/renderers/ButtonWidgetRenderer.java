@@ -50,6 +50,7 @@ public class ButtonWidgetRenderer extends WidgetRenderer {
                     kv.getValue(),
                     workspaceButtonWidget.retain
             ));
+            button.setLongClickable(true);
             this.layout.addView(button);
         }
 

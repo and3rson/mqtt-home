@@ -1,5 +1,7 @@
 package com.dunai.home.client.workspace;
 
+import com.dunai.home.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,8 +9,8 @@ public class ColorWidget extends Widget {
     public ColorFormat format;
     public boolean alpha;
 
-    public ColorWidget(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor, String format, boolean alpha) {
-        super(id, title, topic, retain, spanPortrait, spanLandscape, bgColor);
+    public ColorWidget(String id, String title, String topic, boolean retain, boolean showTitle, boolean showLastUpdate, int spanPortrait, int spanLandscape, String bgColor, String format, boolean alpha) {
+        super(id, title, topic, retain, showTitle, showLastUpdate, spanPortrait, spanLandscape, bgColor);
         this.format = ColorFormat.valueOf(format);
         this.alpha = alpha;
     }
@@ -27,6 +29,11 @@ public class ColorWidget extends Widget {
     @Override
     public String getType() {
         return "color";
+    }
+
+    @Override
+    public int getIconResource() {
+        return R.drawable.ic_w_color;
     }
 
     public enum ColorFormat {

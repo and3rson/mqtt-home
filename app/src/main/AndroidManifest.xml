@@ -45,7 +45,7 @@
         <activity android:name=".activities.ButtonWidgetEditActivity" />
         <activity android:name=".activities.SliderWidgetEditActivity" />
         <activity
-            android:name=".activities.EditItemsActivity"
+            android:name=".activities.ReorderItemsActivity"
             android:label="@string/title_activity_edit_items" />
         <activity
             android:name=".activities.SettingsActivity"

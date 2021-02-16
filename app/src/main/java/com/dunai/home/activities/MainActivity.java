@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        menuConnectionStatus = menu.findItem(R.id.menuConnectionStatus);
+        menuConnectionStatus = menu.findItem(R.id.action_connection_status);
         setConnectionState(HomeClient.getInstance().getConnectionState());
         return true;
     }
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings || (id == R.id.menuConnectionStatus && HomeClient.getInstance().getConnectionState() == ConnectionState.NO_CONF)) {
+        if (id == R.id.action_settings || (id == R.id.action_connection_status && HomeClient.getInstance().getConnectionState() == ConnectionState.NO_CONF)) {
             Intent intent = new Intent(this, SettingsActivity.class);
             this.startActivity(intent);
             return true;
@@ -154,6 +154,10 @@ public class MainActivity extends AppCompatActivity {
                 this.startActivity(intent);
             }));
             builder.show();
+        } else if (id == R.id.action_reorder_items) {
+            Intent intent = new Intent(this, ReorderItemsActivity.class);
+            this.startActivity(intent);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

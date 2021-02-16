@@ -40,6 +40,8 @@ public class ItemFactory {
         int spanPortrait = item.has("spanPortrait") ? item.getInt("spanPortrait") : item.has("span") ? item.getInt("span") : 12;
         int spanLandscape = item.has("spanLandscape") ? item.getInt("spanLandscape") : spanPortrait;
         boolean retain = !item.has("retain") || item.getBoolean("retain");
+        boolean showTitle = !item.has("showTitle") || item.getBoolean("showTitle");
+        boolean showLastUpdate = !item.has("showLastUpdate") || item.getBoolean("showLastUpdate");
         String bgColor = item.has("bgColor") ? item.getString("bgColor") : null;
         switch (item.getString("type")) {
             case "text":
@@ -48,6 +50,8 @@ public class ItemFactory {
                         title,
                         topic,
                         retain,
+                        showTitle,
+                        showLastUpdate,
                         spanPortrait,
                         spanLandscape,
                         bgColor,
@@ -60,6 +64,8 @@ public class ItemFactory {
                         title,
                         topic,
                         retain,
+                        showTitle,
+                        showLastUpdate,
                         spanPortrait,
                         spanLandscape,
                         bgColor,
@@ -72,6 +78,8 @@ public class ItemFactory {
                         title,
                         topic,
                         retain,
+                        showTitle,
+                        showLastUpdate,
                         spanPortrait,
                         spanLandscape,
                         bgColor
@@ -88,6 +96,8 @@ public class ItemFactory {
                         title,
                         topic,
                         retain,
+                        showTitle,
+                        showLastUpdate,
                         spanPortrait,
                         spanLandscape,
                         bgColor,
@@ -99,6 +109,8 @@ public class ItemFactory {
                         title,
                         topic,
                         retain,
+                        showTitle,
+                        showLastUpdate,
                         spanPortrait,
                         spanLandscape,
                         bgColor,
@@ -119,6 +131,8 @@ public class ItemFactory {
                         title,
                         topic,
                         retain,
+                        showTitle,
+                        showLastUpdate,
                         spanPortrait,
                         spanLandscape,
                         bgColor,
@@ -131,6 +145,8 @@ public class ItemFactory {
                         title,
                         topic,
                         retain,
+                        showTitle,
+                        showLastUpdate,
                         spanPortrait,
                         spanLandscape,
                         bgColor,

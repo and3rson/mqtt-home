@@ -3,16 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.dunai.home.activities.MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" ></item>
-    <item
-        android:id="@+id/action_add_item"
-        android:title="Add item"
-        app:showAsAction="never"></item>
-    <item
-        android:id="@+id/menuConnectionStatus"
+        android:id="@+id/action_connection_status"
         android:title="Unknown"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
+    <item
+        android:icon="@drawable/ic_menu"
+        android:title="Menu"
+        app:showAsAction="always">
+        <menu>
+
+            <item
+                android:id="@+id/action_add_item"
+                android:icon="@drawable/ic_menu_add"
+                android:title="Add item"
+                app:showAsAction="never"></item>
+            <item
+                android:id="@+id/action_reorder_items"
+                android:icon="@drawable/ic_menu_reorder"
+                android:title="Reorder items"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_settings"
+                android:icon="@drawable/ic_menu_settings"
+                android:orderInCategory="100"
+                android:title="@string/action_settings"
+                app:showAsAction="never"></item>
+        </menu>
+    </item>
 </menu>

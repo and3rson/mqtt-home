@@ -7,18 +7,22 @@ public abstract class Widget extends Item {
     public String title;
     public String bgColor;
     public String topic;
+    public boolean retain;
+    public boolean showTitle;
+    public boolean showLastUpdate;
     public int spanPortrait;
     public int spanLandscape;
-    public boolean retain;
 
-    public Widget(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor) {
+    public Widget(String id, String title, String topic, boolean retain, boolean showTitle, boolean showLastUpdate, int spanPortrait, int spanLandscape, String bgColor) {
         super(id);
         this.title = title;
         this.topic = topic;
         this.retain = retain;
-        this.bgColor = bgColor;
+        this.showTitle = showTitle;
+        this.showLastUpdate = showLastUpdate;
         this.spanPortrait = spanPortrait;
         this.spanLandscape = spanLandscape;
+        this.bgColor = bgColor;
     }
 
     public JSONObject serialize() {
@@ -27,12 +31,24 @@ public abstract class Widget extends Item {
             root.put("title", this.title);
             root.put("topic", this.topic);
             root.put("retain", this.retain);
-            root.put("bgColor", this.bgColor);
+            root.put("showTitle", this.showTitle);
+            root.put("showLastUpdate", this.showLastUpdate);
             root.put("spanPortrait", this.spanPortrait);
             root.put("spanLandscape", this.spanLandscape);
+            root.put("bgColor", this.bgColor);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return root;
+    }
+
+    @Override
+    public String getTitle() {
+        return this.title;
+    }
+
+    @Override
+    public String getSubTitle() {
+        return this.topic;
     }
 }

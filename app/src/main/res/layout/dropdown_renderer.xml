@@ -6,8 +6,10 @@
 
     <Spinner
         android:id="@+id/dropdownRendererSpinner"
+        style="@style/Widget.AppCompat.DropDownItem.Spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:longClickable="true"
         android:spinnerMode="dialog" />
 </LinearLayout>

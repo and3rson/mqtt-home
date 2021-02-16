@@ -2,6 +2,7 @@ package com.dunai.home.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -25,6 +26,8 @@ public abstract class AbstractWidgetEditActivity extends AbstractEditActivity {
     private CheckBox retain;
     private SeekBar spanPortrait;
     private SeekBar spanLandscape;
+    private CheckBox showTitle;
+    private CheckBox showLastUpdate;
     private Widget existing;
 
     protected abstract int getLayoutResource();
@@ -33,7 +36,11 @@ public abstract class AbstractWidgetEditActivity extends AbstractEditActivity {
 
     protected abstract List<TextView> getRequiredFields();
 
-    protected abstract Widget construct(String id, String title, String topic, boolean retain, int spanPortrait, int spanLandscape, String bgColor);
+    protected abstract Widget construct(String id, String title, String topic, boolean retain, boolean showTitle, boolean showLastUpdate, int spanPortrait, int spanLandscape, String bgColor);
+
+    protected boolean isRetainEditable() {
+        return true;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,7 +55,12 @@ public abstract class AbstractWidgetEditActivity extends AbstractEditActivity {
 
         title = findViewById(R.id.rendererEditTitle);
         topic = findViewById(R.id.rendererEditTopic);
-        retain = findViewById(R.id.rendererEditRetain); // Can be null. If absent in layout, this means that this widget does not publish any data.
+        retain = findViewById(R.id.rendererEditRetain);
+        if (!isRetainEditable()) {
+            retain.setVisibility(View.GONE);
+        }
+        showTitle = findViewById(R.id.rendererEditShowTitle);
+        showLastUpdate = findViewById(R.id.rendererEditShowLastUpdate);
         spanPortrait = findViewById(R.id.rendererEditSpanPortrait);
         spanLandscape = findViewById(R.id.rendererEditSpanLandscape);
 
@@ -62,9 +74,11 @@ public abstract class AbstractWidgetEditActivity extends AbstractEditActivity {
             }
             title.setText(item.title);
             topic.setText(item.topic);
-            if (retain != null) {
+            if (isRetainEditable()) {
                 retain.setChecked(item.retain);
             }
+            showTitle.setChecked(item.showTitle);
+            showLastUpdate.setChecked(item.showLastUpdate);
             spanPortrait.setProgress(item.spanPortrait - 1);
             spanLandscape.setProgress(item.spanLandscape - 1);
             this.existing = item;
@@ -83,7 +97,9 @@ public abstract class AbstractWidgetEditActivity extends AbstractEditActivity {
                     itemId,
                     title.getText().toString(),
                     topic.getText().toString(),
-                    retain != null && retain.isChecked(),
+                    isRetainEditable() && retain.isChecked(),
+                    showTitle.isChecked(),
+                    showLastUpdate.isChecked(),
                     spanPortrait.getProgress() + 1,
                     spanLandscape.getProgress() + 1,
                     null
@@ -93,7 +109,9 @@ public abstract class AbstractWidgetEditActivity extends AbstractEditActivity {
                     String.valueOf(Math.round(Math.random() * 1e9)),
                     title.getText().toString(),
                     topic.getText().toString(),
-                    retain != null && retain.isChecked(),
+                    isRetainEditable() && retain.isChecked(),
+                    showTitle.isChecked(),
+                    showLastUpdate.isChecked(),
                     spanPortrait.getProgress() + 1,
                     spanLandscape.getProgress() + 1,
                     null

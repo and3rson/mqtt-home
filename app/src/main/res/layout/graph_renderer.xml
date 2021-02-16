@@ -7,5 +7,7 @@
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graphRendererGraph"
         android:layout_width="match_parent"
-        android:layout_height="100dp" />
+        android:layout_height="60dp"
+        android:clickable="true"
+        android:longClickable="true" />
 </LinearLayout>

@@ -70,11 +70,11 @@ public abstract class WidgetRenderer extends LinearLayout {
         });
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        if (!prefs.getBoolean("showLastUpdateTime", true)) {
+        if (!widget.showLastUpdate) {
             this.lastUpdate.setVisibility(GONE);
         }
 
-        if (widget.title.isEmpty() || prefs.getBoolean("hideAllTitles", false)) {
+        if (widget.title.isEmpty() || !widget.showTitle) {
             findViewById(R.id.rendererTitleContainer).setVisibility(GONE);
         } else {
             this.title.setText(widget.title);

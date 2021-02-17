@@ -50,22 +50,22 @@ public class ReorderItemsActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_save, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             super.onBackPressed();
             return true;
-        } else if (item.getItemId() == R.id.action_save) {
+        } else if (item.getItemId() == R.id.menuSave) {
             Workspace workspace = new Workspace();
             workspace.items = this.adapter.getItems();
             HomeClient.getInstance().publishWorkspace(workspace);
             finish();
         }
         return super.onContextItemSelected(item);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_reorder, menu);
-        return true;
     }
 }

@@ -39,9 +39,9 @@ public class SectionEditActivity extends AbstractEditActivity {
                 return;
             }
             title.setText(item.title);
-            this.setTitle("Edit section \"" + item.title + "\"");
+            this.setTitle(String.format(getString(R.string.section_s), item.title));
         } else {
-            this.setTitle("Create section");
+            this.setTitle(getString(R.string.create_section));
         }
     }
 

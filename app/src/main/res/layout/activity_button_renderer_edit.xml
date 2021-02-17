@@ -21,7 +21,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
@@ -55,7 +55,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:paddingLeft="12sp"
-                        android:text="Items"
+                        android:text="@string/items"
                         android:textSize="16sp" />
 
                     <Button
@@ -63,15 +63,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_add"
-                        android:text="Add" />
+                        android:text="@string/add" />
 
                 </LinearLayout>
 
                 <ListView
                     android:id="@+id/buttonRendererEditList"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1000">
+                    android:layout_height="wrap_content">
 
                 </ListView>
 
@@ -85,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:paddingLeft="12sp"
-                        android:text="Display"
+                        android:text="@string/display"
                         android:textSize="16sp" />
 
                     <ToggleButton
@@ -93,15 +92,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ToggleButton"
-                        android:textOff="Horizontal"
-                        android:textOn="Vertical" />
+                        android:textOff="@string/horizontal"
+                        android:textOn="@string/vertical" />
                 </LinearLayout>
 
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="TextView"
+        android:text="@string/empty"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -19,6 +19,6 @@
         android:id="@+id/itemLine2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="@string/empty"
         android:textSize="12sp" />
 </LinearLayout>

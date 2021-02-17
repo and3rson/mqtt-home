@@ -52,7 +52,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8sp"
-                        android:hint="Prefix" />
+                        android:hint="@string/prefix" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -64,7 +64,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8sp"
-                        android:hint="Suffix" />
+                        android:hint="@string/suffix" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>

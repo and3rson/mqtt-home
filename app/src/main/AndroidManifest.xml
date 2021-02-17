@@ -46,10 +46,10 @@
         <activity android:name=".activities.SliderWidgetEditActivity" />
         <activity
             android:name=".activities.ReorderItemsActivity"
-            android:label="@string/title_activity_edit_items" />
+            android:label="@string/action_reorder_items" />
         <activity
             android:name=".activities.SettingsActivity"
-            android:label="@string/title_activity_settings"
+            android:label="@string/action_settings"
             android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

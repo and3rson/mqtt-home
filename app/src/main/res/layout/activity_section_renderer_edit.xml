@@ -50,7 +50,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8sp"
-                        android:hint="Title" />
+                        android:hint="@string/title" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Space

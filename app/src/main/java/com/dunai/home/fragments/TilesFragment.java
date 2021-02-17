@@ -173,10 +173,11 @@ public class TilesFragment extends Fragment {
         Log.i("HomeApp", "" + v.getParent());
         Log.i("HomeApp", "" + v.getParent().getParent());
         int groupId = ((GridLayout) v.getParent()).indexOfChild(v);
-        menu.add(groupId, 0, 0, "Move back");
-        menu.add(groupId, 1, 0, "Move forth");
-        menu.add(groupId, 2, 0, "Edit");
-        menu.add(groupId, 3, 0, "Delete");
+        menu.add(this.workspace.items.get(groupId).getTitle()).setEnabled(false);
+        menu.add(groupId, 0, 0, R.string.action_move_back);
+        menu.add(groupId, 1, 0, R.string.action_move_forth);
+        menu.add(groupId, 2, 0, R.string.action_edit);
+        menu.add(groupId, 3, 0, R.string.action_delete);
         super.onCreateContextMenu(menu, v, menuInfo);
     }
 

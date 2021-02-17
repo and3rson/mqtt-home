@@ -55,7 +55,7 @@
                         android:id="@+id/sliderRendererEditMinValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Minimum value"
+                        android:hint="@string/minimum_value"
                         android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,7 +68,7 @@
                         android:id="@+id/sliderRendererEditMaxValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Maximum value"
+                        android:hint="@string/maximum_value"
                         android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -80,7 +80,7 @@
                         android:id="@+id/sliderRendererEditStep"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Step"
+                        android:hint="@string/step"
                         android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 

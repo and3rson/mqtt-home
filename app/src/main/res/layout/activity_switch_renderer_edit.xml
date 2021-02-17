@@ -55,7 +55,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8sp"
-                        android:hint="On value" />
+                        android:hint="@string/on_value" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -67,7 +67,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8sp"
-                        android:hint="Off value" />
+                        android:hint="@string/off_value" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>

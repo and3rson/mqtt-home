@@ -1,36 +1,75 @@
 <resources>
-    <string name="app_name">MQTT Home</string>
+    <string name="app_name" translatable="false">MQTT Home</string>
+    <string name="host">Host</string>
+    <string name="port">Port</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="use_tls">Use TLS</string>
+    <string name="use_tls_summary">Don\'t forget to change port (if needed) when using TLS.</string>
+    <string name="client_cert">"    Client certificate"</string>
+    <string name="cert_password">"    Certificate password"</string>
+    <string name="validate_certs">"    Validate certificates"</string>
+    <string name="client_id">Client ID</string>
+    <string name="connection_timeout">Connection timeout</string>
+    <string name="keepalive_interval">Keep-alive interval</string>
+    <string name="share_server_config">Share server configuration</string>
+    <string name="share_server_config_summary">Generate a link that you can send it to your friends to easily grant them access to your server.</string>
+    <string name="user_interface">User interface</string>
+    <string name="connection">Connection</string>
+    <string name="show_menu_dots">Show menu dots on widgets</string>
+    <string name="show_menu_dots_summary">Disable this to hide menu icon from widgets. You can still long-click the widget to open the menu.</string>
+    <string name="app_version">App version</string>
+    <string name="configuration">Configuration</string>
+    <string name="load_configuration">Load configuration</string>
+    <string name="empty">Empty</string>
+    <string name="title">Title</string>
+    <string name="topic">Topic</string>
+    <string name="retain">Retain</string>
+    <string name="show_title">Show title</string>
+    <string name="show_last_update">Show last update</string>
+    <string name="width_portrait">Width (portrait)</string>
+    <string name="width_landscape">Width (landscape)</string>
+    <string name="items">Items</string>
+    <string name="add">Add</string>
+    <string name="display">Display</string>
+    <string name="horizontal">Horizontal</string>
+    <string name="vertical">Vertical</string>
+    <string name="allow_transparent_colors">Allow transparent colors</string>
+    <string name="app_settings">App settings</string>
+    <string name="minimum_value">Minimum value</string>
+    <string name="maximum_value">Maximum value</string>
+    <string name="step">Step</string>
+    <string name="on_value">On value</string>
+    <string name="off_value">Off value</string>
+    <string name="prefix">Prefix</string>
+    <string name="suffix">Suffix</string>
+    <string name="not_connected">You are not connected.</string>
+    <string name="value">Value</string>
+    <string name="action_add_item">Add item</string>
+    <string name="action_reorder_items">Reorder items</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="title_activity_settings">SettingsActivity</string>
-
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_edit_items">EditItemsActivity</string>
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
-    <string name="hello_world">Hello Square World!</string>
+    <string name="action_save">Save</string>
+    <string name="status_no_config">No config</string>
+    <string name="status_error">Error</string>
+    <string name="status_offline">Offline</string>
+    <string name="status_connecting">Connecting...</string>
+    <string name="status_on_air">On air</string>
+    <string name="create_new_item">Create new item</string>
+    <string name="w_section">Section</string>
+    <string name="w_text">Text</string>
+    <string name="w_switch">Switch</string>
+    <string name="w_graph">Graph</string>
+    <string name="w_dropdown">Dropdown</string>
+    <string name="w_color">Color</string>
+    <string name="w_button">Button</string>
+    <string name="w_slider">Slider</string>
+    <string name="edit_widget_s">%s \"%s\"</string>
+    <string name="create_widget_s">Create (%s)</string>
+    <string name="field_required">This field is required.</string>
+    <string name="action_move_back">Move back</string>
+    <string name="action_move_forth">Move forth</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+    <string name="create_section">Create section</string>
+    <string name="section_s">Section \"%s\"</string>
 </resources>

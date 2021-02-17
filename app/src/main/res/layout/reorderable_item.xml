@@ -18,7 +18,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="4sp"
         android:layout_marginRight="4sp"
-        android:text="TextView" />
+        android:text="@string/empty" />
 
     <TextView
         android:id="@+id/itemSubTitle"
@@ -29,7 +29,7 @@
         android:layout_marginRight="4sp"
         android:layout_weight="1"
         android:alpha="0.5"
-        android:text="TextView" />
+        android:text="@string/empty" />
 
     <ImageView
         android:id="@+id/itemHandle"

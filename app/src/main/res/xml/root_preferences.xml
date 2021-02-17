@@ -3,13 +3,13 @@
 
     <PreferenceCategory
         app:icon="@drawable/ic_plug"
-        app:title="Connection">
+        app:title="@string/connection">
 
         <EditTextPreference
             android:key="host"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Host"
+            android:title="@string/host"
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             android:layout_width="wrap_content"
@@ -18,7 +18,7 @@
             android:key="port"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Port"
+            android:title="@string/port"
             app:defaultValue="1883"
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
@@ -27,7 +27,7 @@
             android:key="username"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Username"
+            android:title="@string/username"
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             android:layout_width="wrap_content"
@@ -36,13 +36,13 @@
             android:key="password"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Password"
+            android:title="@string/password"
             app:useSimpleSummaryProvider="false" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="useSSL"
-            android:title="Use TLS"
-            app:summary="Don't forget to change port (if needed) when using TLS." />
+            android:title="@string/use_tls"
+            app:summary="@string/use_tls_summary" />
         <!--        <Preference-->
         <!--            android:key="caCert"-->
         <!--            android:title="    CA cert" />-->
@@ -54,7 +54,7 @@
         <!--            android:title="    Client key" />-->
         <Preference
             android:key="clientCert"
-            android:title="    Client certificate" />
+            android:title="@string/client_cert" />
         <EditTextPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,28 +62,28 @@
             android:key="sslPassword"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="    Certificate password"
+            android:title="@string/cert_password"
             app:useSimpleSummaryProvider="false" />
         <CheckBoxPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:defaultValue="true"
             android:key="validateCerts"
-            android:title="   Validate certificates"
+            android:title="@string/validate_certs"
             app:summary="     Turn this off to accept all certificates." />
         <EditTextPreference
             android:defaultValue="automatic"
             android:key="clientId"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Client ID"
+            android:title="@string/client_id"
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             android:inputType="number"
             android:key="connectionTimeout"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Connection timeout"
+            android:title="@string/connection_timeout"
             app:defaultValue="5"
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
@@ -93,30 +93,30 @@
             android:key="keepAliveInterval"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Keep-alive interval"
+            android:title="@string/keepalive_interval"
             app:defaultValue="10"
             app:useSimpleSummaryProvider="true" />
         <Preference
             android:key="shareServerConfig"
-            android:summary="Generate a link that you can send it to your friends to easily grant them access to your server."
-            android:title="Share server configuration"
+            android:summary="@string/share_server_config_summary"
+            android:title="@string/share_server_config"
             app:icon="@drawable/ic_share" />
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="Interface"
-        app:icon="@drawable/ic_ui">
+        app:icon="@drawable/ic_ui"
+        app:title="@string/user_interface">
 
         <CheckBoxPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:defaultValue="true"
             android:key="showMenuDots"
-            android:title="Show menu dots on widgets"
-            app:summary="Disable this to hide menu icon from widgets. You can still long-click the widget to open the menu." />
+            android:title="@string/show_menu_dots"
+            app:summary="@string/show_menu_dots_summary" />
         <Preference
             android:key="appVersion"
             android:summary=""
-            android:title="App version" />
+            android:title="@string/app_version" />
     </PreferenceCategory>
 
 </PreferenceScreen>

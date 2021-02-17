@@ -22,8 +22,6 @@ import androidx.preference.PreferenceManager;
 import com.dunai.home.R;
 import com.dunai.home.client.ConnectionState;
 import com.dunai.home.client.HomeClient;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Arrays;
 
@@ -55,15 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.hide(getSupportFragmentManager().findFragmentById(R.id.fragment_tiles));
         ft.commit();
@@ -88,14 +77,14 @@ public class MainActivity extends AppCompatActivity {
         };
 
         alertAdapter.addAll(Arrays.asList(
-                new AlertItem("Section", R.drawable.ic_w_section, SectionEditActivity.class),
-                new AlertItem("Text", R.drawable.ic_w_text, TextWidgetEditActivity.class),
-                new AlertItem("Switch", R.drawable.ic_w_switch, SwitchWidgetEditActivity.class),
-                new AlertItem("Graph", R.drawable.ic_w_graph, GraphWidgetEditActivity.class),
-                new AlertItem("Dropdown", R.drawable.ic_w_dropdown, DropdownWidgetEditActivity.class),
-                new AlertItem("Color", R.drawable.ic_w_color, ColorWidgetEditActivity.class),
-                new AlertItem("Button", R.drawable.ic_w_button, ButtonWidgetEditActivity.class),
-                new AlertItem("Slider", R.drawable.ic_w_slider, SliderWidgetEditActivity.class)
+                new AlertItem(getString(R.string.w_section), R.drawable.ic_w_section, SectionEditActivity.class),
+                new AlertItem(getString(R.string.w_text), R.drawable.ic_w_text, TextWidgetEditActivity.class),
+                new AlertItem(getString(R.string.w_switch), R.drawable.ic_w_switch, SwitchWidgetEditActivity.class),
+                new AlertItem(getString(R.string.w_graph), R.drawable.ic_w_graph, GraphWidgetEditActivity.class),
+                new AlertItem(getString(R.string.w_dropdown), R.drawable.ic_w_dropdown, DropdownWidgetEditActivity.class),
+                new AlertItem(getString(R.string.w_color), R.drawable.ic_w_color, ColorWidgetEditActivity.class),
+                new AlertItem(getString(R.string.w_button), R.drawable.ic_w_button, ButtonWidgetEditActivity.class),
+                new AlertItem(getString(R.string.w_slider), R.drawable.ic_w_slider, SliderWidgetEditActivity.class)
         ));
     }
 
@@ -147,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.action_add_item) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Create new item");
+            builder.setTitle(R.string.create_new_item);
             builder.setAdapter(alertAdapter, ((dialog, which) -> {
                 AlertItem alertItem = alertAdapter.getItem(which);
                 Intent intent = new Intent(this, alertItem.activityClass);
@@ -183,25 +172,25 @@ public class MainActivity extends AppCompatActivity {
                 case NO_CONF:
                 case ERROR:
                     if (connectionState == ConnectionState.NO_CONF) {
-                        menuConnectionStatus.setTitle("No config");
+                        menuConnectionStatus.setTitle(R.string.status_no_config);
                     } else {
-                        menuConnectionStatus.setTitle("Error");
+                        menuConnectionStatus.setTitle(R.string.status_error);
                     }
                     ft1.hide(getSupportFragmentManager().findFragmentById(R.id.fragment_tiles));
                     ft1.show(getSupportFragmentManager().findFragmentById(R.id.fragment_not_connected));
                     ft1.commit();
                     break;
                 case OFFLINE:
-                    menuConnectionStatus.setTitle("Offline");
+                    menuConnectionStatus.setTitle(R.string.status_offline);
                     ft1.hide(getSupportFragmentManager().findFragmentById(R.id.fragment_tiles));
                     ft1.show(getSupportFragmentManager().findFragmentById(R.id.fragment_not_connected));
                     ft1.commit();
                     break;
                 case CONNECTING:
-                    menuConnectionStatus.setTitle("Connecting...");
+                    menuConnectionStatus.setTitle(R.string.status_connecting);
                     break;
                 case CONNECTED:
-                    menuConnectionStatus.setTitle("On air");
+                    menuConnectionStatus.setTitle(R.string.status_on_air);
                     ft1.hide(getSupportFragmentManager().findFragmentById(R.id.fragment_not_connected));
                     ft1.show(getSupportFragmentManager().findFragmentById(R.id.fragment_tiles));
                     ft1.commit();

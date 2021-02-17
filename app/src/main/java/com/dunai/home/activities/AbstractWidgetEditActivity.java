@@ -1,6 +1,7 @@
 package com.dunai.home.activities;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -65,6 +66,8 @@ public abstract class AbstractWidgetEditActivity extends AbstractEditActivity {
         spanLandscape = findViewById(R.id.rendererEditSpanLandscape);
 
         Intent intent = getIntent();
+        Resources res = getResources();
+        String type = res.getString(res.getIdentifier("w_" + this.getType(), "string", getPackageName()));
         if (intent.hasExtra("item_id")) {
             itemId = intent.getStringExtra("item_id");
             Widget item = ((Widget) client.getItem(itemId));
@@ -82,9 +85,9 @@ public abstract class AbstractWidgetEditActivity extends AbstractEditActivity {
             spanPortrait.setProgress(item.spanPortrait - 1);
             spanLandscape.setProgress(item.spanLandscape - 1);
             this.existing = item;
-            this.setTitle("Edit " + this.getType() + " widget \"" + item.title + "\"");
+            this.setTitle(String.format(getString(R.string.edit_widget_s), type, item.title));
         } else {
-            this.setTitle("Create " + this.getType() + " widget");
+            this.setTitle(String.format(getString(R.string.create_widget_s), type));
         }
     }
 
@@ -124,7 +127,7 @@ public abstract class AbstractWidgetEditActivity extends AbstractEditActivity {
         AtomicBoolean errors = new AtomicBoolean(false);
         Stream.concat(Stream.of(this.title), this.getRequiredFields().stream()).forEach(field -> {
             if (field.getText().length() == 0) {
-                field.setError("This field is required.");
+                field.setError(getString(R.string.field_required));
                 errors.set(true);
             } else {
                 field.setError(null);

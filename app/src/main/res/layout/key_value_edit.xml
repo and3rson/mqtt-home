@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="4sp"
         android:layout_weight="10"
-        android:hint="Title" />
+        android:text="@string/title" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/valueEdit"
@@ -21,7 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="4sp"
         android:layout_weight="10"
-        android:hint="Value" />
+        android:hint="Value"
+        android:text="@string/value" />
 
     <LinearLayout
         android:layout_width="16dp"

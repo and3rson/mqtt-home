@@ -21,10 +21,9 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,7 +54,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:paddingLeft="12sp"
-                        android:text="Items"
+                        android:text="@string/items"
                         android:textSize="16sp" />
 
                     <Button
@@ -63,21 +62,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_add"
-                        android:text="Add" />
+                        android:text="@string/add" />
 
                 </LinearLayout>
 
                 <ListView
                     android:id="@+id/dropdownRendererEditList"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1000" />
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

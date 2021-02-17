@@ -21,11 +21,9 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,23 +42,21 @@
                 <include
                     layout="@layout/activity_renderer_edit_fields"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_height="wrap_content" />
 
                 <CheckBox
                     android:id="@+id/colorRendererAlpha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:button="@null"
                     android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-                    android:text="Allow transparent colors" />
+                    android:text="@string/allow_transparent_colors" />
 
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -23,7 +23,7 @@
                 android:id="@+id/textView5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Configuration"
+                android:text="@string/configuration"
                 android:textSize="32sp" />
 
             <Space
@@ -34,14 +34,14 @@
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Host:"
+                android:text="@string/host"
                 android:textColor="@color/purple_200" />
 
             <TextView
                 android:id="@+id/autoConfHostPort"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="@string/empty" />
 
             <Space
                 android:layout_width="match_parent"
@@ -51,14 +51,14 @@
                 android:id="@+id/textView7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Username:"
+                android:text="@string/username"
                 android:textColor="@color/purple_200" />
 
             <TextView
                 android:id="@+id/autoConfUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="@string/empty" />
 
             <Space
                 android:layout_width="match_parent"
@@ -68,14 +68,14 @@
                 android:id="@+id/textView8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Password:"
+                android:text="@string/password"
                 android:textColor="@color/purple_200" />
 
             <TextView
                 android:id="@+id/autoConfPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="@string/empty" />
 
             <Space
                 android:layout_width="match_parent"
@@ -85,7 +85,7 @@
                 android:id="@+id/autoConfLoadConfig"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Load configuration" />
+                android:text="@string/load_configuration" />
         </LinearLayout>
     </LinearLayout>
 

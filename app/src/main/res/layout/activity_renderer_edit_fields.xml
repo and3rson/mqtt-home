@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8sp"
-            android:hint="Title" />
+            android:hint="@string/title" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8sp"
-            android:hint="Topic" />
+            android:hint="@string/topic" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
@@ -38,7 +38,7 @@
         android:button="@null"
         android:checked="true"
         android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-        android:text="Retain" />
+        android:text="@string/retain" />
 
     <CheckBox
         android:id="@+id/rendererEditShowTitle"
@@ -48,7 +48,7 @@
         android:button="@null"
         android:checked="true"
         android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-        android:text="Show title" />
+        android:text="@string/show_title" />
 
     <CheckBox
         android:id="@+id/rendererEditShowLastUpdate"
@@ -58,7 +58,7 @@
         android:button="@null"
         android:checked="true"
         android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-        android:text="Show last update" />
+        android:text="@string/show_last_update" />
 
     <androidx.gridlayout.widget.GridLayout
         android:layout_width="match_parent"
@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="12sp"
-            android:text="Width (portrait)"
+            android:text="@string/width_portrait"
             android:textSize="16sp"
             app:layout_column="0"
             app:layout_gravity="center_vertical"
@@ -95,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="12sp"
-            android:text="Width (landscape)"
+            android:text="@string/width_landscape"
             android:textSize="16sp"
             app:layout_column="0"
             app:layout_gravity="center_vertical"

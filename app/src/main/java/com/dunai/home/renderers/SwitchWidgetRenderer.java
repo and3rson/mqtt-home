@@ -1,5 +1,6 @@
 package com.dunai.home.renderers;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.dunai.home.client.workspace.SwitchWidget;
 /**
  * TODO: document your custom view class.
  */
+@SuppressLint("ViewConstructor")
 public class SwitchWidgetRenderer extends WidgetRenderer {
     private final SwitchWidget workspaceSwitchWidget;
 
@@ -34,13 +36,11 @@ public class SwitchWidgetRenderer extends WidgetRenderer {
             this.setValue(value);
         }
 
-        this.button.setOnClickListener(v -> {
-            HomeClient.getInstance().publish(
-                    workspaceSwitchWidget.topic,
-                    isChecked ? workspaceSwitchWidget.offValue : workspaceSwitchWidget.onValue,
-                    workspaceSwitchWidget.retain
-            );
-        });
+        this.button.setOnClickListener(v -> HomeClient.getInstance().publish(
+                workspaceSwitchWidget.topic,
+                isChecked ? workspaceSwitchWidget.offValue : workspaceSwitchWidget.onValue,
+                workspaceSwitchWidget.retain
+        ));
     }
 
     public void setValue(String value) {

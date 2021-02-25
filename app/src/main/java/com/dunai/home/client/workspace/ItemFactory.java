@@ -8,8 +8,6 @@ import java.util.ArrayList;
 
 public class ItemFactory {
     public static Item createFromJSONObject(JSONObject item) throws Exception {
-        String id = item.getString("id");
-        String title = item.getString("title");
         switch (item.getString("type")) {
             case "section":
                 return buildSection(item);
@@ -29,7 +27,8 @@ public class ItemFactory {
     private static Section buildSection(JSONObject item) throws JSONException {
         return new Section(
                 item.getString("id"),
-                item.getString("title")
+                item.getString("title"),
+                item.has("topic") ? item.getString("topic") : null
         );
     }
 

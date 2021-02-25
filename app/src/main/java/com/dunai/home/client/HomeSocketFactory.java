@@ -1,5 +1,6 @@
 package com.dunai.home.client;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import org.bouncycastle.cert.X509CertificateHolder;
@@ -166,12 +167,14 @@ public class HomeSocketFactory {
         if (!validateCerts) {
             trustManagers = new TrustManager[]{
                     new X509TrustManager() {
+                        @SuppressLint("TrustAllX509TrustManager")
                         @Override
-                        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                        public void checkClientTrusted(X509Certificate[] chain, String authType) {
                         }
 
+                        @SuppressLint("TrustAllX509TrustManager")
                         @Override
-                        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                        public void checkServerTrusted(X509Certificate[] chain, String authType) {
                         }
 
                         @Override
@@ -183,11 +186,11 @@ public class HomeSocketFactory {
         }
 
         //Configure keyManager to select the private key and the certificate chain from KeyChain
-        KeyManager keyManager = null;
+        KeyManager keyManager;
         keyManager = KeyChainKeyManager.fromAlias(context, keyAlias);
 
         //Configure SSLContext
-        SSLContext sslContext = null;
+        SSLContext sslContext;
         sslContext = SSLContext.getInstance("TLS");
         sslContext.init(new KeyManager[]{keyManager}, trustManagers, null);
 

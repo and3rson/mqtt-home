@@ -1,5 +1,6 @@
 package com.dunai.home.renderers;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
@@ -18,9 +19,8 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 /**
  * TODO: document your custom view class.
  */
+@SuppressLint("ViewConstructor")
 public class GraphWidgetRenderer extends WidgetRenderer {
-    private final GraphWidget workspaceGraphWidget;
-
     private final GraphView graphView;
 
     public GraphWidgetRenderer(Context context, GraphWidget workspaceGraphWidget, String value) {
@@ -32,8 +32,6 @@ public class GraphWidgetRenderer extends WidgetRenderer {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.graph_renderer, this.findViewById(R.id.rendererContainer), true);
-
-        this.workspaceGraphWidget = workspaceGraphWidget;
 
         this.graphView = this.findViewById(R.id.graphRendererGraph);
         this.graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);

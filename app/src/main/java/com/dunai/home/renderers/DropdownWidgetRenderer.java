@@ -1,5 +1,6 @@
 package com.dunai.home.renderers;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import java.util.List;
 /**
  * TODO: document your custom view class.
  */
+@SuppressLint("ViewConstructor")
 public class DropdownWidgetRenderer extends WidgetRenderer {
     private final DropdownWidget workspaceDropdownWidget;
 
@@ -77,7 +79,7 @@ public class DropdownWidgetRenderer extends WidgetRenderer {
         super.notifyValueChanged();
     }
 
-    public class DropdownAdapter extends ArrayAdapter<DropdownWidget.KeyValue> {
+    public static class DropdownAdapter extends ArrayAdapter<DropdownWidget.KeyValue> {
         public DropdownAdapter(@NonNull Context context, int resource, @NonNull List<DropdownWidget.KeyValue> objects) {
             super(context, resource, objects);
         }

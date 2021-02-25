@@ -73,4 +73,11 @@
     <string name="action_delete">Видалити</string>
     <string name="create_section">Створити секцію</string>
     <string name="section_s">Секція \"%s\"</string>
+    <string name="no_workspace_items">Ще немає жодного елемента.</string>
+    <string name="none">(Немає)</string>
+    <string name="t_just_now">щойно</string>
+    <string name="t_sec_ago">%d сек тому</string>
+    <string name="t_min_ago">%d хв тому</string>
+    <string name="t_hours_ago">%d год тому</string>
+    <string name="t_days_ago">%d днів тому</string>
 </resources>

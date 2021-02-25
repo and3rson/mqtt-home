@@ -1,5 +1,6 @@
 package com.dunai.home.renderers;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.TextView;
@@ -10,6 +11,7 @@ import com.dunai.home.client.workspace.TextWidget;
 /**
  * TODO: document your custom view class.
  */
+@SuppressLint("ViewConstructor")
 public class TextWidgetRenderer extends WidgetRenderer {
     private final TextWidget workspaceTextWidget;
 

@@ -10,13 +10,12 @@ public class GraphWidget extends Widget {
     }
 
     public JSONObject serialize() {
-        JSONObject root = super.serialize();
-//        try {
+        //        try {
 //            root.put("suffix", this.suffix);
 //        } catch (JSONException e) {
 //            e.printStackTrace();
 //        }
-        return root;
+        return super.serialize();
     }
 
     @Override

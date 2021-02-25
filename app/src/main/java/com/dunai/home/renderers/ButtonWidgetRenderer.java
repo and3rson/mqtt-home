@@ -1,5 +1,6 @@
 package com.dunai.home.renderers;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.Button;
@@ -12,31 +13,26 @@ import com.dunai.home.client.workspace.ButtonWidget;
 /**
  * TODO: document your custom view class.
  */
+@SuppressLint("ViewConstructor")
 public class ButtonWidgetRenderer extends WidgetRenderer {
-    private final ButtonWidget workspaceButtonWidget;
-
-    private final LinearLayout layout;
-
     public ButtonWidgetRenderer(Context context, ButtonWidget workspaceButtonWidget, String value) {
         super(context, workspaceButtonWidget);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.button_renderer, this.findViewById(R.id.rendererContainer), true);
 
-        this.workspaceButtonWidget = workspaceButtonWidget;
+        LinearLayout layout = this.findViewById(R.id.buttonRendererLayout);
+        layout.removeAllViews();
 
-        this.layout = this.findViewById(R.id.buttonRendererLayout);
-        this.layout.removeAllViews();
-
-        if (this.workspaceButtonWidget.orientation == ButtonWidget.Orientation.HORIZONTAL) {
-            this.layout.setOrientation(HORIZONTAL);
+        if (workspaceButtonWidget.orientation == ButtonWidget.Orientation.HORIZONTAL) {
+            layout.setOrientation(HORIZONTAL);
         } else {
-            this.layout.setOrientation(VERTICAL);
+            layout.setOrientation(VERTICAL);
         }
 
-        for (ButtonWidget.KeyValue keyValue : this.workspaceButtonWidget.keyValues) {
+        for (ButtonWidget.KeyValue keyValue : workspaceButtonWidget.keyValues) {
             Button button = new Button(getContext());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            if (this.workspaceButtonWidget.orientation == ButtonWidget.Orientation.VERTICAL) {
+            if (workspaceButtonWidget.orientation == ButtonWidget.Orientation.VERTICAL) {
                 params.width = LayoutParams.MATCH_PARENT;
             }
             params.weight = 1.0f;
@@ -51,7 +47,7 @@ public class ButtonWidgetRenderer extends WidgetRenderer {
                     workspaceButtonWidget.retain
             ));
             button.setLongClickable(true);
-            this.layout.addView(button);
+            layout.addView(button);
         }
 
         if (value != null) {

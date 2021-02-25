@@ -1,12 +1,9 @@
 package com.dunai.home.activities;
 
 import android.os.Bundle;
-import android.widget.CheckBox;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.dunai.home.R;
-import com.dunai.home.client.HomeClient;
 import com.dunai.home.client.workspace.SliderWidget;
 import com.dunai.home.client.workspace.Widget;
 
@@ -14,16 +11,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SliderWidgetEditActivity extends AbstractWidgetEditActivity {
-    private String itemId;
-    private TextView title;
-    private TextView topic;
-    private CheckBox retain;
-    private SeekBar spanPortrait;
-    private SeekBar spanLandscape;
     private TextView minValue;
     private TextView maxValue;
     private TextView step;
-    private HomeClient client;
 
     @Override
     protected int getLayoutResource() {

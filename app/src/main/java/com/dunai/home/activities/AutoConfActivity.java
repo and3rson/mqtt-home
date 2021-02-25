@@ -31,7 +31,7 @@ public class AutoConfActivity extends AppCompatActivity {
         String username = data.getQueryParameter("username");
         String password = data.getQueryParameter("password");
 
-        ((TextView) findViewById(R.id.autoConfHostPort)).setText(host + ":" + port);
+        ((TextView) findViewById(R.id.autoConfHostPort)).setText(String.format("%s:%s", host, port));
         ((TextView) findViewById(R.id.autoConfUsername)).setText(username);
         ((TextView) findViewById(R.id.autoConfPassword)).setText(password.replaceAll("(.)", "*"));
 

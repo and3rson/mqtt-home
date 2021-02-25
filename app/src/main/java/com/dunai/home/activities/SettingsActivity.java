@@ -1,6 +1,5 @@
 package com.dunai.home.activities;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -11,9 +10,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
 import android.security.KeyChain;
 import android.util.AttributeSet;
 import android.view.MenuItem;
@@ -24,23 +20,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import com.dunai.home.R;
-import com.dunai.home.client.ConnectionState;
 import com.dunai.home.client.HomeClient;
 
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import abhishekti7.unicorn.filepicker.UnicornFilePicker;
 
 public class SettingsActivity extends AppCompatActivity {
     private SettingsFragment settingsFragment;
@@ -114,31 +103,29 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
         public boolean settingsChanged = false;
-        private Timer timer;
         private int clicks = 0;
 
-        private boolean checkPermissions() {
-            int permissionCheck1 = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
-            int permissionCheck2 = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if (permissionCheck1 != PackageManager.PERMISSION_GRANTED || permissionCheck2 != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1337);
-                return false;
-            }
-            return true;
-        }
+//        private boolean checkPermissions() {
+//            int permissionCheck1 = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
+//            int permissionCheck2 = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//            if (permissionCheck1 != PackageManager.PERMISSION_GRANTED || permissionCheck2 != PackageManager.PERMISSION_GRANTED) {
+//                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1337);
+//                return false;
+//            }
+//            return true;
+//        }
 
-        private UnicornFilePicker getUnicornFilePickerConfigBuilder() {
-            return UnicornFilePicker.from(getActivity())
-                    .addConfigBuilder()
-                    .selectMultipleFiles(false)
-//                                .showOnlyDirectory(true)
-                    .setRootDirectory(Environment.getExternalStorageDirectory().getAbsolutePath())
-                    .showHiddenFiles(false)
-//                                .setFilters(new String[]{"pdf", "png", "jpg", "jpeg"})
-                    .addItemDivider(true)
-                    .theme(R.style.UnicornFilePicker_Dracula)
-                    .build();
-        }
+//        private UnicornFilePicker getUnicornFilePickerConfigBuilder() {
+//            return UnicornFilePicker.from(getActivity())
+//                    .addConfigBuilder()
+//                    .selectMultipleFiles(false)
+//                    .setRootDirectory(Environment.getExternalStorageDirectory().getAbsolutePath())
+//                    .showHiddenFiles(false)
+////                    .setFilters(new String[]{"pdf", "png", "jpg", "jpeg"})
+//                    .addItemDivider(true)
+//                    .theme(R.style.UnicornFilePicker_Dracula)
+//                    .build();
+//        }
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -189,7 +176,7 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             });
 
-            PackageInfo info = null;
+            PackageInfo info;
             try {
                 info = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), PackageManager.GET_ACTIVITIES);
                 Preference appVersion = findPreference("appVersion");
@@ -207,8 +194,8 @@ public class SettingsActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            this.timer = new Timer();
-            this.timer.schedule(new TimerTask() {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     clicks = 0;

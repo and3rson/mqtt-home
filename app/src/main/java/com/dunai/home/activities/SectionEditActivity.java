@@ -13,6 +13,7 @@ import com.dunai.home.client.workspace.Section;
 public class SectionEditActivity extends AbstractEditActivity {
     private String itemId;
     private TextView title;
+    private TextView topic;
     private HomeClient client;
 
     @Override
@@ -27,6 +28,7 @@ public class SectionEditActivity extends AbstractEditActivity {
         client = HomeClient.getInstance();
 
         title = findViewById(R.id.sectionRendererEditTitle);
+        topic = findViewById(R.id.sectionRendererEditTopic);
 
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -39,6 +41,9 @@ public class SectionEditActivity extends AbstractEditActivity {
                 return;
             }
             title.setText(item.title);
+            if (item.topic != null) {
+                topic.setText(item.topic);
+            }
             this.setTitle(String.format(getString(R.string.section_s), item.title));
         } else {
             this.setTitle(getString(R.string.create_section));
@@ -66,14 +71,16 @@ public class SectionEditActivity extends AbstractEditActivity {
                     itemId,
                     new Section(
                             itemId,
-                            title.getText().toString()
+                            title.getText().toString(),
+                            topic.getText().toString().trim().length() > 0 ? topic.getText().toString() : null
                     )
             );
         } else {
             client.addItem(
                     new Section(
                             String.valueOf(Math.round(Math.random() * 1e9)),
-                            title.getText().toString()
+                            title.getText().toString(),
+                            topic.getText().toString().trim().length() > 0 ? topic.getText().toString() : null
                     )
             );
         }

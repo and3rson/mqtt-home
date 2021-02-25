@@ -1,23 +1,11 @@
 package com.dunai.home.activities;
 
 import android.app.AlertDialog;
-import android.content.Context;
-import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.SeekBar;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.dunai.home.R;
-import com.dunai.home.client.HomeClient;
 import com.dunai.home.client.workspace.DropdownWidget;
 import com.dunai.home.client.workspace.Widget;
 import com.dunai.home.views.KeyValueView;
@@ -28,15 +16,7 @@ import java.util.List;
 
 public class DropdownWidgetEditActivity extends AbstractWidgetEditActivity {
     private final ArrayList<DropdownWidget.KeyValue> keyValues = new ArrayList<>();
-    private String itemId;
-    private TextView title;
-    private TextView topic;
-    private CheckBox retain;
-    private SeekBar spanPortrait;
-    private SeekBar spanLandscape;
-    private ListView list;
-    private HomeClient client;
-    private KeyValueAdapter adapter;
+    private LinearLayout list;
 
     @Override
     protected int getLayoutResource() {
@@ -58,32 +38,15 @@ public class DropdownWidgetEditActivity extends AbstractWidgetEditActivity {
         return new DropdownWidget(id, title, topic, retain, showTitle, showLastUpdate, spanPortrait, spanLandscape, bgColor, this.keyValues);
     }
 
-    public void justifyListViewHeightBasedOnChildren (ListView listView) {
-        ListAdapter adapter = listView.getAdapter();
-
-        if (adapter == null) {
-            return;
-        }
-        ViewGroup vg = listView;
-        int totalHeight = 0;
-        for (int i = 0; i < adapter.getCount(); i++) {
-            View listItem = adapter.getView(i, null, vg);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
-        }
-
-        ViewGroup.LayoutParams par = listView.getLayoutParams();
-        par.height = totalHeight + (listView.getDividerHeight() * (adapter.getCount() - 1));
-        listView.setLayoutParams(par);
-        listView.requestLayout();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         list = findViewById(R.id.dropdownRendererEditList);
 
-        findViewById(R.id.dropdownRendererEditAdd).setOnClickListener(v -> adapter.add(new DropdownWidget.KeyValue("", "")));
+        findViewById(R.id.dropdownRendererEditAdd).setOnClickListener(v -> {
+            this.keyValues.add(new DropdownWidget.KeyValue("", ""));
+            renderItems();
+        });
 
         DropdownWidget item = (DropdownWidget) getExisting();
         if (item != null) {
@@ -91,48 +54,28 @@ public class DropdownWidgetEditActivity extends AbstractWidgetEditActivity {
         } else {
             keyValues.add(new DropdownWidget.KeyValue("", ""));
         }
-
-        adapter = new KeyValueAdapter(this, keyValues);
-        list.setAdapter(adapter);
-
-        justifyListViewHeightBasedOnChildren(list);
-        adapter.registerDataSetObserver(new DataSetObserver() {
-            @Override
-            public void onChanged() {
-                justifyListViewHeightBasedOnChildren(list);
-                super.onChanged();
-            }
-        });
+        renderItems();
     }
 
-    public static class KeyValueAdapter extends ArrayAdapter<DropdownWidget.KeyValue> {
-        private final List<DropdownWidget.KeyValue> objects;
-
-        public KeyValueAdapter(@NonNull Context context, @NonNull List<DropdownWidget.KeyValue> objects) {
-            super(context, 0, objects);
-            this.objects = objects;
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            KeyValueView view = new KeyValueView(getContext());
-
-            final DropdownWidget.KeyValue keyValue = this.getItem(position);
-
+    private void renderItems() {
+        this.list.removeAllViews();
+        for(int position = 0; position < this.keyValues.size(); position++) {
+            DropdownWidget.KeyValue keyValue = this.keyValues.get(position);
+            KeyValueView view = new KeyValueView(this);
             view.setKey(keyValue.getKey());
             view.setValue(keyValue.getValue());
+            int finalPosition = position;
 
             view.setOnMoveUpRequested(v -> {
-                if (position > 0) {
-                    Collections.swap(objects, position, position - 1);
-                    notifyDataSetChanged();
+                if (finalPosition > 0) {
+                    Collections.swap(this.keyValues, finalPosition, finalPosition - 1);
+                    renderItems();
                 }
             });
             view.setOnMoveDownRequested(v -> {
-                if (position < getCount() - 1) {
-                    Collections.swap(objects, position, position + 1);
-                    notifyDataSetChanged();
+                if (finalPosition < this.keyValues.size() - 1) {
+                    Collections.swap(this.keyValues, finalPosition, finalPosition + 1);
+                    renderItems();
                 }
             });
             view.setOnKeyValueChangedListener((key, value) -> {
@@ -140,16 +83,19 @@ public class DropdownWidgetEditActivity extends AbstractWidgetEditActivity {
                 keyValue.setValue(value);
             });
             view.setOnDeleteRequestedListener(v -> {
-                if (getCount() > 1) {
-                    new AlertDialog.Builder(getContext())
+                if (this.keyValues.size() > 1) {
+                    new AlertDialog.Builder(this)
                             .setTitle("Confirm deletion")
                             .setMessage("Do you want to delete this item?")
-                            .setPositiveButton("Yes", (dialog, which) -> remove(keyValue))
+                            .setPositiveButton("Yes", (dialog, which) -> {
+                                this.keyValues.remove(keyValue);
+                                renderItems();
+                            })
                             .setNegativeButton("No", null)
                             .show();
                 }
             });
-            return view;
+            this.list.addView(view);
         }
     }
 }

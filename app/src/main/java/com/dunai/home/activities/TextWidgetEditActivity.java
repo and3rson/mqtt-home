@@ -1,11 +1,9 @@
 package com.dunai.home.activities;
 
 import android.os.Bundle;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.dunai.home.R;
-import com.dunai.home.client.HomeClient;
 import com.dunai.home.client.workspace.TextWidget;
 import com.dunai.home.client.workspace.Widget;
 
@@ -13,14 +11,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class TextWidgetEditActivity extends AbstractWidgetEditActivity {
-    private String itemId;
-    private TextView title;
-    private TextView topic;
-    private SeekBar spanPortrait;
-    private SeekBar spanLandscape;
     private TextView prefix;
     private TextView suffix;
-    private HomeClient client;
 
     @Override
     protected int getLayoutResource() {

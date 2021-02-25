@@ -1,10 +1,8 @@
 package com.dunai.home.activities;
 
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.dunai.home.R;
-import com.dunai.home.client.HomeClient;
 import com.dunai.home.client.workspace.GraphWidget;
 import com.dunai.home.client.workspace.Widget;
 
@@ -12,13 +10,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class GraphWidgetEditActivity extends AbstractWidgetEditActivity {
-    private String itemId;
-    private TextView title;
-    private TextView topic;
-    private SeekBar spanPortrait;
-    private SeekBar spanLandscape;
-    private HomeClient client;
-
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_graph_renderer_edit;

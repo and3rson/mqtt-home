@@ -1,5 +1,6 @@
 package com.dunai.home.client;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -38,6 +39,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class HomeClient {
+    @SuppressLint("StaticFieldLeak")
     private static HomeClient instance = null; // TODO: Memory leak?
     private ConnectionState connectionState = ConnectionState.OFFLINE;
     private MqttAndroidClient mqttClient;
@@ -176,7 +178,7 @@ public class HomeClient {
                         if (HomeClient.this.workspaceChangedListener != null) {
                             try {
                                 Workspace workspace = new Workspace();
-                                JSONObject root = null;
+                                JSONObject root;
                                 root = new JSONObject(new String(message.getPayload()));
                                 JSONArray items = root.getJSONArray("items");
                                 Log.i("HomeApp", "Tiles: " + items.length());

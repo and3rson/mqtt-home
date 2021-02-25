@@ -34,18 +34,14 @@ public class KeyChainKeyManager extends X509ExtendedKeyManager {
         X509Certificate[] certificateChain;
         try {
             certificateChain = KeyChain.getCertificateChain(context, alias);
-        } catch (KeyChainException e) {
-            throw new CertificateException(e);
-        } catch (InterruptedException e) {
+        } catch (KeyChainException | InterruptedException e) {
             throw new CertificateException(e);
         }
 
         PrivateKey privateKey;
         try {
             privateKey = KeyChain.getPrivateKey(context, alias);
-        } catch (KeyChainException e) {
-            throw new CertificateException(e);
-        } catch (InterruptedException e) {
+        } catch (KeyChainException | InterruptedException e) {
             throw new CertificateException(e);
         }
 

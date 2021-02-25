@@ -2,19 +2,15 @@ package com.dunai.home.renderers;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,10 +25,8 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public abstract class WidgetRenderer extends LinearLayout {
-    private final Timer lastUpdateTimer;
+public abstract class WidgetRenderer extends AbstractRenderer {
     private final LinearLayout root;
-    private final TextView title;
     private final TextView pin;
     private final TextView lastUpdate;
 
@@ -44,7 +38,7 @@ public abstract class WidgetRenderer extends LinearLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.renderer, this, true);
 
-        this.title = this.findViewById(R.id.rendererTitle);
+        TextView title = this.findViewById(R.id.rendererTitle);
         this.root = this.findViewById(R.id.rendererRoot);
         this.pin = this.findViewById(R.id.rendererPin);
         this.lastUpdate = this.findViewById(R.id.rendererLastUpdate);
@@ -77,7 +71,7 @@ public abstract class WidgetRenderer extends LinearLayout {
         if (widget.title.isEmpty() || !widget.showTitle) {
             findViewById(R.id.rendererTitleContainer).setVisibility(GONE);
         } else {
-            this.title.setText(widget.title);
+            title.setText(widget.title);
         }
 
         if (!prefs.getBoolean("showMenuDots", true)) {
@@ -96,8 +90,8 @@ public abstract class WidgetRenderer extends LinearLayout {
 
         this.pin.setAlpha(0);
 
-        this.lastUpdateTimer = new Timer();
-        this.lastUpdateTimer.schedule(new TimerTask() {
+        Timer lastUpdateTimer = new Timer();
+        lastUpdateTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 refreshLastUpdate();
@@ -111,15 +105,15 @@ public abstract class WidgetRenderer extends LinearLayout {
             if (this.lastUpdateDate != null) {
                 long diff = (new Date().getTime() - this.lastUpdateDate.getTime()) / 1000;
                 if (diff < 10) {
-                    this.lastUpdate.setText("just now");
+                    this.lastUpdate.setText(R.string.t_just_now);
                 } else if (diff < 60) {
-                    this.lastUpdate.setText("" + diff + " sec ago");
+                    this.lastUpdate.setText(String.format(getContext().getString(R.string.t_sec_ago), diff));
                 } else if (diff < 3600) {
-                    this.lastUpdate.setText("" + (diff / 60) + " min ago");
+                    this.lastUpdate.setText(String.format(getContext().getString(R.string.t_min_ago), diff / 60));
                 } else if (diff < 86400) {
-                    this.lastUpdate.setText("" + (diff / 3600) + " hours ago");
+                    this.lastUpdate.setText(String.format(getContext().getString(R.string.t_hours_ago), diff / 3600));
                 } else {
-                    this.lastUpdate.setText("" + (diff / 86400) + " days ago");
+                    this.lastUpdate.setText(String.format(getContext().getString(R.string.t_days_ago), diff / 86400));
                 }
                 this.lastUpdate.setTextColor(Color.parseColor("#777777"));
             } else {
@@ -137,9 +131,7 @@ public abstract class WidgetRenderer extends LinearLayout {
     public void notifyValueChanged() {
         ValueAnimator colorAnimator = ValueAnimator.ofObject(new ArgbEvaluator(), Color.parseColor("#FF6200EE"), this.bgColor);
         colorAnimator.setDuration(600);
-        colorAnimator.addUpdateListener(animation -> {
-            this.root.setBackgroundColor((Integer) animation.getAnimatedValue());
-        });
+        colorAnimator.addUpdateListener(animation -> this.root.setBackgroundColor((Integer) animation.getAnimatedValue()));
         colorAnimator.start();
         ValueAnimator alphaAnimator = ValueAnimator.ofFloat(1, 1, 0);
         alphaAnimator.setDuration(1500);

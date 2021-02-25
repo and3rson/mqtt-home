@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +42,7 @@ import com.dunai.home.client.workspace.SliderWidget;
 import com.dunai.home.client.workspace.SwitchWidget;
 import com.dunai.home.client.workspace.TextWidget;
 import com.dunai.home.client.workspace.Widget;
+import com.dunai.home.renderers.AbstractRenderer;
 import com.dunai.home.renderers.ButtonWidgetRenderer;
 import com.dunai.home.renderers.ColorWidgetRenderer;
 import com.dunai.home.renderers.DropdownWidgetRenderer;
@@ -54,17 +54,15 @@ import com.dunai.home.renderers.TextWidgetRenderer;
 import com.dunai.home.renderers.WidgetRenderer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class TilesFragment extends Fragment {
     private final HomeClient client;
-    private final HashMap<String, ArrayList<WidgetRenderer>> topicRenderersMap = new HashMap<>();
+    private final HashMap<String, ArrayList<AbstractRenderer>> topicRenderersMap = new HashMap<>();
     private Workspace workspace;
     private HashMap<String, String> topicValueMap = new HashMap<>();
 
     public TilesFragment() {
-        // Required empty public constructor
         this.client = HomeClient.getInstance();
         client.setWorkspaceChangedCallback(workspace -> {
             this.workspace = workspace;
@@ -72,9 +70,8 @@ public class TilesFragment extends Fragment {
         });
         this.workspace = HomeClient.getInstance().getWorkspace();
         client.setDataReceivedListener((topic, payload) -> {
-//            Log.i("HomeApp", topic + " -> " + payload);
             topicValueMap.put(topic, payload);
-            ArrayList<WidgetRenderer> renderers = topicRenderersMap.get(topic);
+            ArrayList<AbstractRenderer> renderers = topicRenderersMap.get(topic);
             if (renderers != null) {
                 renderers.forEach(renderer -> renderer.setValue(payload));
             }
@@ -96,36 +93,34 @@ public class TilesFragment extends Fragment {
 
             Log.i("HomeApp", "Creating tiles: " + workspace.items.size());
             for (int i = 0; i < workspace.items.size(); i++) {
-                Item item = workspace.items.get(i);
-                View renderer;
+                final Item item = workspace.items.get(i);
+                final AbstractRenderer renderer;
+                final String value = this.topicValueMap.get(item.topic);
                 if (item instanceof Section) {
-                    renderer = new SectionRenderer(getContext(), (Section) item);
+                    renderer = new SectionRenderer(getContext(), (Section) item, value);
+                } else if (item instanceof TextWidget) {
+                    renderer = new TextWidgetRenderer(getContext(), (TextWidget) item, value);
+                } else if (item instanceof SwitchWidget) {
+                    renderer = new SwitchWidgetRenderer(getContext(), (SwitchWidget) item, value);
+                } else if (item instanceof GraphWidget) {
+                    renderer = new GraphWidgetRenderer(getContext(), (GraphWidget) item, value);
+                } else if (item instanceof DropdownWidget) {
+                    renderer = new DropdownWidgetRenderer(getContext(), (DropdownWidget) item, value);
+                } else if (item instanceof ColorWidget) {
+                    renderer = new ColorWidgetRenderer(getContext(), (ColorWidget) item, value);
+                } else if (item instanceof ButtonWidget) {
+                    renderer = new ButtonWidgetRenderer(getContext(), (ButtonWidget) item, value);
+                } else if (item instanceof SliderWidget) {
+                    renderer = new SliderWidgetRenderer(getContext(), (SliderWidget) item, value);
                 } else {
-                    final String topic = this.topicValueMap.get((((Widget) item).topic));
-                    if (item instanceof TextWidget) {
-                        renderer = new TextWidgetRenderer(getContext(), (TextWidget) item, topic);
-                    } else if (item instanceof SwitchWidget) {
-                        renderer = new SwitchWidgetRenderer(getContext(), (SwitchWidget) item, topic);
-                    } else if (item instanceof GraphWidget) {
-                        renderer = new GraphWidgetRenderer(getContext(), (GraphWidget) item, topic);
-                    } else if (item instanceof DropdownWidget) {
-                        renderer = new DropdownWidgetRenderer(getContext(), (DropdownWidget) item, topic);
-                    } else if (item instanceof ColorWidget) {
-                        renderer = new ColorWidgetRenderer(getContext(), (ColorWidget) item, topic);
-                    } else if (item instanceof ButtonWidget) {
-                        renderer = new ButtonWidgetRenderer(getContext(), (ButtonWidget) item, topic);
-                    } else if (item instanceof SliderWidget) {
-                        renderer = new SliderWidgetRenderer(getContext(), (SliderWidget) item, topic);
-                    } else {
-                        throw new Exception("Unknown item type: " + item.getType());
-                    }
-                    ArrayList<WidgetRenderer> renderers = topicRenderersMap.get(((Widget) item).topic);
-                    if (renderers == null) {
-                        renderers = new ArrayList<>();
-                    }
-                    renderers.add((WidgetRenderer) renderer);
-                    topicRenderersMap.put(((Widget) item).topic, renderers);
+                    throw new Exception("Unknown item type: " + item.getType());
                 }
+                ArrayList<AbstractRenderer> renderers = topicRenderersMap.get(item.topic);
+                if (renderers == null) {
+                    renderers = new ArrayList<>();
+                }
+                renderers.add(renderer);
+                topicRenderersMap.put(item.topic, renderers);
                 tiles.addView(renderer);
                 registerForContextMenu(renderer);
             }
@@ -135,7 +130,7 @@ public class TilesFragment extends Fragment {
         }
         if (this.workspace.items.size() == 0) {
             TextView noWorkspace = new TextView(this.getContext());
-            noWorkspace.setText("No workspace items defined.");
+            noWorkspace.setText(R.string.no_workspace_items);
             noWorkspace.setGravity(Gravity.CENTER);
             tiles.addView(noWorkspace, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }

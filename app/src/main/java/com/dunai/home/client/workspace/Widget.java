@@ -4,9 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public abstract class Widget extends Item {
-    public String title;
     public String bgColor;
-    public String topic;
     public boolean retain;
     public boolean showTitle;
     public boolean showLastUpdate;
@@ -14,9 +12,7 @@ public abstract class Widget extends Item {
     public int spanLandscape;
 
     public Widget(String id, String title, String topic, boolean retain, boolean showTitle, boolean showLastUpdate, int spanPortrait, int spanLandscape, String bgColor) {
-        super(id);
-        this.title = title;
-        this.topic = topic;
+        super(id, title, topic);
         this.retain = retain;
         this.showTitle = showTitle;
         this.showLastUpdate = showLastUpdate;
@@ -28,8 +24,6 @@ public abstract class Widget extends Item {
     public JSONObject serialize() {
         JSONObject root = super.serialize();
         try {
-            root.put("title", this.title);
-            root.put("topic", this.topic);
             root.put("retain", this.retain);
             root.put("showTitle", this.showTitle);
             root.put("showLastUpdate", this.showLastUpdate);

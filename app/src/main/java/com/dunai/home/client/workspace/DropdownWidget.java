@@ -9,8 +9,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class DropdownWidget extends Widget {
-    public String suffix;
-
     public ArrayList<KeyValue> keyValues;
 
     public DropdownWidget(String id, String title, String topic, boolean retain, boolean showTitle, boolean showLastUpdate, int spanPortrait, int spanLandscape, String bgColor, ArrayList<KeyValue> keyValues) {

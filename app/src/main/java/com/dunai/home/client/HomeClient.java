@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -30,9 +31,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executor;
@@ -48,7 +54,7 @@ public class HomeClient {
     private DataReceivedListener dataReceivedListener;
     private ConnectionStateChangedListener connectionStateChangedListener;
     private Timer reconnectTimer;
-    private Workspace workspace;
+    private Workspace workspace = new Workspace();
 
     private HomeClient() {
     }
@@ -146,11 +152,12 @@ public class HomeClient {
                     public void onSuccess(IMqttToken asyncActionToken) {
                         setConnectionState(ConnectionState.CONNECTED);
                         try {
-                            HomeClient.this.mqttClient.subscribe("#", 0);
+//                            HomeClient.this.mqttClient.subscribe("#", 0);
+                            HomeClient.this.mqttClient.subscribe("workspace", 0);
                         } catch (MqttException e) {
                             Log.e("HomeApp", "Failed to subscribe to MQTT topics");
                             e.printStackTrace();
-                            Toast.makeText(context, "Failed to subscribe to #: " + e.toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Failed to subscribe to workspace: " + e.toString(), Toast.LENGTH_LONG).show();
                         }
                     }
 
@@ -177,15 +184,59 @@ public class HomeClient {
                     if (topic.equals("workspace")) {
                         if (HomeClient.this.workspaceChangedListener != null) {
                             try {
+                                // Remember old topics
+                                Set<String> oldTopics = new HashSet<>();
+                                for (int i = 0; i < workspace.items.size(); i++) {
+                                    String itemTopic = workspace.items.get(i).topic;
+                                    if (itemTopic != null) {
+                                        oldTopics.add(itemTopic);
+                                    }
+                                }
+
+                                // Create new workspace
                                 Workspace workspace = new Workspace();
                                 JSONObject root;
                                 root = new JSONObject(new String(message.getPayload()));
                                 JSONArray items = root.getJSONArray("items");
                                 Log.i("HomeApp", "Tiles: " + items.length());
+
+                                // Populate new items & topics
+                                Set<String> newTopics = new HashSet<>();
+                                int[] qos = new int[items.length()];
                                 for (int i = 0; i < items.length(); i++) {
                                     JSONObject item = items.getJSONObject(i);
                                     Item workspaceItem = ItemFactory.createFromJSONObject(item);
                                     workspace.items.add(workspaceItem);
+                                    if (workspaceItem.topic != null) {
+                                        newTopics.add(workspaceItem.topic);
+                                    }
+                                    qos[i] = 0;
+                                }
+
+                                oldTopics.removeAll(newTopics);
+                                newTopics.removeAll(oldTopics);
+
+                                // Unsubscribe from old topics
+                                if (oldTopics.size() > 0) {
+                                    try {
+                                        HomeClient.this.mqttClient.unsubscribe(oldTopics.toArray(new String[0]));
+                                        Log.i("HomeApp", "Unsubscribed from " + TextUtils.join(", ", oldTopics.toArray(new String[0])));
+                                    } catch (MqttException e) {
+                                        Log.e("HomeApp", "Failed to subscribe to MQTT topics");
+                                        e.printStackTrace();
+                                        Toast.makeText(context, String.format("Failed to unsubscribe from %s: %s", TextUtils.join(", ", oldTopics.toArray(new String[0])), e.toString()), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                                // Subscribe to new topics
+                                if (newTopics.size() > 0) {
+                                    try {
+                                        HomeClient.this.mqttClient.subscribe(newTopics.toArray(new String[0]), qos);
+                                        Log.i("HomeApp", "Subscribed to " + TextUtils.join(", ", newTopics.toArray(new String[0])));
+                                    } catch (MqttException e) {
+                                        Log.e("HomeApp", "Failed to subscribe to MQTT topics");
+                                        e.printStackTrace();
+                                        Toast.makeText(context, String.format("Failed to subscribe to %s: %s", TextUtils.join(", ", newTopics.toArray(new String[0])), e.toString()), Toast.LENGTH_LONG).show();
+                                    }
                                 }
                                 HomeClient.this.workspace = workspace;
                                 workspaceChangedListener.onWorkspaceChanged(workspace);

@@ -10,8 +10,8 @@ android {
         applicationId "com.dunai.home"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 22
-        versionName "1.22"
+        versionCode 24
+        versionName "1.24"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

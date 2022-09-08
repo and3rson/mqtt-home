@@ -131,6 +131,7 @@ public class HomeClient {
             return;
         }
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.context);
+        String workspaceTopic = prefs.getString("workspaceTopic", "workspace");
         if (prefs.getString("host", "").isEmpty()) {
             this.setConnectionState(ConnectionState.NO_CONF);
             return;
@@ -151,7 +152,6 @@ public class HomeClient {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
                         setConnectionState(ConnectionState.CONNECTED);
-                        String workspaceTopic = prefs.getString("workspaceTopic", "workspace");
                         try {
 //                            HomeClient.this.mqttClient.subscribe("#", 0);
                             HomeClient.this.mqttClient.subscribe(workspaceTopic, 0);
@@ -182,7 +182,7 @@ public class HomeClient {
 
                 @Override
                 public void messageArrived(String topic, MqttMessage message) {
-                    if (topic.equals("workspace")) {
+                    if (topic.equals(workspaceTopic)) {
                         if (HomeClient.this.workspaceChangedListener != null) {
                             try {
                                 // Remember old topics
@@ -318,8 +318,10 @@ public class HomeClient {
     }
 
     public void publishWorkspace(Workspace newWorkspace) {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.context);
+        String workspaceTopic = prefs.getString("workspaceTopic", "workspace");
         try {
-            this.mqttClient.publish("workspace", newWorkspace.serialize().toString(4).getBytes(), 0, true);
+            this.mqttClient.publish(workspaceTopic, newWorkspace.serialize().toString(4).getBytes(), 0, true);
         } catch (MqttException | JSONException e) {
             Toast.makeText(context, "Failed to save workspace: " + e.getMessage(), Toast.LENGTH_LONG).show();
             e.printStackTrace();

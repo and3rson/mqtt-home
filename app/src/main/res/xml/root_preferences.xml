@@ -72,6 +72,16 @@
             android:title="@string/validate_certs"
             app:summary="     Turn this off to accept all certificates." />
         <EditTextPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="workspace"
+            android:inputType="text|textPassword"
+            android:key="workspaceTopic"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/workspace_topic"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
             android:defaultValue="automatic"
             android:key="clientId"
             android:selectAllOnFocus="true"

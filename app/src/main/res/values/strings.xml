@@ -9,6 +9,7 @@
     <string name="client_cert">"    Client certificate"</string>
     <string name="cert_password">"    Certificate password"</string>
     <string name="validate_certs">"    Validate certificates"</string>
+    <string name="workspace_topic">Topic for saving elements</string>
     <string name="client_id">Client ID</string>
     <string name="connection_timeout">Connection timeout</string>
     <string name="keepalive_interval">Keep-alive interval</string>

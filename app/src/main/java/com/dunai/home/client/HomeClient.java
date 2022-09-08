@@ -151,13 +151,14 @@ public class HomeClient {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
                         setConnectionState(ConnectionState.CONNECTED);
+                        String workspaceTopic = prefs.getString("workspaceTopic", "workspace");
                         try {
 //                            HomeClient.this.mqttClient.subscribe("#", 0);
-                            HomeClient.this.mqttClient.subscribe("workspace", 0);
+                            HomeClient.this.mqttClient.subscribe(workspaceTopic, 0);
                         } catch (MqttException e) {
-                            Log.e("HomeApp", "Failed to subscribe to MQTT topics");
+                            Log.e("HomeApp", "Failed to subscribe to MQTT workspace topic");
                             e.printStackTrace();
-                            Toast.makeText(context, "Failed to subscribe to workspace: " + e.toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, String.format("Failed to subscribe to workspace topic %s: %s", workspaceTopic, e.toString()), Toast.LENGTH_LONG).show();
                         }
                     }
 

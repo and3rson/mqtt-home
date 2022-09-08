@@ -11,6 +11,7 @@
     <string name="client_cert">"    Клієнтський сертифікат"</string>
     <string name="cert_password">"    Пароль для сертифіката"</string>
     <string name="validate_certs">Перевіряти сертифікати</string>
+    <string name="workspace_topic">Topic для збереження елементів</string>
     <string name="client_id">ID клієнта</string>
     <string name="connection_timeout">Тайм-аут підключення</string>
     <string name="keepalive_interval">Keep-alive інтервал</string>

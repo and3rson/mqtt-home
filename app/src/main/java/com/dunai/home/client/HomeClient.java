@@ -187,10 +187,9 @@ public class HomeClient {
                             try {
                                 // Remember old topics
                                 Set<String> oldTopics = new HashSet<>();
-                                for (int i = 0; i < workspace.items.size(); i++) {
-                                    String itemTopic = workspace.items.get(i).topic;
-                                    if (itemTopic != null) {
-                                        oldTopics.add(itemTopic);
+                                for (Item item: workspace.items) {
+                                    if (item.topic != null) {
+                                        oldTopics.add(item.topic);
                                     }
                                 }
 
@@ -214,29 +213,35 @@ public class HomeClient {
                                     qos[i] = 0;
                                 }
 
-                                oldTopics.removeAll(newTopics);
-                                newTopics.removeAll(oldTopics);
+                                // Find difference between old & new topics
+                                Set<String> unsubscribeTopics = new HashSet<>(oldTopics);
+                                unsubscribeTopics.removeAll(newTopics);
+                                Set<String> subscribeTopics = new HashSet<>(newTopics);
+                                subscribeTopics.removeAll(oldTopics);
 
                                 // Unsubscribe from old topics
-                                if (oldTopics.size() > 0) {
+                                if (unsubscribeTopics.size() > 0) {
+                                    String unsubscribeString = TextUtils.join(", ", unsubscribeTopics.toArray(new String[0]));
                                     try {
-                                        HomeClient.this.mqttClient.unsubscribe(oldTopics.toArray(new String[0]));
-                                        Log.i("HomeApp", "Unsubscribed from " + TextUtils.join(", ", oldTopics.toArray(new String[0])));
+                                        HomeClient.this.mqttClient.unsubscribe(unsubscribeTopics.toArray(new String[0]));
+                                        Log.i("HomeApp", "Unsubscribed from " + unsubscribeString);
                                     } catch (MqttException e) {
-                                        Log.e("HomeApp", "Failed to subscribe to MQTT topics");
+                                        Log.e("HomeApp", "Failed to unsubscribe from MQTT topics");
                                         e.printStackTrace();
-                                        Toast.makeText(context, String.format("Failed to unsubscribe from %s: %s", TextUtils.join(", ", oldTopics.toArray(new String[0])), e.toString()), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(context, String.format("Failed to unsubscribe from %s: %s", unsubscribeString, e.toString()), Toast.LENGTH_LONG).show();
                                     }
                                 }
+
                                 // Subscribe to new topics
-                                if (newTopics.size() > 0) {
+                                if (subscribeTopics.size() > 0) {
+                                    String subscribeString = TextUtils.join(", ", subscribeTopics.toArray(new String[0]));
                                     try {
-                                        HomeClient.this.mqttClient.subscribe(newTopics.toArray(new String[0]), qos);
-                                        Log.i("HomeApp", "Subscribed to " + TextUtils.join(", ", newTopics.toArray(new String[0])));
+                                        HomeClient.this.mqttClient.subscribe(subscribeTopics.toArray(new String[0]), qos);
+                                        Log.i("HomeApp", "Subscribed to " + subscribeString);
                                     } catch (MqttException e) {
                                         Log.e("HomeApp", "Failed to subscribe to MQTT topics");
                                         e.printStackTrace();
-                                        Toast.makeText(context, String.format("Failed to subscribe to %s: %s", TextUtils.join(", ", newTopics.toArray(new String[0])), e.toString()), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(context, String.format("Failed to subscribe to %s: %s", subscribeString, e.toString()), Toast.LENGTH_LONG).show();
                                     }
                                 }
                                 HomeClient.this.workspace = workspace;

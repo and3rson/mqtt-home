@@ -4,7 +4,6 @@ import androidx.annotation.Nullable;
 
 import com.dunai.home.R;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Section extends Item {

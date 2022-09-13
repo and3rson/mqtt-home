@@ -14,7 +14,6 @@ import com.dunai.home.activities.interfaces.ItemTouchHelperAdapter;
 import com.dunai.home.client.workspace.Item;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<ItemViewHolder> implements ItemTouchHelperAdapter {
     private final Context context;

@@ -9,15 +9,15 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
+import com.annimon.stream.Stream;
 import com.dunai.home.R;
 import com.dunai.home.client.HomeClient;
 import com.dunai.home.client.workspace.Widget;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Stream;
 
 public abstract class AbstractWidgetEditActivity extends AbstractEditActivity {
     private HomeClient client;
@@ -48,9 +48,11 @@ public abstract class AbstractWidgetEditActivity extends AbstractEditActivity {
         super.onCreate(savedInstanceState);
         setContentView(this.getLayoutResource());
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        final ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null)
+            actionBar.setDisplayHomeAsUpEnabled(true);
 
         this.client = HomeClient.getInstance();
 
@@ -124,16 +126,17 @@ public abstract class AbstractWidgetEditActivity extends AbstractEditActivity {
     }
 
     protected boolean validateFields() {
-        AtomicBoolean errors = new AtomicBoolean(false);
-        Stream.concat(Stream.of(this.title), this.getRequiredFields().stream()).forEach(field -> {
-            if (field.getText().length() == 0) {
-                field.setError(getString(R.string.field_required));
-                errors.set(true);
-            } else {
-                field.setError(null);
-            }
-        });
-        return !errors.get();
+        final Boolean errors = Stream.concat(Stream.of(this.title), Stream.of(this.getRequiredFields()))
+                .reduce(Boolean.FALSE, (errorAccumulator, field) -> {
+                    if (field.getText().length() == 0) {
+                        field.setError(getString(R.string.field_required));
+                        return Boolean.TRUE;
+                    } else {
+                        field.setError(null);
+                        return errorAccumulator;
+                    }
+                });
+        return errors == null || !errors;
     }
 
     protected @Nullable

@@ -71,7 +71,6 @@ public class SliderWidgetRenderer extends WidgetRenderer {
         super.notifyValueChanged();
     }
 
-
     private int mapWidgetToSeekBar(int value){
         return value - widgetMinValue;
     }

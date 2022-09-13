@@ -41,7 +41,6 @@ import com.dunai.home.client.workspace.Section;
 import com.dunai.home.client.workspace.SliderWidget;
 import com.dunai.home.client.workspace.SwitchWidget;
 import com.dunai.home.client.workspace.TextWidget;
-import com.dunai.home.client.workspace.Widget;
 import com.dunai.home.renderers.AbstractRenderer;
 import com.dunai.home.renderers.ButtonWidgetRenderer;
 import com.dunai.home.renderers.ColorWidgetRenderer;
@@ -51,7 +50,6 @@ import com.dunai.home.renderers.SectionRenderer;
 import com.dunai.home.renderers.SliderWidgetRenderer;
 import com.dunai.home.renderers.SwitchWidgetRenderer;
 import com.dunai.home.renderers.TextWidgetRenderer;
-import com.dunai.home.renderers.WidgetRenderer;
 
 import java.util.ArrayList;
 import java.util.HashMap;

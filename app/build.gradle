@@ -66,4 +66,6 @@ dependencies {
     implementation "com.github.abhishekti7:UnicornFilePicker:1.0.1"
     implementation group: 'org.bouncycastle', name: 'bcprov-jdk15to18', version: '1.68'
     implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15to18', version: '1.68'
+
+    implementation 'com.annimon:stream:1.2.2'
 }

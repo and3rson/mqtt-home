@@ -14,16 +14,21 @@ import com.dunai.home.client.workspace.SliderWidget;
  */
 @SuppressLint("ViewConstructor")
 public class SliderWidgetRenderer extends WidgetRenderer {
+
     private final SeekBar seekBar;
+    private final int widgetMinValue;
 
     public SliderWidgetRenderer(Context context, SliderWidget workspaceSliderWidget, String value) {
         super(context, workspaceSliderWidget);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.slider_renderer, this.findViewById(R.id.rendererContainer), true);
 
+        widgetMinValue = workspaceSliderWidget.minValue;
+        final int sliderRange = workspaceSliderWidget.maxValue - workspaceSliderWidget.minValue;
+
         this.seekBar = this.findViewById(R.id.sliderRendererSeekBar);
-        this.seekBar.setMin(workspaceSliderWidget.minValue);
-        this.seekBar.setMax(workspaceSliderWidget.maxValue);
+        // SeekBar's minValue is 0 by default
+        this.seekBar.setMax(sliderRange);
 
         if (value != null) {
             this.setValue(value);
@@ -33,9 +38,10 @@ public class SliderWidgetRenderer extends WidgetRenderer {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
+                    final int widgetValue = mapSeekBarToWidget(progress);
                     HomeClient.getInstance().publish(
                             workspaceSliderWidget.topic,
-                            String.valueOf(progress),
+                            String.valueOf(widgetValue),
                             workspaceSliderWidget.retain
                     );
                 }
@@ -57,10 +63,21 @@ public class SliderWidgetRenderer extends WidgetRenderer {
 
     public void setValue(String value) {
         try {
-            this.seekBar.setProgress(Integer.parseInt(value));
+            int widgetValue = Integer.parseInt(value);
+            this.seekBar.setProgress(mapWidgetToSeekBar(widgetValue));
         } catch (Exception e) {
             //
         }
         super.notifyValueChanged();
     }
+
+    private int mapWidgetToSeekBar(int value){
+        return value - widgetMinValue;
+    }
+
+    private int mapSeekBarToWidget(int value){
+        return widgetMinValue + value;
+    }
+
+
 }

@@ -199,7 +199,6 @@ public class HomeClient {
 
                                 // Populate new items & topics
                                 Set<String> newTopics = new HashSet<>();
-                                int[] qos = new int[items.length()];
                                 for (int i = 0; i < items.length(); i++) {
                                     JSONObject item = items.getJSONObject(i);
                                     Item workspaceItem = ItemFactory.createFromJSONObject(item);
@@ -207,7 +206,6 @@ public class HomeClient {
                                     if (workspaceItem.topic != null) {
                                         newTopics.add(workspaceItem.topic);
                                     }
-                                    qos[i] = 0;
                                 }
 
                                 // Find difference between old & new topics
@@ -215,6 +213,11 @@ public class HomeClient {
                                 unsubscribeTopics.removeAll(newTopics);
                                 Set<String> subscribeTopics = new HashSet<>(newTopics);
                                 subscribeTopics.removeAll(oldTopics);
+
+                                int[] qos = new int[subscribeTopics.size()];
+                                for (int i = 0; i < subscribeTopics.size(); i++) {
+                                    qos[i] = 0;
+                                }
 
                                 // Unsubscribe from old topics
                                 if (unsubscribeTopics.size() > 0) {
@@ -249,8 +252,10 @@ public class HomeClient {
                             }
                         }
                     } else {
+                        String payload = new String(message.getPayload());
+                        Log.i("HomeApp", String.format("Topic/data: %s/%s", topic, payload));
                         if (HomeClient.this.dataReceivedListener != null) {
-                            HomeClient.this.dataReceivedListener.onDataReceived(topic, new String(message.getPayload()));
+                            HomeClient.this.dataReceivedListener.onDataReceived(topic, payload);
                         }
                     }
                 }

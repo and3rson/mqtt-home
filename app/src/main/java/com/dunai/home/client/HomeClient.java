@@ -208,22 +208,16 @@ public class HomeClient {
                                     }
                                 }
 
-                                // Find difference between old & new topics
-                                Set<String> unsubscribeTopics = new HashSet<>(oldTopics);
-                                unsubscribeTopics.removeAll(newTopics);
-                                Set<String> subscribeTopics = new HashSet<>(newTopics);
-                                subscribeTopics.removeAll(oldTopics);
-
-                                int[] qos = new int[subscribeTopics.size()];
-                                for (int i = 0; i < subscribeTopics.size(); i++) {
+                                int[] qos = new int[newTopics.size()];
+                                for (int i = 0; i < newTopics.size(); i++) {
                                     qos[i] = 0;
                                 }
 
                                 // Unsubscribe from old topics
-                                if (unsubscribeTopics.size() > 0) {
-                                    String unsubscribeString = TextUtils.join(", ", unsubscribeTopics.toArray(new String[0]));
+                                if (oldTopics.size() > 0) {
+                                    String unsubscribeString = TextUtils.join(", ", oldTopics.toArray(new String[0]));
                                     try {
-                                        HomeClient.this.mqttClient.unsubscribe(unsubscribeTopics.toArray(new String[0]));
+                                        HomeClient.this.mqttClient.unsubscribe(oldTopics.toArray(new String[0]));
                                         Log.i("HomeApp", "Unsubscribed from " + unsubscribeString);
                                     } catch (MqttException e) {
                                         Log.e("HomeApp", "Failed to unsubscribe from MQTT topics");
@@ -233,10 +227,10 @@ public class HomeClient {
                                 }
 
                                 // Subscribe to new topics
-                                if (subscribeTopics.size() > 0) {
-                                    String subscribeString = TextUtils.join(", ", subscribeTopics.toArray(new String[0]));
+                                if (newTopics.size() > 0) {
+                                    String subscribeString = TextUtils.join(", ", newTopics.toArray(new String[0]));
                                     try {
-                                        HomeClient.this.mqttClient.subscribe(subscribeTopics.toArray(new String[0]), qos);
+                                        HomeClient.this.mqttClient.subscribe(newTopics.toArray(new String[0]), qos);
                                         Log.i("HomeApp", "Subscribed to " + subscribeString);
                                     } catch (MqttException e) {
                                         Log.e("HomeApp", "Failed to subscribe to MQTT topics");
@@ -404,6 +398,7 @@ public class HomeClient {
     }
 
     void setConnectionState(ConnectionState connectionState) {
+        Log.i("HomeApp", String.format("Connection state: %s", connectionState));
         this.connectionState = connectionState;
         if (this.connectionStateChangedListener != null) {
             this.connectionStateChangedListener.onConnectionStateChanged(connectionState);
